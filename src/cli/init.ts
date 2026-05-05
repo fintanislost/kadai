@@ -59,24 +59,54 @@ function appendKadaiSectionToClaudeMd(rootDir: string): void {
 
 export const initCommand = new Command('init')
   .description('Bootstrap a kadai spine in the current directory')
-  .option('-y, --yes', 'skip prompts; use defaults')
+  .option('-y, --yes', 'skip prompts; use defaults; no first epic')
   .action(async (opts: { yes?: boolean }) => {
     const rootDir = process.cwd();
-    let productDescription = '';
-    if (opts.yes) {
-      productDescription = 'Untitled product';
-    } else {
-      const r = await prompts({
+    let productDescription = 'Untitled product';
+    let createFirstEpic = false;
+    let firstEpicTitle = '';
+
+    if (!opts.yes) {
+      const r1 = await prompts({
         type: 'text',
         name: 'productDescription',
         message: 'What is the product you are tracking?',
         initial: 'Untitled product',
       });
-      productDescription = r.productDescription ?? 'Untitled product';
+      productDescription = r1.productDescription ?? 'Untitled product';
+
+      const r2 = await prompts({
+        type: 'confirm',
+        name: 'createFirstEpic',
+        message: 'Want to create your first epic now?',
+        initial: true,
+      });
+      createFirstEpic = !!r2.createFirstEpic;
+
+      if (createFirstEpic) {
+        const r3 = await prompts({
+          type: 'text',
+          name: 'firstEpicTitle',
+          message: 'First epic title:',
+          initial: 'Project setup',
+        });
+        firstEpicTitle = r3.firstEpicTitle ?? 'Project setup';
+      }
     }
-    runInit({ rootDir, productDescription, skipFirstEpic: true });
+
+    runInit({ rootDir, productDescription, skipFirstEpic: !createFirstEpic });
     console.log(pc.green('✓ kadai initialized in ' + rootDir));
-    console.log('  - .kadai/ created with config + README');
-    console.log('  - CLAUDE.md updated with kadai section');
-    console.log('Next: ' + pc.cyan('kadai add epic'));
+
+    if (createFirstEpic && firstEpicTitle) {
+      // @ts-ignore
+      const { runAdd } = await import('./add');
+      runAdd({
+        rootDir,
+        kind: 'epic',
+        title: firstEpicTitle,
+        phase: DEFAULT_CONFIG.phases[0].slug,
+      });
+      console.log(pc.green('✓ first epic created'));
+    }
+    console.log('Next: ' + pc.cyan('kadai add feature'));
   });

@@ -2217,7 +2217,7 @@ git commit -m "feat(cli): add kadai init (filesystem + CLAUDE.md) [Plan-1 Task-1
 
 > **Note on testing:** The wizard's interactive `prompts()` calls aren't unit-testable without mocking. We rely on the smoke test (Task 25) to manually verify the wizard prompts work. The `runInit` core function is already covered by Task 17's tests.
 
-- [ ] **Step 1: Add the wizard to the action handler**
+- [x] **Step 1: Add the wizard to the action handler**
 
 In `src/cli/init.ts`, replace the `initCommand` action with:
 
@@ -2276,7 +2276,7 @@ export const initCommand = new Command('init')
   });
 ```
 
-- [ ] **Step 2: Verify type-check + existing tests still pass**
+- [x] **Step 2: Verify type-check + existing tests still pass**
 
 ```bash
 bun run typecheck
@@ -2287,10 +2287,10 @@ Expected: typecheck clean; init tests still PASS (5 tests).
 
 > Note: `runAdd` is implemented in Task 19. This task imports it dynamically (`await import('./add')`) so this file compiles before Task 19 lands. Until Task 19 is done, the wizard's epic-creation branch will throw at runtime if exercised. Tests don't exercise it; manual smoke after Task 19 will.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
-git add src/cli/init.ts
+git add src/cli/init.ts docs/superpowers/plans/2026-05-05-kadai-01-spine-and-cli.md
 git commit -m "feat(cli): add interactive wizard to kadai init [Plan-1 Task-18]"
 ```
 
