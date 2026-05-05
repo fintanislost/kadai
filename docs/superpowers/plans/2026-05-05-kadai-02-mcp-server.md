@@ -1451,7 +1451,7 @@ git commit -m "feat(mcp): add pick_story and unpick write tools [Plan-2 Task-9]"
 
 **Goal:** Move a spec file from `docs/superpowers/specs/` into the feature's directory as `spec.md`, and update the feature's frontmatter to reference it. Same for plans → stories.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/mcp/handlers/attach.test.ts`:
 
@@ -1526,7 +1526,7 @@ test('attach_spec errors if source file missing', async () => {
 });
 ```
 
-- [ ] **Step 2: Run the tests (should fail)**
+- [x] **Step 2: Run the tests (should fail)**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test tests/mcp/handlers/attach.test.ts
@@ -1534,7 +1534,7 @@ cd /home/fintan/repos/kadai && bun test tests/mcp/handlers/attach.test.ts
 
 Expected: FAIL.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `/home/fintan/repos/kadai/src/mcp/handlers/attach.ts`:
 
@@ -1614,7 +1614,7 @@ export function registerAttachTools(): void {
 }
 ```
 
-- [ ] **Step 4: Run the tests (should pass)**
+- [x] **Step 4: Run the tests (should pass)**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test tests/mcp/handlers/attach.test.ts
@@ -1622,7 +1622,7 @@ cd /home/fintan/repos/kadai && bun test tests/mcp/handlers/attach.test.ts
 
 Expected: 4 tests pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/mcp/handlers/attach.ts tests/mcp/handlers/attach.test.ts docs/superpowers/plans/2026-05-05-kadai-02-mcp-server.md
