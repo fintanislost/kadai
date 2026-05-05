@@ -3,6 +3,7 @@ import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
 import { Epic } from './pages/Epic';
 import { Feature } from './pages/Feature';
+import { Story } from './pages/Story';
 
 const rootRoute = createRootRoute({
   component: Layout,
@@ -29,7 +30,7 @@ const featureRoute = createRoute({
 const storyRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/stories/$id',
-  component: () => <div>Story detail (placeholder)</div>,
+  component: Story,
 });
 
 const routeTree = rootRoute.addChildren([homeRoute, epicRoute, featureRoute, storyRoute]);

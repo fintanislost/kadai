@@ -1,3 +1,5 @@
+import { dirname, join } from 'node:path';
+import { existsSync, readFileSync } from 'node:fs';
 import { walkSpine, findById } from '../core/spine';
 import { loadConfig } from '../config/load';
 import { readPicked } from '../core/picked';
@@ -11,7 +13,7 @@ function filterItems(
 ): Item[] {
   return items.filter(item => {
     if (item.kind !== kind) return false;
-    const d = item.data as Record<string, unknown>;
+    const d = item.data as unknown as Record<string, unknown>;
     if (filters.phase && d.phase !== filters.phase) return false;
     if (filters.status && item.data.status !== filters.status) return false;
     if (filters.parent && d.parent !== filters.parent) return false;
@@ -60,6 +62,21 @@ export async function handleApi(req: Request, rootDir: string): Promise<Response
       status: readQuery(url, 'status') as Status | undefined,
       parent: readQuery(url, 'story_id'),
     }));
+  }
+
+  const fileMatch = path.match(/^\/api\/files\/([A-Z]+-\d+)\/([a-z.]+)$/);
+  if (fileMatch) {
+    const [, id, filename] = fileMatch;
+    if (!['spec.md', 'plan.md', 'changelog.md'].includes(filename)) {
+      return new Response('Forbidden', { status: 403 });
+    }
+    const item = findById(rootDir, id);
+    if (!item) return new Response('Not found', { status: 404 });
+    const itemDir = dirname(item.path);
+    const filePath = join(itemDir, filename);
+    if (!existsSync(filePath)) return new Response('Not found', { status: 404 });
+    const content = readFileSync(filePath, 'utf8');
+    return new Response(content, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   }
 
   const itemMatch = path.match(/^\/api\/items\/(.+)$/);

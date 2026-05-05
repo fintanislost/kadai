@@ -40,3 +40,10 @@ export async function getItem(id: string): Promise<Item | null> {
 export async function getPicked(): Promise<Item | null> {
   return get<Item | null>('/api/picked');
 }
+
+export async function getFile(id: string, filename: 'spec.md' | 'plan.md' | 'changelog.md'): Promise<string | null> {
+  const r = await fetch(`/api/files/${id}/${filename}`);
+  if (r.status === 404) return null;
+  if (!r.ok) throw new Error(`/api/files/${id}/${filename} → ${r.status}`);
+  return r.text();
+}
