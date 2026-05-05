@@ -50,7 +50,7 @@ export function writeItem(
   }
 
   const filePath = join(itemDir, filename);
-  const content = serialize(validated as Record<string, unknown>, body);
+  const content = serialize(validated as unknown as Record<string, unknown>, body);
   writeFileAtomic(filePath, content);
   return filePath;
 }
