@@ -166,7 +166,7 @@ git commit -m "feat(plugin): scaffold kadai-plugin with manifest [Plan-5 Task-1]
 
 **Goal:** Skill with description tuned to auto-trigger on planning/scoping language, teaching Claude the canonical kadai workflow.
 
-- [ ] **Step 1: Create the skill**
+- [x] **Step 1: Create the skill**
 
 Create `/home/fintan/repos/kadai/kadai-plugin/skills/kadai/SKILL.md`:
 
@@ -224,7 +224,7 @@ This is what makes kadai an **archive** as well as a tracker — every story car
 - Web viewer: `kadai serve`
 ````
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -233,7 +233,7 @@ cat kadai-plugin/skills/kadai/SKILL.md | head -5
 
 Expected: YAML frontmatter visible.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -251,7 +251,7 @@ git commit -m "feat(plugin): add kadai skill (SKILL.md) [Plan-5 Task-2]"
 
 **Goal:** Slash command that picks a story and transitions it to `in_progress`. Frontmatter declares argument hint + allowed tools.
 
-- [ ] **Step 1: Create the command**
+- [x] **Step 1: Create the command**
 
 Create `/home/fintan/repos/kadai/kadai-plugin/commands/kadai-pick.md`:
 
@@ -287,7 +287,7 @@ kadai pick $ARGUMENTS
 This does the same thing (sets picked + transitions to in_progress).
 ````
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -296,7 +296,7 @@ cat kadai-plugin/commands/kadai-pick.md | head -10
 
 Expected: YAML frontmatter visible with `description`, `allowed-tools`, `argument-hint`.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -372,7 +372,7 @@ git commit -m "feat(plugin): add /kadai-status slash command [Plan-5 Task-4]"
 
 **Goal:** Confirm the plugin manifest, skill, and slash commands are well-formed and would be loadable by Claude Code. We don't actually install it into the user's session here — that happens in Task 6.
 
-- [ ] **Step 1: Validate manifest JSON**
+- [x] **Step 1: Validate manifest JSON**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -381,7 +381,7 @@ cat kadai-plugin/.claude-plugin/plugin.json | jq . > /dev/null && echo "manifest
 
 Expected: prints `manifest OK` (no JSON parse error).
 
-- [ ] **Step 2: Validate skill frontmatter**
+- [x] **Step 2: Validate skill frontmatter**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -390,7 +390,7 @@ head -4 kadai-plugin/skills/kadai/SKILL.md
 
 Expected: starts with `---`, contains `name: kadai`, contains `description:`, ends with `---`.
 
-- [ ] **Step 3: Validate slash command frontmatter**
+- [x] **Step 3: Validate slash command frontmatter**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -402,7 +402,7 @@ done
 
 Expected: each file starts with `---` + `description:` + `allowed-tools:` + (for kadai-pick) `argument-hint:`.
 
-- [ ] **Step 4: Verify the directory tree**
+- [x] **Step 4: Verify the directory tree**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -418,7 +418,7 @@ kadai-plugin/commands/kadai-status.md
 kadai-plugin/skills/kadai/SKILL.md
 ```
 
-- [ ] **Step 5: Commit (if any tweaks were needed; otherwise skip)**
+- [x] **Step 5: Commit (if any tweaks were needed; otherwise skip)**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -607,13 +607,13 @@ git commit -m "test(dogfood): run subagent acceptance test [Plan-5 Task-6]"
 
 > **This task is OPTIONAL.** Skip if you (or the user) prefer to keep the kadai repo uninstalled for now. MVP is considered done after Task 6 passes regardless.
 
-- [ ] **Step 1: Confirm with the user before proceeding**
+- [x] **Step 1: Confirm with the user before proceeding**
 
 Ask the user: "MVP is done. Optional: install kadai against the kadai repo itself, so post-MVP work is tracked in the spine? (Y/n)"
 
 If the user says no or doesn't respond, mark this task SKIPPED and move on to plan finalization.
 
-- [ ] **Step 2: Run kadai init in this repo**
+- [x] **Step 2: Run kadai init in this repo**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -626,7 +626,7 @@ This creates:
 - Appends `## Kadai` section to `CLAUDE.md`
 - Adds hook entries to `.claude/settings.json`
 
-- [ ] **Step 3: Seed the post-MVP backlog as a kadai-self epic**
+- [x] **Step 3: Seed the post-MVP backlog as a kadai-self epic**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -639,7 +639,7 @@ kadai add feature --title 'Slash command polish (kadai-add, kadai-sync, kadai-un
 kadai add feature --title 'Plugin distribution polish (Brew, curl install)' --phase v1 --parent EPIC-001
 ```
 
-- [ ] **Step 4: Verify**
+- [x] **Step 4: Verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -650,7 +650,7 @@ kadai status
 
 Expected: epic + 5 features visible.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
