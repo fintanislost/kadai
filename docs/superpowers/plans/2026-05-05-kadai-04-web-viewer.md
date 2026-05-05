@@ -1074,7 +1074,7 @@ git commit -m "feat(web): add Home roadmap page and router [Plan-4 Task-7]"
 
 **Goal:** Epic detail shows the epic's metadata + a sub-roadmap of features. Feature detail shows kanban of stories grouped by status + the spec preview (if present).
 
-- [ ] **Step 1: Create KanbanBoard component**
+- [x] **Step 1: Create KanbanBoard component**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/components/KanbanBoard.tsx`:
 
@@ -1113,7 +1113,7 @@ export function KanbanBoard({ stories }: { stories: Item[] }) {
 }
 ```
 
-- [ ] **Step 2: Create Epic page**
+- [x] **Step 2: Create Epic page**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/pages/Epic.tsx`:
 
@@ -1173,7 +1173,7 @@ export function Epic() {
 }
 ```
 
-- [ ] **Step 3: Create Feature page**
+- [x] **Step 3: Create Feature page**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/pages/Feature.tsx`:
 
@@ -1222,7 +1222,7 @@ export function Feature() {
 }
 ```
 
-- [ ] **Step 4: Register the new pages in router**
+- [x] **Step 4: Register the new pages in router**
 
 In `/home/fintan/repos/kadai/src/web/frontend/src/router.tsx`, replace the placeholder `epicRoute` and `featureRoute` definitions with:
 
@@ -1247,7 +1247,7 @@ const featureRoute = createRoute({
 
 (Keep `storyRoute` as the placeholder; Task 9 handles it.)
 
-- [ ] **Step 5: Build**
+- [x] **Step 5: Build**
 
 ```bash
 cd /home/fintan/repos/kadai && bun run build:web
@@ -1255,7 +1255,7 @@ cd /home/fintan/repos/kadai && bun run build:web
 
 Expected: clean.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1263,7 +1263,7 @@ git add src/web/frontend/src/pages/Epic.tsx src/web/frontend/src/pages/Feature.t
 git commit -m "feat(web): add Epic and Feature detail pages [Plan-4 Task-8]"
 ```
 
-## Update Task 8 checkboxes (6 boxes) in plan.
+## Update Task 8 checkboxes (6 boxes) — COMPLETE.
 
 ---
 

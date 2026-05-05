@@ -1,6 +1,8 @@
 import { createRootRoute, createRoute, createRouter } from '@tanstack/react-router';
 import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
+import { Epic } from './pages/Epic';
+import { Feature } from './pages/Feature';
 
 const rootRoute = createRootRoute({
   component: Layout,
@@ -12,17 +14,16 @@ const homeRoute = createRoute({
   component: Home,
 });
 
-// Placeholder routes for the not-yet-implemented pages — replaced in Tasks 8/9.
 const epicRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/epics/$id',
-  component: () => <div>Epic detail (placeholder)</div>,
+  component: Epic,
 });
 
 const featureRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/features/$id',
-  component: () => <div>Feature detail (placeholder)</div>,
+  component: Feature,
 });
 
 const storyRoute = createRoute({
