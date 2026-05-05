@@ -1176,7 +1176,7 @@ git commit -m "feat(mcp): add create_* write tools and runAdd body support [Plan
 
 **Goal:** `set_status(id, status, reason?)` validates against the state machine. `set_phase(id, phase, order?)` updates phase + order on epics/features/stories (errors on tasks).
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/mcp/handlers/status.test.ts`:
 
@@ -1237,15 +1237,15 @@ test('set_phase rejects tasks (tasks inherit phase from story)', async () => {
 });
 ```
 
-- [ ] **Step 2: Run the tests (should fail)**
+- [x] **Step 2: Run the tests (should fail)**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test tests/mcp/handlers/status.test.ts
 ```
 
-Expected: FAIL.
+Expected: FAIL. ✓
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `/home/fintan/repos/kadai/src/mcp/handlers/status.ts`:
 
@@ -1304,20 +1304,22 @@ export function registerStatusTools(): void {
 }
 ```
 
-- [ ] **Step 4: Run the tests (should pass)**
+- [x] **Step 4: Run the tests (should pass)**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test tests/mcp/handlers/status.test.ts
 ```
 
-Expected: 5 tests pass.
+Expected: 5 tests pass. ✓ (5 pass, 0 fail)
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/mcp/handlers/status.ts tests/mcp/handlers/status.test.ts docs/superpowers/plans/2026-05-05-kadai-02-mcp-server.md
 git commit -m "feat(mcp): add set_status and set_phase write tools [Plan-2 Task-8]"
 ```
+
+Committed: aebf978
 
 ---
 
