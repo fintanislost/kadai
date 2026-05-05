@@ -1785,7 +1785,7 @@ git commit -m "feat(config): add TOML loader/saver with defaults merge [Plan-1 T
 
 **Goal:** `readPicked` / `setPicked` / `clearPicked` for the `.kadai/.picked` file. `setStatus(rootDir, id, newStatus)` validates against the state machine and atomic-writes the updated frontmatter.
 
-- [ ] **Step 1: Write picked tests**
+- [x] **Step 1: Write picked tests**
 
 Create `tests/core/picked.test.ts`:
 
@@ -1823,7 +1823,7 @@ test('setPicked rejects non-story IDs', () => {
 });
 ```
 
-- [ ] **Step 2: Write operations tests**
+- [x] **Step 2: Write operations tests**
 
 Create `tests/core/operations.test.ts`:
 
@@ -1871,7 +1871,7 @@ test('setStatus updates the updated timestamp', () => {
 });
 ```
 
-- [ ] **Step 3: Run tests (should fail)**
+- [x] **Step 3: Run tests (should fail)**
 
 ```bash
 bun test tests/core/picked.test.ts tests/core/operations.test.ts
@@ -1879,7 +1879,7 @@ bun test tests/core/picked.test.ts tests/core/operations.test.ts
 
 Expected: FAIL.
 
-- [ ] **Step 4: Implement picked**
+- [x] **Step 4: Implement picked**
 
 Create `src/core/picked.ts`:
 
@@ -1916,7 +1916,7 @@ export function clearPicked(rootDir: string): void {
 }
 ```
 
-- [ ] **Step 5: Implement operations**
+- [x] **Step 5: Implement operations**
 
 Create `src/core/operations.ts`:
 
@@ -1943,7 +1943,7 @@ export function setStatus(rootDir: string, id: string, newStatus: Status): void 
 }
 ```
 
-- [ ] **Step 6: Run tests (should pass)**
+- [x] **Step 6: Run tests (should pass)**
 
 ```bash
 bun test tests/core/picked.test.ts tests/core/operations.test.ts
@@ -1951,7 +1951,7 @@ bun test tests/core/picked.test.ts tests/core/operations.test.ts
 
 Expected: PASS — 8 tests across both files.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add src/core/picked.ts src/core/operations.ts tests/core/picked.test.ts tests/core/operations.test.ts
