@@ -9,6 +9,7 @@ import { phasesCommand } from './phases';
 import { configCommand } from './config';
 import { mcpCommand } from './mcp';
 import { hookCommand } from './hook';
+import { serveCommand } from './serve';
 
 const program = new Command();
 program
@@ -26,5 +27,6 @@ program.addCommand(phasesCommand);
 program.addCommand(configCommand);
 program.addCommand(mcpCommand);
 program.addCommand(hookCommand);
+program.addCommand(serveCommand);
 
 program.parseAsync(process.argv);

@@ -1467,7 +1467,7 @@ git commit -m "feat(web): add Story detail page with tabs + /api/files endpoint 
 
 **Goal:** `kadai serve [--port N] [--no-open]` starts the server, optionally opens the browser.
 
-- [ ] **Step 1: Failing test**
+- [x] **Step 1: Failing test**
 
 Create `/home/fintan/repos/kadai/tests/cli/serve.test.ts`:
 
@@ -1483,9 +1483,9 @@ test('serveCommand has expected name and options', () => {
 });
 ```
 
-- [ ] **Step 2:** `bun test tests/cli/serve.test.ts` — expect FAIL.
+- [x] **Step 2:** `bun test tests/cli/serve.test.ts` — expect FAIL.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `/home/fintan/repos/kadai/src/cli/serve.ts`:
 
@@ -1528,9 +1528,9 @@ import { serveCommand } from './serve';
 program.addCommand(serveCommand);
 ```
 
-- [ ] **Step 4:** `bun test tests/cli/serve.test.ts` — expect 1 PASS.
+- [x] **Step 4:** `bun test tests/cli/serve.test.ts` — expect 1 PASS.
 
-- [ ] **Step 5: Verify CLI**
+- [x] **Step 5: Verify CLI**
 
 ```bash
 cd /home/fintan/repos/kadai && bun run src/cli/index.ts --help | grep serve
@@ -1538,7 +1538,7 @@ cd /home/fintan/repos/kadai && bun run src/cli/index.ts --help | grep serve
 
 Expected: `serve` command is listed.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1546,7 +1546,7 @@ git add src/cli/serve.ts src/cli/index.ts tests/cli/serve.test.ts docs/superpowe
 git commit -m "feat(cli): add 'kadai serve' command [Plan-4 Task-10]"
 ```
 
-## Update Task 10 checkboxes (6 boxes) in plan.
+## Update Task 10 checkboxes (6 boxes) — COMPLETE.
 
 ---
 
