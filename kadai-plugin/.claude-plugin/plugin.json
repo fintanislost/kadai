@@ -1,0 +1,12 @@
+{
+  "name": "kadai",
+  "description": "Auto-triggering skill + slash commands for kadai (the local-first product spine for projects driven by agentic coding)",
+  "version": "0.1.0",
+  "author": {
+    "name": "Fintan"
+  },
+  "homepage": "https://github.com/fintan/kadai",
+  "repository": "https://github.com/fintan/kadai",
+  "license": "MIT",
+  "keywords": ["kadai", "product-management", "agentic-coding", "spine", "epics", "stories"]
+}

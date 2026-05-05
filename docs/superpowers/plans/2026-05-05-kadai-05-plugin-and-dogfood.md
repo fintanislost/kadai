@@ -75,14 +75,14 @@ docs/dogfood-acceptance-test.md    # Runbook + execution log for the subagent te
 
 **Goal:** Create the plugin directory with a valid manifest. No skills or commands yet (those come in Tasks 2-4).
 
-- [ ] **Step 1: Create directories**
+- [x] **Step 1: Create directories**
 
 ```bash
 cd /home/fintan/repos/kadai
 mkdir -p kadai-plugin/.claude-plugin kadai-plugin/skills/kadai kadai-plugin/commands
 ```
 
-- [ ] **Step 2: Create the manifest**
+- [x] **Step 2: Create the manifest**
 
 Create `/home/fintan/repos/kadai/kadai-plugin/.claude-plugin/plugin.json`:
 
@@ -101,7 +101,7 @@ Create `/home/fintan/repos/kadai/kadai-plugin/.claude-plugin/plugin.json`:
 }
 ```
 
-- [ ] **Step 3: Create the README**
+- [x] **Step 3: Create the README**
 
 Create `/home/fintan/repos/kadai/kadai-plugin/README.md`:
 
@@ -138,7 +138,7 @@ After installing, the skill auto-triggers on relevant prompts. The slash command
 ```
 ````
 
-- [ ] **Step 4: Verify**
+- [x] **Step 4: Verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -148,7 +148,7 @@ cat kadai-plugin/.claude-plugin/plugin.json
 
 Expected: manifest valid JSON; README readable; both directories exist.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -156,7 +156,7 @@ git add kadai-plugin/.claude-plugin/plugin.json kadai-plugin/README.md docs/supe
 git commit -m "feat(plugin): scaffold kadai-plugin with manifest [Plan-5 Task-1]"
 ```
 
-## Update Task 1 checkboxes (5 boxes) in plan.
+## Update Task 1 checkboxes (5 boxes) in plan. [DONE]
 
 ---
 
