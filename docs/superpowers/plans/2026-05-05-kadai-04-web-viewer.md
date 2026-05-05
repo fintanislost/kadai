@@ -42,13 +42,15 @@ Implement `kadai serve` — a Bun HTTP server + React SPA at localhost that rend
 
 ## Dependencies — what must exist before writing this plan
 
-**Plan(s) shipped:** Plans 1, 2, 3 — and the mid-build dogfood transition has happened (kadai is installed against this project).
+**Plan(s) shipped:** Plans 1, 2, 3.
 
 **Specifically, these inputs:**
 
 - All Plan 1 core modules (read-only access to spine)
 - Plan 2's MCP server is irrelevant here — the web viewer reads files directly via the core modules; no MCP coupling
 - Plan 3's `.kadai/.picked` is read for the active-story badge
+
+**Note:** kadai is NOT yet installed against the kadai repo (that happens optionally in Plan 5). Web viewer testing uses temp-dir spines (created via `runInit({ rootDir: tmp, ... })`) — same pattern as Plan 1's CLI integration tests.
 
 ## Outputs — what ships at the end of this plan
 
@@ -64,13 +66,12 @@ Implement `kadai serve` — a Bun HTTP server + React SPA at localhost that rend
 
 ## When to write this plan
 
-After Plan 3 ships and kadai is installed against this project. **This plan is itself executed under kadai's own guardrails** — the agent writing it will need to `kadai pick <story-id>` first.
+After Plan 3 ships. The kadai repo is still uninstalled at this stage — testing uses temp-dir spines (Playwright launches `kadai serve` against a temp project where `runInit` has been called).
 
 ## Compaction recovery note
 
 If a fresh Claude lands here:
 1. Verify Plans 1–3 are `DONE` per [`README.md`](README.md).
-2. Verify kadai is installed against this project (`.kadai/` exists with epics/features/stories — this is the mid-build dogfood state).
+2. Confirm `.kadai/` does NOT exist in the kadai repo (it shouldn't — install only happens in Plan 5).
 3. Read spec §6.
-4. **You're now operating under kadai's own guardrails** — the PreToolUse hook will block edits unless you've picked a story. Run `kadai status` to see what's picked.
-5. Run `/writing-plans` and reference this file.
+4. Run `/writing-plans` and reference this file. Web viewer tests should follow the existing temp-dir pattern from Plan 1's CLI tests.

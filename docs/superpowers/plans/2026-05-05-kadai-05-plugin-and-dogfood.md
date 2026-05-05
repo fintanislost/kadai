@@ -27,16 +27,18 @@ Build the bundled Claude Code plugin (skill + minimal slash commands) and run th
 - Implement `/kadai-status` slash command
 - Document plugin install instructions
 - **Run the subagent acceptance test (spec §10):**
-  - Spawn a fresh subagent (via the Agent tool) with a kadai-managed story
+  - Spawn a fresh subagent (via the Agent tool) in a **temp working directory** where kadai has just been freshly initialized (`kadai init`) and the spine has been seeded with a sample story to work
+  - Assign the subagent a kadai-managed story (e.g., "STORY-N: implement the SSE endpoint for live updates")
   - Observe the 6-point checklist from spec §10:
     1. Skill auto-trigger fires before planning
     2. PreToolUse hook blocks first Edit/Write
     3. Subagent recovers via `pick_story` + `set_status(in_progress)`
     4. PostToolUse hook captures edits to changelog.md
     5. Subagent calls `set_status(review)` after task completion
-    6. Web viewer (running in terminal session) reflects the change after manual reload (live updates are post-MVP)
+    6. Web viewer (running in terminal session against the same temp dir) reflects the change after manual reload (live updates are post-MVP)
   - Document pass/fail; iterate on guardrails / skill description / hook config if any step fails
-- **MVP "done" gate:** all 6 points pass; update README and CLAUDE.md to mark MVP complete; seed post-MVP backlog (spec §13) into the kadai spine as the next epics to work
+- **MVP "done" gate:** all 6 points pass.
+- **Optional final wrap (after the gate passes):** install kadai against the kadai repo itself (`kadai init`), seed the spine with the post-MVP backlog from spec §13 as the next epic, and update README + CLAUDE.md accordingly. This is the moment the kadai repo first becomes self-tracked.
 
 ## Out of scope (deferred — these become the first post-MVP work, tracked in kadai itself)
 
@@ -48,21 +50,23 @@ Build the bundled Claude Code plugin (skill + minimal slash commands) and run th
 
 ## Dependencies — what must exist before writing this plan
 
-**Plan(s) shipped:** Plans 1–4. Kadai is installed and self-tracking.
+**Plan(s) shipped:** Plans 1–4. Kadai is NOT yet installed against the kadai repo (that is the optional final wrap of this plan).
 
 **Specifically, these inputs:**
 
-- All MCP tools functional and tested
-- Hooks installed and tested
-- Web viewer running (the subagent test verifies the file changes that an SSE-equipped viewer would consume; for MVP, manual reload is fine)
+- All MCP tools functional and tested (Plan 2)
+- Hooks implemented and verified via temp-dir tests (Plan 3)
+- Web viewer running (Plan 4) — for the subagent test, point it at the temp dir where kadai is initialized for the test
+- For MVP, manual reload of the web viewer is fine (live updates via SSE are post-MVP)
 
 ## Outputs — what ships at the end of this plan
 
 - `kadai-plugin/` directory ready to install via Claude Code's plugin system
 - `kadai` skill auto-triggers on planning language
 - `/kadai-pick` and `/kadai-status` slash commands work
-- Subagent acceptance test passes all 6 points
-- README.md and CLAUDE.md updated: MVP marked complete; post-MVP backlog seeded into kadai itself
+- Subagent acceptance test passes all 6 points (executed in a temp dir)
+- README.md and CLAUDE.md updated: MVP marked complete
+- (Optional final wrap) Kadai installed against the kadai repo itself; post-MVP backlog seeded as the next epic
 
 ## Spec sections covered
 
@@ -80,7 +84,8 @@ After Plan 4 ships. Read Plan 4's outputs (especially the web viewer's read path
 
 If a fresh Claude lands here:
 1. Verify Plans 1–4 are `DONE` per [`README.md`](README.md).
-2. Read spec §5.3, §5.4, §10, §12 step 7, §13.
-3. Run `/writing-plans` and reference this file.
-4. **The terminal task of this plan is the subagent acceptance test.** It is the gating check for MVP-done. Do not declare MVP done until all 6 points pass.
-5. After MVP is done, seed the kadai spine with post-MVP backlog items (spec §13) as the next work.
+2. Confirm `.kadai/` does NOT exist in the kadai repo yet — install only happens at the optional final wrap of this plan.
+3. Read spec §5.3, §5.4, §10, §12 step 7, §13.
+4. Run `/writing-plans` and reference this file.
+5. **The terminal task of this plan is the subagent acceptance test, executed against a temp dir.** It is the gating check for MVP-done. Do not declare MVP done until all 6 points pass.
+6. After the subagent test passes, optionally install kadai against the kadai repo as a final wrap (this is when self-tracking begins; post-MVP work uses the kadai spine).

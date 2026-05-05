@@ -15,8 +15,6 @@ If you're a fresh Claude session, read in this order:
 > **Currently:** Plan 3 — Hooks (guardrails) (stub; awaiting `/writing-plans`)
 >
 > Plans 1 (Spine + CLI) and 2 (MCP server) shipped. Plan 2 also extended `kadai init` to merge `.mcp.json`, so any project can register the kadai MCP server with `kadai init`. The next step is to run `/writing-plans` against [`docs/superpowers/plans/2026-05-05-kadai-03-hooks.md`](docs/superpowers/plans/2026-05-05-kadai-03-hooks.md) to draft the executable plan from its stub.
->
-> **Plan 3 also includes the mid-build dogfood transition** — once hooks ship, kadai installs against this very project and Plans 4 and 5 are executed under kadai's own guardrails.
 
 When a plan completes, update both this section *and* the plans index status column to point to the next plan.
 
@@ -49,13 +47,11 @@ bun test src/core       # core module tests
 bun test src/cli        # CLI tests
 ```
 
-## Self-hosted dogfood
+## Dogfood / testing approach
 
-After **Plan 3** (hooks) ships, kadai installs against this very project. From that point, work on Plans 4 and 5 happens under kadai's own guardrails — you'll need to `kadai pick <story-id>` before editing code.
+Kadai testing happens via **subagents in isolated working directories**, not by installing kadai against this project itself.
 
-## Kadai
+- **Plans 3 and 4:** integration and behavior tests spawn fresh subagents (or use temp dirs) where kadai is initialized and exercised. The kadai project repo stays clean — no `.kadai/`, no MCP registration, no hooks installed here.
+- **Plan 5:** the formal dogfood test spawns a subagent given a kadai-managed story (with kadai initialized in the subagent's working dir) and observes the 6-point behavior checklist (spec §10). Optionally, Plan 5 also installs kadai against this very project as a final wrap, so kadai becomes self-tracked going into post-MVP work.
 
-This project uses kadai for product/feature/story tracking (spine in `.kadai/`).
-Use the `kadai` CLI to read/update the spine — direct edits to `.kadai/` are allowed but `kadai add` validates schema and increments IDs.
-
-Run `kadai status` to see the picked story and queue.
+Until Plan 5 lands, treat this repo as a normal TypeScript project — no kadai guardrails apply to commits here.

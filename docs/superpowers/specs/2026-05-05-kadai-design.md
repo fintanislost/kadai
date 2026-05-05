@@ -408,15 +408,17 @@ Single language across MCP server, web backend, CLI, and frontend.
 
 ### Dogfood / agent acceptance testing (primary acceptance test)
 
-The strongest acceptance test for kadai is whether agents stay honest to it. We dogfood **within this build session** rather than treating dogfooding as a post-launch step.
+The strongest acceptance test for kadai is whether agents stay honest to it. We dogfood **via subagents in isolated working directories** within this build session — the kadai project repo itself stays clean of `.kadai/`, hooks, and MCP registration until Plan 5.
 
 **Approach:**
 
-Once phases 1–4 of the MVP build are complete (core data + CLI + MCP + hooks), we run `kadai init` against the kadai project itself, registering kadai's own MCP server in this project's `.mcp.json` and installing the hooks into `.claude/settings.json`. We seed the spine with kadai's own epics/features/stories — using the post-MVP backlog (Section 13) and any remaining MVP work as the initial scope. From that point on, **kadai is built using kadai**.
+For Plans 3 and 4, integration tests spawn fresh subagents (via the Agent tool) or use temp-dir fixtures where kadai is initialized and exercised. The agent-facing parts (hooks, MCP) are verified against these isolated environments — we get the same observation power without polluting the kadai repo with self-tracking state.
+
+For **Plan 5** (the formal subagent acceptance test), we spawn a fresh subagent and assign it a kadai-managed story in a working directory where kadai has been freshly initialized. We observe whether the subagent stays within the guardrails. Optionally, Plan 5 also wraps by installing kadai against the kadai repo itself, so post-MVP work (the items in §13) is tracked in kadai going forward.
 
 **Subagent acceptance test:**
 
-With kadai installed and registered, spawn a fresh subagent (via the Agent tool) and assign it a kadai-managed story (e.g., "STORY-N: implement the SSE endpoint for live updates"). Observe in sequence:
+Spawn a fresh subagent (via the Agent tool) in a working directory where kadai is initialized. Assign it a kadai-managed story (e.g., "STORY-N: implement the SSE endpoint for live updates"). Observe in sequence:
 
 1. Subagent calls `kadai.get_active_story()` or `kadai.list_stories(status="ready")` before planning — *driven by the bundled skill's auto-trigger.*
 2. `PreToolUse` hook blocks the subagent's first `Edit`/`Write` because nothing is picked — *the guardrail fires.*
@@ -450,9 +452,9 @@ The slice we'd build first; everything else is post-MVP.
 4. **Core hooks** — `PreToolUse(Edit, Write)` (the guardrail) and `PostToolUse(Edit, Write)` (changelog capture). Skip `UserPromptSubmit` and `Stop` for MVP.
 5. **Read-only web viewer** — Bun HTTP + React SPA, roadmap home + epic/feature/story detail. No drag-drop, no status mutations from UI. Status changes via CLI/MCP/agent.
 6. **Bundled skill + minimal slash commands** — `/kadai-pick`, `/kadai-status`. Skill description tuned for triggering on planning language.
-7. **Dogfood validation** — `kadai init` against the kadai project itself, register kadai's own MCP, populate the spine with kadai's own epics/features/stories (post-MVP backlog from Section 13 + any remaining MVP work), then run the subagent acceptance test (Section 10). MVP is "done" only after the subagent test passes end-to-end.
+7. **Dogfood validation** — spawn a fresh subagent in a working directory where kadai has been freshly initialized (with the post-MVP backlog from §13 seeded as the spine), then run the subagent acceptance test (Section 10). MVP is "done" only after the subagent test passes end-to-end. As an optional final wrap, install kadai against the kadai repo itself so post-MVP work is self-tracked going forward.
 
-> **Mid-build transition.** As soon as step 4 lands (core hooks working), we install kadai against this project and start tracking subsequent build work *in kadai* — meaning steps 5 and 6 are themselves the first dogfood. Step 7 is the formal subagent test.
+> **Note on testing approach.** Throughout Plans 3, 4, and 5, kadai's behavior is verified via subagents and temp-dir fixtures — the kadai project repo itself stays clean of `.kadai/`, hooks, and MCP registration until step 7 (and even then, only optionally). This keeps the build environment uncluttered and ensures the dogfood test exercises a fresh-install path.
 
 ---
 
