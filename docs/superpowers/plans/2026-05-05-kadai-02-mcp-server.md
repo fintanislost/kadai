@@ -72,7 +72,7 @@ src/core/
 
 **Goal:** Get the MCP SDK installed and the directory layout in place. No code yet.
 
-- [ ] **Step 1: Add dependencies**
+- [x] **Step 1: Add dependencies**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -82,7 +82,7 @@ bun add -d @types/proper-lockfile
 
 Expected: `package.json` updated; `bun.lock` updated; `node_modules` populated.
 
-- [ ] **Step 2: Create directories**
+- [x] **Step 2: Create directories**
 
 ```bash
 mkdir -p src/mcp/handlers tests/mcp/handlers
@@ -91,7 +91,7 @@ touch src/mcp/.gitkeep tests/mcp/.gitkeep
 
 (The `.gitkeep` files are removed once real files are created in Tasks 3+.)
 
-- [ ] **Step 3: Verify install**
+- [x] **Step 3: Verify install**
 
 ```bash
 bun run typecheck
@@ -99,7 +99,7 @@ bun run typecheck
 
 Expected: exit 0 (existing code still compiles; new packages resolved).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add package.json bun.lock src/mcp tests/mcp docs/superpowers/plans/2026-05-05-kadai-02-mcp-server.md
