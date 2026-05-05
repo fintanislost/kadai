@@ -153,13 +153,15 @@ export const initCommand = new Command('init')
     if (createFirstEpic && firstEpicTitle) {
       // @ts-ignore
       const { runAdd } = await import('./add');
-      runAdd({
+      const epicId = runAdd({
         rootDir,
         kind: 'epic',
         title: firstEpicTitle,
         phase: DEFAULT_CONFIG.phases[0].slug,
       });
-      console.log(pc.green('✓ first epic created'));
+      console.log(pc.green(`✓ first epic created: ${epicId} — ${firstEpicTitle}`));
+      console.log('Next: ' + pc.cyan(`kadai add feature --parent ${epicId}`));
+    } else {
+      console.log('Next: ' + pc.cyan('kadai add epic'));
     }
-    console.log('Next: ' + pc.cyan('kadai add feature'));
   });
