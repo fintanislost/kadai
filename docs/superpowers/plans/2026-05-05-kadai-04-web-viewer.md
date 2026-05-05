@@ -822,7 +822,7 @@ git commit -m "feat(web): add frontend API client and shared types [Plan-4 Task-
 - Create: `src/web/frontend/src/components/Layout.tsx`
 - Create: `src/web/frontend/src/components/Markdown.tsx`
 
-- [ ] **Step 1: Create Layout**
+- [x] **Step 1: Create Layout**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/components/Layout.tsx`:
 
@@ -874,7 +874,7 @@ export function Layout() {
 }
 ```
 
-- [ ] **Step 2: Create Markdown wrapper**
+- [x] **Step 2: Create Markdown wrapper**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/components/Markdown.tsx`:
 
@@ -893,7 +893,7 @@ export function Markdown({ children }: { children: string }) {
 
 > Note: prose styles require @tailwindcss/typography. We're not installing it for MVP — the rendered markdown will use unstyled defaults. Add `@tailwindcss/typography` plugin in a post-MVP polish task if desired.
 
-- [ ] **Step 3: Verify build**
+- [x] **Step 3: Verify build**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -902,7 +902,7 @@ bun run build:web
 
 Expected: clean build (warnings about unused imports OK).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
