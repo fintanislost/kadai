@@ -437,7 +437,7 @@ git commit -m "feat(core): add persistent ID generator [Plan-1 Task-3]"
 
 **Goal:** Helpers for sparse ordering (10, 20, 30…) so insertions don't require renumbering, with a re-densify path when midpoints get tight.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `tests/core/ordering.test.ts`:
 
@@ -481,7 +481,7 @@ test('needsRedensify false with healthy gaps', () => {
 });
 ```
 
-- [ ] **Step 2: Run the test (should fail)**
+- [x] **Step 2: Run the test (should fail)**
 
 ```bash
 bun test tests/core/ordering.test.ts
@@ -489,7 +489,7 @@ bun test tests/core/ordering.test.ts
 
 Expected: FAIL — module not found.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `src/core/ordering.ts`:
 
@@ -530,7 +530,7 @@ export function needsRedensify<T extends Ordered>(items: T[]): boolean {
 }
 ```
 
-- [ ] **Step 4: Run the test (should pass)**
+- [x] **Step 4: Run the test (should pass)**
 
 ```bash
 bun test tests/core/ordering.test.ts
@@ -538,7 +538,7 @@ bun test tests/core/ordering.test.ts
 
 Expected: PASS — 8 tests.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/core/ordering.ts tests/core/ordering.test.ts
