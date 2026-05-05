@@ -2305,7 +2305,7 @@ git commit -m "feat(cli): add interactive wizard to kadai init [Plan-1 Task-18]"
 
 **Goal:** `kadai add <kind>` creates an item. Supports `--id`, `--title`, `--phase`, `--order`, `--parent` flags. Interactive when flags are missing.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `tests/cli/add.test.ts`:
 
@@ -2371,7 +2371,7 @@ test('runAdd creates a task without phase/order (inherits)', () => {
 });
 ```
 
-- [ ] **Step 2: Run the test (should fail)**
+- [x] **Step 2: Run the test (should fail)**
 
 ```bash
 bun test tests/cli/add.test.ts
@@ -2379,7 +2379,7 @@ bun test tests/cli/add.test.ts
 
 Expected: FAIL.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `src/cli/add.ts`:
 
@@ -2526,7 +2526,7 @@ program.addCommand(addCommand);
 program.parseAsync(process.argv);
 ```
 
-- [ ] **Step 4: Run the test (should pass)**
+- [x] **Step 4: Run the test (should pass)**
 
 ```bash
 bun test tests/cli/add.test.ts
@@ -2534,7 +2534,7 @@ bun test tests/cli/add.test.ts
 
 Expected: PASS — 6 tests.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/cli/add.ts src/cli/index.ts tests/cli/add.test.ts

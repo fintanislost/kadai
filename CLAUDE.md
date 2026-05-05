@@ -48,3 +48,10 @@ bun test src/cli        # CLI tests
 ## Self-hosted dogfood
 
 After **Plan 3** (hooks) ships, kadai installs against this very project. From that point, work on Plans 4 and 5 happens under kadai's own guardrails — you'll need to `kadai pick <story-id>` before editing code.
+
+## Kadai
+
+This project uses kadai for product/feature/story tracking (spine in `.kadai/`).
+Use the `kadai` CLI to read/update the spine — direct edits to `.kadai/` are allowed but `kadai add` validates schema and increments IDs.
+
+Run `kadai status` to see the picked story and queue.
