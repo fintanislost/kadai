@@ -638,7 +638,7 @@ git commit -m "feat(core): add slugify helper [Plan-1 Task-5]"
 
 **Goal:** Thin typed wrapper over `gray-matter` for parsing/writing YAML frontmatter + markdown body.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `tests/core/frontmatter.test.ts`:
 
@@ -691,7 +691,7 @@ body
 });
 ```
 
-- [ ] **Step 2: Run the test (should fail)**
+- [x] **Step 2: Run the test (should fail)**
 
 ```bash
 bun test tests/core/frontmatter.test.ts
@@ -699,7 +699,7 @@ bun test tests/core/frontmatter.test.ts
 
 Expected: FAIL.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `src/core/frontmatter.ts`:
 
@@ -721,7 +721,7 @@ export function serialize<T extends Record<string, unknown>>(data: T, body: stri
 }
 ```
 
-- [ ] **Step 4: Run the test (should pass)**
+- [x] **Step 4: Run the test (should pass)**
 
 ```bash
 bun test tests/core/frontmatter.test.ts
@@ -729,7 +729,7 @@ bun test tests/core/frontmatter.test.ts
 
 Expected: PASS — 4 tests.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/core/frontmatter.ts tests/core/frontmatter.test.ts
