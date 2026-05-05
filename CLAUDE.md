@@ -12,9 +12,9 @@ If you're a fresh Claude session, read in this order:
 
 ## Active plan
 
-> **Currently:** Plan 3 — Hooks (guardrails) (stub; awaiting `/writing-plans`)
+> **Currently:** Plan 4 — Web viewer (read-only) (stub; awaiting `/writing-plans`)
 >
-> Plans 1 (Spine + CLI) and 2 (MCP server) shipped. Plan 2 also extended `kadai init` to merge `.mcp.json`, so any project can register the kadai MCP server with `kadai init`. The next step is to run `/writing-plans` against [`docs/superpowers/plans/2026-05-05-kadai-03-hooks.md`](docs/superpowers/plans/2026-05-05-kadai-03-hooks.md) to draft the executable plan from its stub.
+> Plans 1 (Spine + CLI), 2 (MCP server), and 3 (Hooks/guardrails) shipped. `kadai init` now installs the spine, the MCP server registration, AND the PreToolUse/PostToolUse hooks in any project where it's run. The next step is to run `/writing-plans` against [`docs/superpowers/plans/2026-05-05-kadai-04-web-viewer.md`](docs/superpowers/plans/2026-05-05-kadai-04-web-viewer.md) to draft the executable plan from its stub.
 
 When a plan completes, update both this section *and* the plans index status column to point to the next plan.
 
