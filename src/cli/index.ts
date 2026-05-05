@@ -4,6 +4,7 @@ import { initCommand } from './init';
 import { addCommand } from './add';
 import { listCommand } from './list';
 import { statusCommand } from './status';
+import { pickCommand, unpickCommand } from './pick';
 
 const program = new Command();
 program
@@ -15,5 +16,7 @@ program.addCommand(initCommand);
 program.addCommand(addCommand);
 program.addCommand(listCommand);
 program.addCommand(statusCommand);
+program.addCommand(pickCommand);
+program.addCommand(unpickCommand);
 
 program.parseAsync(process.argv);
