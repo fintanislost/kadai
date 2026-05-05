@@ -1220,7 +1220,7 @@ git commit -m "feat(core): add item reader [Plan-1 Task-10]"
 
 **Goal:** `writeItem(kind, data, body, ctx)` — compute the right directory + filename from item kind, slugify the title, atomic-write the file.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `tests/core/writer.test.ts`:
 
@@ -1313,7 +1313,7 @@ test('writeItem requires parentPath for non-epics', () => {
 });
 ```
 
-- [ ] **Step 2: Run the test (should fail)**
+- [x] **Step 2: Run the test (should fail)**
 
 ```bash
 bun test tests/core/writer.test.ts
@@ -1321,7 +1321,7 @@ bun test tests/core/writer.test.ts
 
 Expected: FAIL.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `src/core/writer.ts`:
 
@@ -1384,7 +1384,7 @@ export function writeItem(
 }
 ```
 
-- [ ] **Step 4: Run the test (should pass)**
+- [x] **Step 4: Run the test (should pass)**
 
 ```bash
 bun test tests/core/writer.test.ts
@@ -1392,10 +1392,10 @@ bun test tests/core/writer.test.ts
 
 Expected: PASS — 6 tests.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
-git add src/core/writer.ts tests/core/writer.test.ts
+git add src/core/writer.ts tests/core/writer.test.ts docs/superpowers/plans/2026-05-05-kadai-01-spine-and-cli.md
 git commit -m "feat(core): add item writer with slug + atomic write [Plan-1 Task-11]"
 ```
 
