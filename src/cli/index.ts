@@ -3,6 +3,7 @@ import { Command } from 'commander';
 import { initCommand } from './init';
 import { addCommand } from './add';
 import { listCommand } from './list';
+import { statusCommand } from './status';
 
 const program = new Command();
 program
@@ -13,5 +14,6 @@ program
 program.addCommand(initCommand);
 program.addCommand(addCommand);
 program.addCommand(listCommand);
+program.addCommand(statusCommand);
 
 program.parseAsync(process.argv);
