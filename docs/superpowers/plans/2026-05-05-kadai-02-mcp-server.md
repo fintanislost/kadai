@@ -661,7 +661,7 @@ git commit -m "feat(mcp): add list_* read tools [Plan-2 Task-4]"
 
 **Goal:** `get(id)` returns any item by ID; `get_active_story()` returns the currently picked story (or null).
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `/home/fintan/repos/kadai/tests/mcp/handlers/get.test.ts`:
 
@@ -717,7 +717,7 @@ test('get_active_story returns the picked story', async () => {
 });
 ```
 
-- [ ] **Step 2: Run the test (should fail)**
+- [x] **Step 2: Run the test (should fail)**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test tests/mcp/handlers/get.test.ts
@@ -725,7 +725,7 @@ cd /home/fintan/repos/kadai && bun test tests/mcp/handlers/get.test.ts
 
 Expected: FAIL.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `/home/fintan/repos/kadai/src/mcp/handlers/get.ts`:
 
@@ -760,7 +760,7 @@ export function registerGetTools(): void {
 }
 ```
 
-- [ ] **Step 4: Run the tests (should pass)**
+- [x] **Step 4: Run the tests (should pass)**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test tests/mcp/handlers/get.test.ts
@@ -768,7 +768,7 @@ cd /home/fintan/repos/kadai && bun test tests/mcp/handlers/get.test.ts
 
 Expected: 4 tests pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/mcp/handlers/get.ts tests/mcp/handlers/get.test.ts docs/superpowers/plans/2026-05-05-kadai-02-mcp-server.md
