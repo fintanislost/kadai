@@ -3309,7 +3309,7 @@ git commit -m "feat(cli): add 'kadai config' get/set [Plan-1 Task-24]"
 
 **Goal:** Confirm the full CLI works end-to-end in a fresh project.
 
-- [ ] **Step 1: Run the full test suite**
+- [x] **Step 1: Run the full test suite**
 
 ```bash
 bun test
@@ -3318,7 +3318,7 @@ bun run typecheck
 
 Expected: all tests pass; no type errors.
 
-- [ ] **Step 2: Link kadai globally so `kadai` is on PATH**
+- [x] **Step 2: Link kadai globally so `kadai` is on PATH**
 
 From the kadai repo root:
 
@@ -3330,7 +3330,7 @@ Expected: bun reports `Success! Registered "kadai"`. Then `kadai --version` shou
 
 > If `bun link` doesn't expose the binary on your PATH, fall back in step 3 to `bun run "$REPO/src/cli/index.ts" <args>` where `REPO` is the absolute path to this repo.
 
-- [ ] **Step 3: Smoke-test the CLI in a temp directory**
+- [x] **Step 3: Smoke-test the CLI in a temp directory**
 
 ```bash
 TMP=$(mktemp -d)
@@ -3357,7 +3357,7 @@ cd / && rm -rf "$TMP"
 
 Expected: each command runs without error; the directory tree mirrors the design from spec §2; the picked story moves to `in_progress` and back; config get/set roundtrips.
 
-- [ ] **Step 4: Verify the kadai repo itself still tests clean**
+- [x] **Step 4: Verify the kadai repo itself still tests clean**
 
 Return to the kadai repo and re-run:
 
@@ -3368,7 +3368,7 @@ bun run typecheck
 
 Expected: all green.
 
-- [ ] **Step 5: Commit (an empty commit to mark the milestone if needed; otherwise skip)**
+- [x] **Step 5: Commit (an empty commit to mark the milestone if needed; otherwise skip)**
 
 If steps 1–3 pass without any code changes needed, no commit is necessary for this task. If you had to fix anything, commit those fixes:
 
@@ -3383,10 +3383,10 @@ git commit -m "test(plan-1): end-to-end smoke pass [Plan-1 Task-25]"
 
 (Run before declaring Plan 1 complete.)
 
-- [ ] All 25 task checkboxes above ticked.
-- [ ] `bun test` passes with 0 failures.
-- [ ] `bun run typecheck` passes (no type errors).
-- [ ] Manual smoke test (Task 25) completed without error.
+- [x] All 25 task checkboxes above ticked.
+- [x] `bun test` passes with 0 failures.
+- [x] `bun run typecheck` passes (no type errors).
+- [x] Manual smoke test (Task 25) completed without error.
 - [ ] [`/CLAUDE.md`](../../../CLAUDE.md) "Active plan" section updated to point to Plan 2.
 - [ ] [`README.md`](README.md) status column updated: Plan 1 → `DONE`, Plan 2 → `IN PROGRESS`.
 
