@@ -116,7 +116,7 @@ git commit -m "chore(mcp): install MCP SDK and scaffold src/mcp/ [Plan-2 Task-1]
 
 **Goal:** Wrap `nextId`'s read-increment-write cycle in an advisory file lock so concurrent CLI + MCP writes don't race.
 
-- [ ] **Step 1: Add a failing concurrency test**
+- [x] **Step 1: Add a failing concurrency test**
 
 Append to `/home/fintan/repos/kadai/tests/core/ids.test.ts`:
 
@@ -131,7 +131,7 @@ test('nextId is safe under concurrent calls', async () => {
 
 > Note: This test simulates concurrency via Promise.all in a single process. With JavaScript's single-threaded model, this won't actually trigger a race in pure JS — but the lock ensures that even if two PROCESSES (CLI + MCP) hit the file simultaneously, ordering is enforced. The test verifies that `nextId` doesn't return duplicates under burst calls.
 
-- [ ] **Step 2: Run the test**
+- [x] **Step 2: Run the test**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test tests/core/ids.test.ts
@@ -139,7 +139,7 @@ cd /home/fintan/repos/kadai && bun test tests/core/ids.test.ts
 
 Expected: this specific new test passes already (single-threaded JS won't race in-process), but Step 3's lock-add still happens to defend against multi-process races.
 
-- [ ] **Step 3: Add file locking**
+- [x] **Step 3: Add file locking**
 
 Replace the body of `/home/fintan/repos/kadai/src/core/ids.ts`'s `nextId` function (only — leave `formatId` and `parseId` as-is). The full new file:
 
@@ -213,7 +213,7 @@ export function parseId(id: string): { kind: ItemKind; n: number } | null {
 }
 ```
 
-- [ ] **Step 4: Run all ID tests**
+- [x] **Step 4: Run all ID tests**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test tests/core/ids.test.ts
@@ -221,7 +221,7 @@ cd /home/fintan/repos/kadai && bun test tests/core/ids.test.ts
 
 Expected: all 7 tests pass (6 original + 1 new concurrency test).
 
-- [ ] **Step 5: Run full test suite (regression check)**
+- [x] **Step 5: Run full test suite (regression check)**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test
@@ -229,7 +229,7 @@ cd /home/fintan/repos/kadai && bun test
 
 Expected: 105 tests pass, 0 fail.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/core/ids.ts tests/core/ids.test.ts docs/superpowers/plans/2026-05-05-kadai-02-mcp-server.md

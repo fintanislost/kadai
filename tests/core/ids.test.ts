@@ -45,3 +45,10 @@ test('parseId returns null for invalid', () => {
   expect(parseId('not-an-id')).toBeNull();
   expect(parseId('')).toBeNull();
 });
+
+test('nextId is safe under concurrent calls', async () => {
+  const promises = Array.from({ length: 10 }, () => Promise.resolve(nextId('epic', tmp)));
+  const ids = await Promise.all(promises);
+  const unique = new Set(ids);
+  expect(unique.size).toBe(10);
+});
