@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 import pc from 'picocolors';
-import { walkSpine, findById } from '../core/spine';
+import { walkSpine } from '../core/spine';
 import { readPicked } from '../core/picked';
 import type { Item } from '../core/types';
 
@@ -13,7 +13,7 @@ export interface StatusReport {
 export function computeStatus(rootDir: string): StatusReport {
   const items = walkSpine(rootDir);
   const pickedId = readPicked(rootDir);
-  const picked = pickedId ? findById(rootDir, pickedId) : null;
+  const picked = pickedId ? (items.find(i => i.data.id === pickedId) ?? null) : null;
   const readyStories = items.filter(i => i.kind === 'story' && i.data.status === 'ready');
   const inProgress = items.filter(i => i.data.status === 'in_progress');
   return { picked, readyStories, inProgress };

@@ -12,7 +12,9 @@ If you're a fresh Claude session, read in this order:
 
 ## Active plan
 
-> **Currently:** Plan 1 — Spine + CLI ([file](docs/superpowers/plans/2026-05-05-kadai-01-spine-and-cli.md))
+> **Currently:** Plan 2 — MCP server (stub; awaiting `/writing-plans`)
+>
+> Plan 1 (Spine + CLI) shipped — see [`docs/superpowers/plans/2026-05-05-kadai-01-spine-and-cli.md`](docs/superpowers/plans/2026-05-05-kadai-01-spine-and-cli.md). The next step is to run `/writing-plans` against [`docs/superpowers/plans/2026-05-05-kadai-02-mcp-server.md`](docs/superpowers/plans/2026-05-05-kadai-02-mcp-server.md) to draft the executable plan from its stub.
 
 When a plan completes, update both this section *and* the plans index status column to point to the next plan.
 
