@@ -52,7 +52,7 @@
 
 **Goal:** Bootable Bun + TypeScript project with all dependencies installed.
 
-- [ ] **Step 1: Write `package.json`**
+- [x] **Step 1: Write `package.json`**
 
 ```json
 {
@@ -85,7 +85,7 @@
 }
 ```
 
-- [ ] **Step 2: Write `tsconfig.json`**
+- [x] **Step 2: Write `tsconfig.json`**
 
 ```json
 {
@@ -111,7 +111,7 @@
 }
 ```
 
-- [ ] **Step 3: Write `bunfig.toml`**
+- [x] **Step 3: Write `bunfig.toml`**
 
 ```toml
 [install]
@@ -121,14 +121,14 @@ exact = false
 preload = []
 ```
 
-- [ ] **Step 4: Create directory structure**
+- [x] **Step 4: Create directory structure**
 
 ```bash
 mkdir -p src/core src/config src/cli tests/core tests/config tests/cli
 touch src/cli/index.ts tests/core/.gitkeep tests/config/.gitkeep tests/cli/.gitkeep
 ```
 
-- [ ] **Step 5: Install dependencies**
+- [x] **Step 5: Install dependencies**
 
 ```bash
 bun install
@@ -136,7 +136,7 @@ bun install
 
 Expected: creates `node_modules/` and `bun.lockb`.
 
-- [ ] **Step 6: Verify scaffolding**
+- [x] **Step 6: Verify scaffolding**
 
 ```bash
 bun --version
@@ -146,7 +146,7 @@ bun test
 
 Expected: bun version printed; `typecheck` passes (empty source files compile fine); `bun test` reports `0 tests` and exits 0.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add package.json tsconfig.json bunfig.toml bun.lockb src/ tests/
@@ -163,7 +163,7 @@ git commit -m "chore(scaffold): bootstrap bun + typescript project [Plan-1 Task-
 
 **Goal:** Pure module that knows the legal status transitions per item kind (with `review` story-only).
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `tests/core/state-machine.test.ts`:
 
@@ -214,7 +214,7 @@ describe('state machine — story-only review state', () => {
 });
 ```
 
-- [ ] **Step 2: Run the test (should fail)**
+- [x] **Step 2: Run the test (should fail)**
 
 ```bash
 bun test tests/core/state-machine.test.ts
@@ -222,7 +222,7 @@ bun test tests/core/state-machine.test.ts
 
 Expected: FAIL — module `../../src/core/state-machine` not found.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `src/core/state-machine.ts`:
 
@@ -262,7 +262,7 @@ export function legalNextStates(kind: ItemKind, from: Status): Status[] {
 }
 ```
 
-- [ ] **Step 4: Run the test (should pass)**
+- [x] **Step 4: Run the test (should pass)**
 
 ```bash
 bun test tests/core/state-machine.test.ts
@@ -270,7 +270,7 @@ bun test tests/core/state-machine.test.ts
 
 Expected: PASS — 8 tests passing.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/core/state-machine.ts tests/core/state-machine.test.ts
@@ -287,7 +287,7 @@ git commit -m "feat(core): add state machine with story-only review state [Plan-
 
 **Goal:** Generate sequential IDs per kind (`EPIC-001`, `STORY-042`) with persistent counters in `.kadai/.counters.json`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `tests/core/ids.test.ts`:
 
@@ -341,7 +341,7 @@ test('parseId returns null for invalid', () => {
 });
 ```
 
-- [ ] **Step 2: Run the test (should fail)**
+- [x] **Step 2: Run the test (should fail)**
 
 ```bash
 bun test tests/core/ids.test.ts
@@ -349,7 +349,7 @@ bun test tests/core/ids.test.ts
 
 Expected: FAIL — module not found.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `src/core/ids.ts`:
 
@@ -412,7 +412,7 @@ export function parseId(id: string): { kind: ItemKind; n: number } | null {
 }
 ```
 
-- [ ] **Step 4: Run the test (should pass)**
+- [x] **Step 4: Run the test (should pass)**
 
 ```bash
 bun test tests/core/ids.test.ts
@@ -420,7 +420,7 @@ bun test tests/core/ids.test.ts
 
 Expected: PASS — 6 tests.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/core/ids.ts tests/core/ids.test.ts
