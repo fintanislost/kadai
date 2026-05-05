@@ -16,6 +16,9 @@ export interface AddOptions {
   phase?: string;
   order?: number;
   parent?: string;
+  body?: string;
+  acceptance_criteria?: string[];
+  plan_step?: number;
 }
 
 const PARENT_KIND: Record<ItemKind, ItemKind | null> = {
@@ -67,8 +70,16 @@ export function runAdd(opts: AddOptions): string {
     }
   }
 
+  if (opts.kind === 'story' && opts.acceptance_criteria) {
+    data.acceptance_criteria = opts.acceptance_criteria;
+  }
+  if (opts.kind === 'task' && typeof opts.plan_step === 'number') {
+    data.plan_step = opts.plan_step;
+  }
+
   const ctx = { rootDir: opts.rootDir, parentPath: parentItem ? dirname(parentItem.path) : undefined };
-  writeItem(opts.kind, data as unknown as AnyFrontmatter, '## Description\n\n_Add a description here._\n', ctx);
+  const body = opts.body ?? '## Description\n\n_Add a description here._\n';
+  writeItem(opts.kind, data as unknown as AnyFrontmatter, body, ctx);
   return id;
 }
 
