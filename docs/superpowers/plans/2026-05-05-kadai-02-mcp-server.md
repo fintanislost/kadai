@@ -1640,7 +1640,7 @@ git commit -m "feat(mcp): add attach_spec and attach_plan write tools [Plan-2 Ta
 
 **Goal:** `kadai mcp` subcommand. When invoked, imports all handler modules (triggering registration into the registry) then calls `runServer(process.cwd())`. The dynamic imports keep the registry side effects scoped to the MCP command path.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `/home/fintan/repos/kadai/tests/cli/mcp.test.ts`:
 
@@ -1654,7 +1654,7 @@ test('mcpCommand has the expected name and description', () => {
 });
 ```
 
-- [ ] **Step 2: Run the test (should fail)**
+- [x] **Step 2: Run the test (should fail)**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test tests/cli/mcp.test.ts
@@ -1662,7 +1662,7 @@ cd /home/fintan/repos/kadai && bun test tests/cli/mcp.test.ts
 
 Expected: FAIL.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `/home/fintan/repos/kadai/src/cli/mcp.ts`:
 
@@ -1724,7 +1724,7 @@ program.addCommand(mcpCommand);
 program.parseAsync(process.argv);
 ```
 
-- [ ] **Step 4: Run the test (should pass)**
+- [x] **Step 4: Run the test (should pass)**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test tests/cli/mcp.test.ts
@@ -1732,7 +1732,7 @@ cd /home/fintan/repos/kadai && bun test tests/cli/mcp.test.ts
 
 Expected: 1 test passes.
 
-- [ ] **Step 5: Verify CLI registers the new command**
+- [x] **Step 5: Verify CLI registers the new command**
 
 ```bash
 cd /home/fintan/repos/kadai && bun run src/cli/index.ts --help
@@ -1740,7 +1740,7 @@ cd /home/fintan/repos/kadai && bun run src/cli/index.ts --help
 
 Expected: output lists `mcp` among the commands.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/cli/mcp.ts src/cli/index.ts tests/cli/mcp.test.ts docs/superpowers/plans/2026-05-05-kadai-02-mcp-server.md
