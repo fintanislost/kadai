@@ -1331,7 +1331,7 @@ Committed: aebf978
 
 **Goal:** Two simple wrappers around the picked-state module. `pick_story(id)` only sets the picked flag (does NOT auto-transition to in_progress — agents call `set_status` separately if they want that, mirroring the orthogonal model in spec §4).
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/mcp/handlers/picks.test.ts`:
 
@@ -1381,7 +1381,7 @@ test('unpick clears the picked flag', async () => {
 });
 ```
 
-- [ ] **Step 2: Run the tests (should fail)**
+- [x] **Step 2: Run the tests (should fail)**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test tests/mcp/handlers/picks.test.ts
@@ -1389,7 +1389,7 @@ cd /home/fintan/repos/kadai && bun test tests/mcp/handlers/picks.test.ts
 
 Expected: FAIL.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `/home/fintan/repos/kadai/src/mcp/handlers/picks.ts`:
 
@@ -1426,7 +1426,7 @@ export function registerPickTools(): void {
 }
 ```
 
-- [ ] **Step 4: Run the tests (should pass)**
+- [x] **Step 4: Run the tests (should pass)**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test tests/mcp/handlers/picks.test.ts
@@ -1434,7 +1434,7 @@ cd /home/fintan/repos/kadai && bun test tests/mcp/handlers/picks.test.ts
 
 Expected: 3 tests pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/mcp/handlers/picks.ts tests/mcp/handlers/picks.test.ts docs/superpowers/plans/2026-05-05-kadai-02-mcp-server.md
