@@ -1,0 +1,23 @@
+import type { Config } from './types';
+
+export const DEFAULT_CONFIG: Config = {
+  phases: [
+    { slug: 'mvp', display: 'MVP', color: '#22c55e' },
+    { slug: 'v1', display: 'v1.0', color: '#3b82f6' },
+    { slug: 'future', display: 'Future', color: '#a78bfa' },
+    { slug: 'parking-lot', display: 'Parking Lot', color: '#9ca3af' },
+  ],
+  auto_transitions: {
+    spec_attached_marks_ready: false,
+    plan_attached_marks_ready: false,
+    plan_step_completion_marks_task_done: false,
+    all_tasks_done_marks_story_review: false,
+    pr_merge_marks_story_done: false,
+  },
+  guardrail: {
+    allowed_paths: ['docs/', 'scripts/', 'README.md', '.gitignore', 'CLAUDE.md'],
+  },
+  change_capture: {
+    enabled: true,
+  },
+};

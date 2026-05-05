@@ -1577,7 +1577,7 @@ git commit -m "feat(core): add spine walker and findById [Plan-1 Task-12]"
 
 **Goal:** Type definitions and default config object. No tests (constants).
 
-- [ ] **Step 1: Implement types**
+- [x] **Step 1: Implement types**
 
 Create `src/config/types.ts`:
 
@@ -1612,7 +1612,7 @@ export interface Config {
 }
 ```
 
-- [ ] **Step 2: Implement defaults**
+- [x] **Step 2: Implement defaults**
 
 Create `src/config/defaults.ts`:
 
@@ -1642,7 +1642,7 @@ export const DEFAULT_CONFIG: Config = {
 };
 ```
 
-- [ ] **Step 3: Verify it compiles**
+- [x] **Step 3: Verify it compiles**
 
 ```bash
 bun run typecheck
@@ -1650,7 +1650,7 @@ bun run typecheck
 
 Expected: PASS.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/config/types.ts src/config/defaults.ts
