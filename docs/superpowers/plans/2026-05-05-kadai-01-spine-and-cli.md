@@ -836,7 +836,7 @@ git commit -m "feat(core): add atomic file write helper [Plan-1 Task-7]"
 
 **Goal:** TypeScript interfaces for each item kind. No tests (types are checked at compile time).
 
-- [ ] **Step 1: Implement**
+- [x] **Step 1: Implement**
 
 Create `src/core/types.ts`:
 
@@ -896,7 +896,7 @@ export type Story = Item<StoryFrontmatter>;
 export type Task = Item<TaskFrontmatter>;
 ```
 
-- [ ] **Step 2: Verify it compiles**
+- [x] **Step 2: Verify it compiles**
 
 ```bash
 bun run typecheck
@@ -904,7 +904,7 @@ bun run typecheck
 
 Expected: PASS (no type errors).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/core/types.ts
