@@ -407,7 +407,7 @@ git commit -m "feat(web): add frontend scaffold with TanStack Router [Plan-4 Tas
 
 **Goal:** Bun HTTP server with `/api/*` routes that delegate to existing core modules. Read-only. Plus a fallback that serves the SPA assets from `src/web/dist/`.
 
-- [ ] **Step 1: Failing test**
+- [x] **Step 1: Failing test**
 
 Create `/home/fintan/repos/kadai/tests/web/api.test.ts`:
 
@@ -489,9 +489,9 @@ test('GET /api/picked returns the picked story', async () => {
 });
 ```
 
-- [ ] **Step 2:** `bun test tests/web/api.test.ts` — expect FAIL.
+- [x] **Step 2:** `bun test tests/web/api.test.ts` — expect FAIL.
 
-- [ ] **Step 3: Implement API**
+- [x] **Step 3: Implement API**
 
 Create `/home/fintan/repos/kadai/src/web/api.ts`:
 
@@ -577,7 +577,7 @@ export async function handleApi(req: Request, rootDir: string): Promise<Response
 }
 ```
 
-- [ ] **Step 4: Implement server**
+- [x] **Step 4: Implement server**
 
 Create `/home/fintan/repos/kadai/src/web/server.ts`:
 
@@ -659,7 +659,7 @@ export async function startServer(opts: ServerOptions): Promise<ServerHandle> {
 }
 ```
 
-- [ ] **Step 5: Build the frontend (so dist exists for the test)**
+- [x] **Step 5: Build the frontend (so dist exists for the test)**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -668,9 +668,9 @@ bun run build:web
 
 Expected: `src/web/dist/index.html` exists.
 
-- [ ] **Step 6:** `bun test tests/web/api.test.ts` — expect 7 PASS.
+- [x] **Step 6:** `bun test tests/web/api.test.ts` — expect 7 PASS.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -678,7 +678,7 @@ git add src/web/api.ts src/web/server.ts tests/web/api.test.ts docs/superpowers/
 git commit -m "feat(web): add HTTP server with read-only API endpoints [Plan-4 Task-4]"
 ```
 
-## Update Task 4 checkboxes (7 boxes) in plan.
+## Task 4 checkboxes (7 boxes) COMPLETE.
 
 ---
 
