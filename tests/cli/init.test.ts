@@ -71,3 +71,47 @@ test('init re-run does not duplicate kadai entry', () => {
   const json = JSON.parse(readFileSync(mcpPath, 'utf8'));
   expect(Object.keys(json.mcpServers).filter(k => k === 'kadai').length).toBe(1);
 });
+
+test('init creates .claude/settings.json with kadai hook entries if missing', () => {
+  runInit({ rootDir: tmp, productDescription: 'X', skipFirstEpic: true });
+  const settingsPath = join(tmp, '.claude/settings.json');
+  expect(existsSync(settingsPath)).toBe(true);
+  const json = JSON.parse(readFileSync(settingsPath, 'utf8'));
+  expect(json.hooks?.PreToolUse).toBeDefined();
+  expect(json.hooks?.PostToolUse).toBeDefined();
+  const preCmds = json.hooks.PreToolUse.flatMap((entry: any) =>
+    entry.hooks?.map((h: any) => h.command) ?? []);
+  expect(preCmds).toContain('kadai hook pre-tool-use');
+  const postCmds = json.hooks.PostToolUse.flatMap((entry: any) =>
+    entry.hooks?.map((h: any) => h.command) ?? []);
+  expect(postCmds).toContain('kadai hook post-tool-use');
+});
+
+test('init merges into existing .claude/settings.json without overwriting other hooks', () => {
+  const settingsPath = join(tmp, '.claude/settings.json');
+  require('node:fs').mkdirSync(join(tmp, '.claude'), { recursive: true });
+  writeFileSync(settingsPath, JSON.stringify({
+    hooks: {
+      PreToolUse: [
+        { matcher: 'Bash', hooks: [{ type: 'command', command: 'other-hook' }] },
+      ],
+    },
+  }, null, 2));
+  runInit({ rootDir: tmp, productDescription: 'X', skipFirstEpic: true });
+  const json = JSON.parse(readFileSync(settingsPath, 'utf8'));
+  const allPreCmds = json.hooks.PreToolUse.flatMap((entry: any) =>
+    entry.hooks?.map((h: any) => h.command) ?? []);
+  expect(allPreCmds).toContain('other-hook');
+  expect(allPreCmds).toContain('kadai hook pre-tool-use');
+});
+
+test('init re-run does not duplicate kadai hook entries', () => {
+  runInit({ rootDir: tmp, productDescription: 'X', skipFirstEpic: true });
+  runInit({ rootDir: tmp, productDescription: 'X', skipFirstEpic: true });
+  const settingsPath = join(tmp, '.claude/settings.json');
+  const json = JSON.parse(readFileSync(settingsPath, 'utf8'));
+  const preCmds = json.hooks.PreToolUse.flatMap((entry: any) =>
+    entry.hooks?.map((h: any) => h.command) ?? []);
+  const kadaiPreCount = preCmds.filter((c: string) => c === 'kadai hook pre-tool-use').length;
+  expect(kadaiPreCount).toBe(1);
+});

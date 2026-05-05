@@ -45,6 +45,7 @@ export function runInit(opts: InitOptions): void {
 
   appendKadaiSectionToClaudeMd(opts.rootDir);
   mergeKadaiIntoMcpJson(opts.rootDir);
+  mergeKadaiHooksIntoSettingsJson(opts.rootDir);
 }
 
 function appendKadaiSectionToClaudeMd(rootDir: string): void {
@@ -71,6 +72,40 @@ function mergeKadaiIntoMcpJson(rootDir: string): void {
   if (!parsed.mcpServers) parsed.mcpServers = {};
   if (!parsed.mcpServers.kadai) {
     parsed.mcpServers.kadai = { command: 'kadai', args: ['mcp'] };
+    writeFileAtomic(path, JSON.stringify(parsed, null, 2) + '\n');
+  }
+}
+
+function mergeKadaiHooksIntoSettingsJson(rootDir: string): void {
+  const path = join(rootDir, '.claude', 'settings.json');
+  let parsed: { hooks?: Record<string, Array<{ matcher?: string; hooks?: Array<{ type?: string; command?: string }> }>> } = {};
+  if (existsSync(path)) {
+    try { parsed = JSON.parse(readFileSync(path, 'utf8')); } catch { parsed = {}; }
+  }
+  if (!parsed.hooks) parsed.hooks = {};
+  if (!parsed.hooks.PreToolUse) parsed.hooks.PreToolUse = [];
+  if (!parsed.hooks.PostToolUse) parsed.hooks.PostToolUse = [];
+
+  const hasPre = parsed.hooks.PreToolUse.some(entry =>
+    entry.hooks?.some(h => h.command === 'kadai hook pre-tool-use'));
+  if (!hasPre) {
+    parsed.hooks.PreToolUse.push({
+      matcher: 'Edit|Write',
+      hooks: [{ type: 'command', command: 'kadai hook pre-tool-use' }],
+    });
+  }
+
+  const hasPost = parsed.hooks.PostToolUse.some(entry =>
+    entry.hooks?.some(h => h.command === 'kadai hook post-tool-use'));
+  if (!hasPost) {
+    parsed.hooks.PostToolUse.push({
+      matcher: 'Edit|Write',
+      hooks: [{ type: 'command', command: 'kadai hook post-tool-use' }],
+    });
+  }
+
+  if (!hasPre || !hasPost) {
+    mkdirSync(join(rootDir, '.claude'), { recursive: true });
     writeFileAtomic(path, JSON.stringify(parsed, null, 2) + '\n');
   }
 }
