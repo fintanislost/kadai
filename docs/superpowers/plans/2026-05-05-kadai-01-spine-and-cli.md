@@ -3158,7 +3158,7 @@ git commit -m "feat(cli): add 'kadai phases' (list/add/remove/rename) [Plan-1 Ta
 
 **Goal:** `kadai config <key>` reads, `kadai config <key>=<value>` writes (string/bool/number type-coerced based on existing value).
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `tests/cli/config.test.ts`:
 
@@ -3202,7 +3202,7 @@ test('getConfigKey throws on unknown key', () => {
 });
 ```
 
-- [ ] **Step 2: Run the test (should fail)**
+- [x] **Step 2: Run the test (should fail)**
 
 ```bash
 bun test tests/cli/config.test.ts
@@ -3210,7 +3210,7 @@ bun test tests/cli/config.test.ts
 
 Expected: FAIL.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `src/cli/config.ts`:
 
@@ -3285,7 +3285,7 @@ import { configCommand } from './config';
 program.addCommand(configCommand);
 ```
 
-- [ ] **Step 4: Run the test (should pass)**
+- [x] **Step 4: Run the test (should pass)**
 
 ```bash
 bun test tests/cli/config.test.ts
@@ -3293,7 +3293,7 @@ bun test tests/cli/config.test.ts
 
 Expected: PASS — 5 tests.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/cli/config.ts src/cli/index.ts tests/cli/config.test.ts
