@@ -2011,7 +2011,7 @@ git commit -m "feat(cli): add commander entry point [Plan-1 Task-16]"
 
 **Goal:** `kadai init` creates `.kadai/`, writes default `config.toml`, writes `.kadai/README.md`, writes `.kadai/.gitignore`, and appends a kadai section to the project's `CLAUDE.md` (creating it if missing).
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `tests/cli/init.test.ts`:
 
@@ -2063,7 +2063,7 @@ test('init does not duplicate the kadai section on re-run', () => {
 });
 ```
 
-- [ ] **Step 2: Run the test (should fail)**
+- [x] **Step 2: Run the test (should fail)**
 
 ```bash
 bun test tests/cli/init.test.ts
@@ -2071,7 +2071,7 @@ bun test tests/cli/init.test.ts
 
 Expected: FAIL.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `src/cli/init.ts`:
 
@@ -2178,7 +2178,7 @@ program.addCommand(initCommand);
 program.parseAsync(process.argv);
 ```
 
-- [ ] **Step 4: Run the test (should pass)**
+- [x] **Step 4: Run the test (should pass)**
 
 ```bash
 bun test tests/cli/init.test.ts
@@ -2186,7 +2186,7 @@ bun test tests/cli/init.test.ts
 
 Expected: PASS — 5 tests.
 
-- [ ] **Step 5: Smoke-test the command**
+- [x] **Step 5: Smoke-test the command**
 
 ```bash
 mkdir -p /tmp/kadai-smoke-init && cd /tmp/kadai-smoke-init && bun run /home/fintan/repos/kadai/src/cli/index.ts init -y && ls -la .kadai && cat CLAUDE.md
@@ -2198,7 +2198,7 @@ Expected: directory created with `config.toml`, `README.md`, `.gitignore`, `epic
 rm -rf /tmp/kadai-smoke-init
 ```
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/cli/init.ts src/cli/index.ts tests/cli/init.test.ts
