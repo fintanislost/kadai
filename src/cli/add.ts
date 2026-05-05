@@ -68,7 +68,7 @@ export function runAdd(opts: AddOptions): string {
   }
 
   const ctx = { rootDir: opts.rootDir, parentPath: parentItem ? dirname(parentItem.path) : undefined };
-  writeItem(opts.kind, data as AnyFrontmatter, '## Description\n\n_Add a description here._\n', ctx);
+  writeItem(opts.kind, data as unknown as AnyFrontmatter, '## Description\n\n_Add a description here._\n', ctx);
   return id;
 }
 

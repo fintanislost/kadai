@@ -25,8 +25,8 @@ test('runAdd auto-orders within phase', () => {
   runAdd({ rootDir: tmp, kind: 'epic', title: 'B', phase: 'mvp' });
   const a = findById(tmp, 'EPIC-001');
   const b = findById(tmp, 'EPIC-002');
-  expect(a?.data.order).toBe(10);
-  expect(b?.data.order).toBe(20);
+  expect((a?.data as any).order).toBe(10);
+  expect((b?.data as any).order).toBe(20);
 });
 
 test('runAdd creates a feature under an epic', () => {
