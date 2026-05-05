@@ -65,7 +65,7 @@ export async function startServer(opts: ServerOptions): Promise<ServerHandle> {
   });
 
   return {
-    port: server.port,
+    port: server.port!,
     url: `http://localhost:${server.port}`,
     stop: async () => { server.stop(); },
   };

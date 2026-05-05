@@ -1560,7 +1560,7 @@ git commit -m "feat(cli): add 'kadai serve' command [Plan-4 Task-10]"
 
 > **Note on test runner:** Playwright tests use `@playwright/test` not `bun:test`. They run via `bunx playwright test`, separately from `bun test`. The Playwright config sets up `webServer` to spawn kadai serve.
 
-- [ ] **Step 1: Create playwright.config.ts**
+- [x] **Step 1: Create playwright.config.ts**
 
 Create `/home/fintan/repos/kadai/playwright.config.ts`:
 
@@ -1584,7 +1584,7 @@ export default defineConfig({
 });
 ```
 
-- [ ] **Step 2: Create the E2E test**
+- [x] **Step 2: Create the E2E test**
 
 Create `/home/fintan/repos/kadai/tests/web/e2e.spec.ts`:
 
@@ -1635,7 +1635,7 @@ test('drilling into a story shows the tabs', async ({ page }) => {
 });
 ```
 
-- [ ] **Step 3: Make sure web build is fresh, then run E2E**
+- [x] **Step 3: Make sure web build is fresh, then run E2E**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1649,7 +1649,7 @@ Expected: 3 tests pass.
 > **If tests fail with timing issues** (text not visible quickly enough): Tailwind class transitions are minimal here, so timeouts are unlikely; check that the API endpoints respond by visiting `http://localhost:<port>/api/epics` manually.
 > **If tests fail because the server isn't ready:** add a `await page.waitForLoadState('networkidle')` after `page.goto`.
 
-- [ ] **Step 4: Run full test suite (regression check)**
+- [x] **Step 4: Run full test suite (regression check)**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1659,7 +1659,7 @@ bun run typecheck
 
 Expected: all `bun test` pass; typecheck clean. Playwright tests run separately via `bunx playwright test`.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
