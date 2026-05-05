@@ -1,8 +1,10 @@
 import { appendFileSync, mkdirSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
+import { Command } from 'commander';
 import { loadConfig } from '../config/load';
 import { readPicked } from '../core/picked';
 import { findById } from '../core/spine';
+import { findKadaiRoot } from '../core/find-root';
 
 export interface PreToolUseInput {
   tool_name: string;
@@ -91,3 +93,45 @@ export function recordPostToolUse(input: PostToolUseInput, rootDir: string): voi
   const rel = relative(rootDir, filePath);
   appendFileSync(changelogPath, `- ${ts} \`${input.tool_name}\` ${rel}\n`, 'utf8');
 }
+
+async function readStdinJson<T>(): Promise<T> {
+  return new Promise((resolve, reject) => {
+    let data = '';
+    process.stdin.setEncoding('utf8');
+    process.stdin.on('data', chunk => { data += chunk; });
+    process.stdin.on('end', () => {
+      try { resolve(JSON.parse(data) as T); } catch (e) { reject(e); }
+    });
+    process.stdin.on('error', reject);
+  });
+}
+
+export const hookCommand = new Command('hook')
+  .description('Hooks invoked by Claude Code (not for direct use)');
+
+hookCommand
+  .command('pre-tool-use')
+  .description('PreToolUse hook: blocks edits outside the spine when no story is picked')
+  .action(async () => {
+    const root = findKadaiRoot(process.cwd());
+    if (!root) process.exit(0);
+    const input = await readStdinJson<PreToolUseInput>();
+    const result = evaluatePreToolUse(input, root);
+    if (result.allow) {
+      process.exit(0);
+    } else {
+      if (result.message) process.stderr.write(result.message + '\n');
+      process.exit(2);
+    }
+  });
+
+hookCommand
+  .command('post-tool-use')
+  .description('PostToolUse hook: appends edits to active story changelog')
+  .action(async () => {
+    const root = findKadaiRoot(process.cwd());
+    if (!root) process.exit(0);
+    const input = await readStdinJson<PostToolUseInput>();
+    recordPostToolUse(input, root);
+    process.exit(0);
+  });

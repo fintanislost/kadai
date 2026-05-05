@@ -2,7 +2,7 @@ import { test, expect, beforeEach, afterEach } from 'bun:test';
 import { mkdtempSync, rmSync, readFileSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
-import { evaluatePreToolUse, recordPostToolUse } from '../../src/cli/hook';
+import { evaluatePreToolUse, recordPostToolUse, hookCommand } from '../../src/cli/hook';
 import { runInit } from '../../src/cli/init';
 import { runAdd } from '../../src/cli/add';
 import { setPicked } from '../../src/core/picked';
@@ -115,4 +115,11 @@ test('recordPostToolUse only acts on Edit and Write tools', () => {
   const story = findById(tmp, 'STORY-001');
   const changelogPath = join(dirname(story!.path), 'changelog.md');
   expect(existsSync(changelogPath)).toBe(false);
+});
+
+test('hookCommand registers pre-tool-use and post-tool-use subcommands', () => {
+  expect(hookCommand.name()).toBe('hook');
+  const subNames = hookCommand.commands.map(c => c.name());
+  expect(subNames).toContain('pre-tool-use');
+  expect(subNames).toContain('post-tool-use');
 });

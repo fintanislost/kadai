@@ -8,6 +8,7 @@ import { pickCommand, unpickCommand } from './pick';
 import { phasesCommand } from './phases';
 import { configCommand } from './config';
 import { mcpCommand } from './mcp';
+import { hookCommand } from './hook';
 
 const program = new Command();
 program
@@ -24,5 +25,6 @@ program.addCommand(unpickCommand);
 program.addCommand(phasesCommand);
 program.addCommand(configCommand);
 program.addCommand(mcpCommand);
+program.addCommand(hookCommand);
 
 program.parseAsync(process.argv);
