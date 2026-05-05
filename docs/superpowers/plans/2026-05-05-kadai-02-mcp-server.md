@@ -1757,7 +1757,7 @@ git commit -m "feat(cli): add 'kadai mcp' command [Plan-2 Task-11]"
 
 **Goal:** Extend `runInit` to merge a `kadai` MCP server entry into the project's `.mcp.json` (creating the file if missing, never overwriting other entries).
 
-- [ ] **Step 1: Add failing tests for `.mcp.json` merge**
+- [x] **Step 1: Add failing tests for `.mcp.json` merge**
 
 Append to `/home/fintan/repos/kadai/tests/cli/init.test.ts`:
 
@@ -1793,7 +1793,7 @@ test('init re-run does not duplicate kadai entry', () => {
 });
 ```
 
-- [ ] **Step 2: Run the tests (should fail)**
+- [x] **Step 2: Run the tests (should fail)**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test tests/cli/init.test.ts
@@ -1801,7 +1801,7 @@ cd /home/fintan/repos/kadai && bun test tests/cli/init.test.ts
 
 Expected: 5 existing tests pass, 3 new ones FAIL.
 
-- [ ] **Step 3: Implement the `.mcp.json` merge in init.ts**
+- [x] **Step 3: Implement the `.mcp.json` merge in init.ts**
 
 In `/home/fintan/repos/kadai/src/cli/init.ts`, add this function near `appendKadaiSectionToClaudeMd`:
 
@@ -1832,7 +1832,7 @@ Then call it from `runInit`, immediately after `appendKadaiSectionToClaudeMd(opt
   mergeKadaiIntoMcpJson(opts.rootDir);
 ```
 
-- [ ] **Step 4: Run the tests (should pass)**
+- [x] **Step 4: Run the tests (should pass)**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test tests/cli/init.test.ts
@@ -1840,7 +1840,7 @@ cd /home/fintan/repos/kadai && bun test tests/cli/init.test.ts
 
 Expected: 8 tests pass total (5 original + 3 new).
 
-- [ ] **Step 5: Smoke-test in a temp dir**
+- [x] **Step 5: Smoke-test in a temp dir**
 
 ```bash
 TMP=$(mktemp -d)
@@ -1852,7 +1852,7 @@ cd / && rm -rf "$TMP"
 
 Expected: `.mcp.json` contains `{"mcpServers":{"kadai":{"command":"kadai","args":["mcp"]}}}`.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

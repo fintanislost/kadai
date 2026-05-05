@@ -43,3 +43,31 @@ test('init does not duplicate the kadai section on re-run', () => {
   const occurrences = claude.match(/## Kadai/g)?.length ?? 0;
   expect(occurrences).toBe(1);
 });
+
+test('init creates .mcp.json with kadai server entry if missing', () => {
+  runInit({ rootDir: tmp, productDescription: 'X', skipFirstEpic: true });
+  const mcpPath = join(tmp, '.mcp.json');
+  expect(existsSync(mcpPath)).toBe(true);
+  const json = JSON.parse(readFileSync(mcpPath, 'utf8'));
+  expect(json.mcpServers?.kadai?.command).toBe('kadai');
+  expect(json.mcpServers?.kadai?.args).toEqual(['mcp']);
+});
+
+test('init merges into existing .mcp.json without overwriting other servers', () => {
+  const mcpPath = join(tmp, '.mcp.json');
+  writeFileSync(mcpPath, JSON.stringify({
+    mcpServers: { other: { command: 'foo', args: [] } },
+  }, null, 2));
+  runInit({ rootDir: tmp, productDescription: 'X', skipFirstEpic: true });
+  const json = JSON.parse(readFileSync(mcpPath, 'utf8'));
+  expect(json.mcpServers.other?.command).toBe('foo');
+  expect(json.mcpServers.kadai?.command).toBe('kadai');
+});
+
+test('init re-run does not duplicate kadai entry', () => {
+  runInit({ rootDir: tmp, productDescription: 'X', skipFirstEpic: true });
+  runInit({ rootDir: tmp, productDescription: 'X', skipFirstEpic: true });
+  const mcpPath = join(tmp, '.mcp.json');
+  const json = JSON.parse(readFileSync(mcpPath, 'utf8'));
+  expect(Object.keys(json.mcpServers).filter(k => k === 'kadai').length).toBe(1);
+});

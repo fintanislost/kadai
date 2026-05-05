@@ -44,6 +44,7 @@ export function runInit(opts: InitOptions): void {
   }
 
   appendKadaiSectionToClaudeMd(opts.rootDir);
+  mergeKadaiIntoMcpJson(opts.rootDir);
 }
 
 function appendKadaiSectionToClaudeMd(rootDir: string): void {
@@ -55,6 +56,23 @@ function appendKadaiSectionToClaudeMd(rootDir: string): void {
   }
   const sep = existing && !existing.endsWith('\n') ? '\n\n' : existing ? '\n' : '';
   writeFileAtomic(path, existing + sep + CLAUDE_KADAI_SECTION);
+}
+
+function mergeKadaiIntoMcpJson(rootDir: string): void {
+  const path = join(rootDir, '.mcp.json');
+  let parsed: { mcpServers?: Record<string, unknown> } = {};
+  if (existsSync(path)) {
+    try {
+      parsed = JSON.parse(readFileSync(path, 'utf8'));
+    } catch {
+      parsed = {};
+    }
+  }
+  if (!parsed.mcpServers) parsed.mcpServers = {};
+  if (!parsed.mcpServers.kadai) {
+    parsed.mcpServers.kadai = { command: 'kadai', args: ['mcp'] };
+    writeFileAtomic(path, JSON.stringify(parsed, null, 2) + '\n');
+  }
 }
 
 export const initCommand = new Command('init')
