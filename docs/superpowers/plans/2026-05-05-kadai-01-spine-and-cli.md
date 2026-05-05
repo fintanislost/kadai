@@ -746,7 +746,7 @@ git commit -m "feat(core): add frontmatter parse/serialize [Plan-1 Task-6]"
 
 **Goal:** `writeFileAtomic(path, contents)` — temp file + rename for crash safety.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `tests/core/files.test.ts`:
 
@@ -787,7 +787,7 @@ test('writeFileAtomic overwrites existing file', () => {
 });
 ```
 
-- [ ] **Step 2: Run the test (should fail)**
+- [x] **Step 2: Run the test (should fail)**
 
 ```bash
 bun test tests/core/files.test.ts
@@ -795,7 +795,7 @@ bun test tests/core/files.test.ts
 
 Expected: FAIL.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `src/core/files.ts`:
 
@@ -812,7 +812,7 @@ export function writeFileAtomic(path: string, contents: string | Buffer): void {
 }
 ```
 
-- [ ] **Step 4: Run the test (should pass)**
+- [x] **Step 4: Run the test (should pass)**
 
 ```bash
 bun test tests/core/files.test.ts
@@ -820,7 +820,7 @@ bun test tests/core/files.test.ts
 
 Expected: PASS — 4 tests.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/core/files.ts tests/core/files.test.ts
