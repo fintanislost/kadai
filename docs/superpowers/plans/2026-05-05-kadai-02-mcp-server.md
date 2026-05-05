@@ -1869,7 +1869,7 @@ git commit -m "feat(cli): extend kadai init to merge .mcp.json [Plan-2 Task-12]"
 
 **Goal:** Spawn `kadai mcp` as a subprocess, connect via the MCP SDK Client over stdio, list tools, and exercise one round-trip (create_epic + get).
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `/home/fintan/repos/kadai/tests/mcp/integration.test.ts`:
 
@@ -1958,7 +1958,7 @@ test('illegal status transition returns isError true with message', async () => 
 });
 ```
 
-- [ ] **Step 2: Run the test (should fail before MCP wiring is right; otherwise pass)**
+- [x] **Step 2: Run the test (should fail before MCP wiring is right; otherwise pass)**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test tests/mcp/integration.test.ts
@@ -1971,7 +1971,7 @@ Expected: PASS (3 tests). If the spawned `kadai mcp` process exits early with an
 > - The test uses `cwd: tmp` so the spawned `kadai mcp` reads the temp spine (created via `runInit`), not the kadai project itself.
 > - If the test times out, increase Bun's test timeout: `bun test --timeout 30000 tests/mcp/integration.test.ts`.
 
-- [ ] **Step 3: Run full test suite**
+- [x] **Step 3: Run full test suite**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test
@@ -1980,7 +1980,7 @@ bun run typecheck
 
 Expected: all tests pass; no type errors.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

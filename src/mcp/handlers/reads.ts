@@ -16,7 +16,7 @@ function filterItems(
 ): Item[] {
   return items.filter(item => {
     if (item.kind !== kind) return false;
-    const d = item.data as Record<string, unknown>;
+    const d = item.data as unknown as Record<string, unknown>;
     if (filters.phase && d.phase !== filters.phase) return false;
     if (filters.status && item.data.status !== filters.status) return false;
     if (filters.parent && d.parent !== filters.parent) return false;

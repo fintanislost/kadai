@@ -1,8 +1,9 @@
 import type { ToolDef } from './types';
 
-let tools: ToolDef[] = [];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let tools: ToolDef<any, any>[] = [];
 
-export function registerTool(def: ToolDef): void {
+export function registerTool<I, O>(def: ToolDef<I, O>): void {
   if (tools.some(t => t.name === def.name)) {
     throw new Error(`Duplicate tool name: ${def.name}`);
   }

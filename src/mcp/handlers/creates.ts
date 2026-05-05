@@ -7,8 +7,8 @@ const phaseField = z.string().min(1);
 const orderField = z.number().int().min(0).optional();
 const descriptionField = z.string().default('');
 
-function bodyFromDescription(desc: string): string {
-  if (!desc.trim()) return '## Description\n\n_Add a description here._\n';
+function bodyFromDescription(desc: string | undefined): string {
+  if (!desc?.trim()) return '## Description\n\n_Add a description here._\n';
   return `## Description\n\n${desc}\n`;
 }
 
