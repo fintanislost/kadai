@@ -1,7 +1,8 @@
 import { appendFileSync, mkdirSync } from 'node:fs';
-import { join, relative } from 'node:path';
+import { dirname, join, relative } from 'node:path';
 import { loadConfig } from '../config/load';
 import { readPicked } from '../core/picked';
+import { findById } from '../core/spine';
 
 export interface PreToolUseInput {
   tool_name: string;
@@ -64,4 +65,29 @@ export function evaluatePreToolUse(input: PreToolUseInput, rootDir: string): Eva
       `  - Or add the path to [guardrail.allowed_paths] in .kadai/config.toml\n` +
       `  - Or set KADAI_BYPASS=1 (with optional KADAI_BYPASS_REASON="...") for one-off escapes`,
   };
+}
+
+export interface PostToolUseInput {
+  tool_name: string;
+  tool_input: { file_path?: string };
+}
+
+export function recordPostToolUse(input: PostToolUseInput, rootDir: string): void {
+  if (!GUARDED_TOOLS.has(input.tool_name)) return;
+  const filePath = input.tool_input.file_path;
+  if (!filePath) return;
+
+  const config = loadConfig(rootDir);
+  if (!config.change_capture.enabled) return;
+
+  const picked = readPicked(rootDir);
+  if (!picked) return;
+
+  const story = findById(rootDir, picked);
+  if (!story) return;
+
+  const changelogPath = join(dirname(story.path), 'changelog.md');
+  const ts = new Date().toISOString();
+  const rel = relative(rootDir, filePath);
+  appendFileSync(changelogPath, `- ${ts} \`${input.tool_name}\` ${rel}\n`, 'utf8');
 }

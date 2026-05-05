@@ -1,11 +1,13 @@
 import { test, expect, beforeEach, afterEach } from 'bun:test';
 import { mkdtempSync, rmSync, readFileSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
-import { evaluatePreToolUse } from '../../src/cli/hook';
+import { join, dirname } from 'node:path';
+import { evaluatePreToolUse, recordPostToolUse } from '../../src/cli/hook';
 import { runInit } from '../../src/cli/init';
 import { runAdd } from '../../src/cli/add';
 import { setPicked } from '../../src/core/picked';
+import { findById } from '../../src/core/spine';
+import { setConfigKey } from '../../src/cli/config';
 
 let tmp: string;
 beforeEach(() => {
@@ -59,4 +61,58 @@ test('KADAI_BYPASS=1 allows blocked edit and writes to bypass.log', () => {
 test('only Edit and Write tools are evaluated; other tools allow through', () => {
   const input = { tool_name: 'Read', tool_input: { file_path: join(tmp, 'src/foo.ts') } };
   expect(evaluatePreToolUse(input, tmp).allow).toBe(true);
+});
+
+test('recordPostToolUse appends to picked story changelog when picked', () => {
+  runAdd({ rootDir: tmp, kind: 'epic', title: 'A', phase: 'mvp' });
+  runAdd({ rootDir: tmp, kind: 'feature', title: 'F', phase: 'mvp', parent: 'EPIC-001' });
+  runAdd({ rootDir: tmp, kind: 'story', title: 'S', phase: 'mvp', parent: 'FEAT-001' });
+  setPicked(tmp, 'STORY-001');
+  recordPostToolUse({
+    tool_name: 'Edit',
+    tool_input: { file_path: join(tmp, 'src/foo.ts') },
+  }, tmp);
+  const story = findById(tmp, 'STORY-001');
+  const changelogPath = join(dirname(story!.path), 'changelog.md');
+  expect(existsSync(changelogPath)).toBe(true);
+  const content = readFileSync(changelogPath, 'utf8');
+  expect(content).toContain('Edit');
+  expect(content).toContain('src/foo.ts');
+});
+
+test('recordPostToolUse is a no-op when no story picked', () => {
+  // Should not throw and should not create any changelog
+  expect(() => recordPostToolUse({
+    tool_name: 'Edit',
+    tool_input: { file_path: join(tmp, 'src/foo.ts') },
+  }, tmp)).not.toThrow();
+});
+
+test('recordPostToolUse is a no-op when change_capture.enabled = false', () => {
+  runAdd({ rootDir: tmp, kind: 'epic', title: 'A', phase: 'mvp' });
+  runAdd({ rootDir: tmp, kind: 'feature', title: 'F', phase: 'mvp', parent: 'EPIC-001' });
+  runAdd({ rootDir: tmp, kind: 'story', title: 'S', phase: 'mvp', parent: 'FEAT-001' });
+  setPicked(tmp, 'STORY-001');
+  setConfigKey(tmp, 'change_capture.enabled', 'false');
+  recordPostToolUse({
+    tool_name: 'Edit',
+    tool_input: { file_path: join(tmp, 'src/foo.ts') },
+  }, tmp);
+  const story = findById(tmp, 'STORY-001');
+  const changelogPath = join(dirname(story!.path), 'changelog.md');
+  expect(existsSync(changelogPath)).toBe(false);
+});
+
+test('recordPostToolUse only acts on Edit and Write tools', () => {
+  runAdd({ rootDir: tmp, kind: 'epic', title: 'A', phase: 'mvp' });
+  runAdd({ rootDir: tmp, kind: 'feature', title: 'F', phase: 'mvp', parent: 'EPIC-001' });
+  runAdd({ rootDir: tmp, kind: 'story', title: 'S', phase: 'mvp', parent: 'FEAT-001' });
+  setPicked(tmp, 'STORY-001');
+  recordPostToolUse({
+    tool_name: 'Read',
+    tool_input: { file_path: join(tmp, 'src/foo.ts') },
+  }, tmp);
+  const story = findById(tmp, 'STORY-001');
+  const changelogPath = join(dirname(story!.path), 'changelog.md');
+  expect(existsSync(changelogPath)).toBe(false);
 });
