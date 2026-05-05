@@ -92,7 +92,7 @@ scripts/embed-or-locate-dist.ts       # (small) helper for serve to find dist/
 
 **Goal:** Get all web stack deps installed + directory layout in place.
 
-- [ ] **Step 1: Add dependencies**
+- [x] **Step 1: Add dependencies**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -102,7 +102,7 @@ bun add -d @types/react @types/react-dom vite @vitejs/plugin-react tailwindcss p
 
 Expected: `package.json` updated with these deps.
 
-- [ ] **Step 2: Create directory structure**
+- [x] **Step 2: Create directory structure**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -110,7 +110,7 @@ mkdir -p src/web/frontend/src/components src/web/frontend/src/pages tests/web
 touch src/web/.gitkeep tests/web/.gitkeep
 ```
 
-- [ ] **Step 3: Update .gitignore**
+- [x] **Step 3: Update .gitignore**
 
 Modify `/home/fintan/repos/kadai/.gitignore` — append:
 
@@ -121,7 +121,7 @@ test-results/
 playwright-report/
 ```
 
-- [ ] **Step 4: Install Playwright browsers (chromium only — keeps install small)**
+- [x] **Step 4: Install Playwright browsers (chromium only — keeps install small)**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -130,7 +130,7 @@ bunx playwright install --with-deps chromium
 
 > If this fails (e.g., on a system without sudo for --with-deps), retry without it: `bunx playwright install chromium`. Document the failure mode in the report if it arises.
 
-- [ ] **Step 5: Verify install**
+- [x] **Step 5: Verify install**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -139,7 +139,7 @@ bun run typecheck
 
 Expected: exit 0.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
