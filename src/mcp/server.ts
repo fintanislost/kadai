@@ -35,7 +35,10 @@ export async function runServer(rootDir: string): Promise<void> {
     try {
       const parsed = tool.inputSchema.parse(args ?? {});
       const result = await tool.handler(parsed, ctx);
-      const text = result === undefined || result === null
+      // Only `undefined` is the void/sentinel case (e.g. handlers that return nothing).
+      // `null` is a meaningful value for tools like `get` (item not found) — serialize as JSON null
+      // so the agent sees it clearly instead of an ambiguous "OK".
+      const text = result === undefined
         ? 'OK'
         : JSON.stringify(result, null, 2);
       return { content: [{ type: 'text' as const, text }] };

@@ -28,6 +28,21 @@ Create an epic, feature, story, or task.
 | `-p, --phase <phase>` | epic, feature, story | Prompted if omitted; tasks inherit from story |
 | `-o, --order <n>` | None | Auto-assigned via sparse ordering if omitted |
 | `--parent <id>` | feature/story/task | The parent's ID. Epics have no parent. |
+| `--epic <id>` | feature (alias) | Equivalent to `--parent` when adding a feature |
+| `--feature <id>` | story (alias) | Equivalent to `--parent` when adding a story |
+| `--story <id>` | task (alias) | Equivalent to `--parent` when adding a task |
+
+> The kind-specific aliases (`--epic`, `--feature`, `--story`) are sugar — they exist because agents often reach for them by intuition. All four flags resolve to the same `parent` field.
+
+## `kadai get <id>`
+
+Fetch a single item by ID and print it as JSON. Useful for debugging or scripting.
+
+```bash
+kadai get EPIC-001              # → JSON of the epic
+kadai get STORY-042 | jq .data  # extract just the frontmatter
+kadai get FEAT-999              # → "Item not found: FEAT-999" (exit 1)
+```
 
 ## `kadai list <kind> [filters]`
 

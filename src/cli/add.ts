@@ -90,14 +90,19 @@ export const addCommand = new Command('add')
   .option('-p, --phase <phase>', 'phase slug (e.g. mvp)')
   .option('-o, --order <n>', 'explicit order within phase', (v) => parseInt(v, 10))
   .option('--parent <id>', 'parent item ID (required except for epics)')
-  .action(async (kind: string, opts: { title?: string; phase?: string; order?: number; parent?: string }) => {
+  .option('--epic <id>', 'parent epic ID — alias for --parent when adding a feature')
+  .option('--feature <id>', 'parent feature ID — alias for --parent when adding a story')
+  .option('--story <id>', 'parent story ID — alias for --parent when adding a task')
+  .action(async (kind: string, opts: { title?: string; phase?: string; order?: number; parent?: string; epic?: string; feature?: string; story?: string }) => {
     if (!['epic', 'feature', 'story', 'task'].includes(kind)) {
       throw new Error(`unknown kind: ${kind}`);
     }
     const k = kind as ItemKind;
     let title = opts.title;
     let phase = opts.phase;
-    let parent = opts.parent;
+    // Resolve parent from --parent or kind-specific alias (--epic / --feature / --story).
+    // First match wins; if multiple are given, prefer --parent for explicitness.
+    let parent = opts.parent ?? opts.epic ?? opts.feature ?? opts.story;
 
     if (!title) {
       const r = await prompts({ type: 'text', name: 'title', message: `${k} title:` });
