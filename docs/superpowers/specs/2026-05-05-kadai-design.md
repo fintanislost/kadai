@@ -400,10 +400,34 @@ Single language across MCP server, web backend, CLI, and frontend.
 
 ## 10. Testing
 
+### Conventional testing layers
 - **Unit tests** — schema validation, state machine transitions, frontmatter parse/serialize, ID generation, sparse ordering, slug generation, atomic write helpers. Pure logic; lots of cases.
 - **Integration tests** — MCP tool surface end-to-end (each tool, happy + error cases), hook behaviors, git sync. Tests use temp dirs as the spine root via a `withTempSpine()` fixture helper.
 - **E2E tests with Playwright** — web viewer flows (roadmap renders, drill into story, status change reflects in MCP, live update over SSE).
 - **Test fixture helper** — `buildSampleSpine({ epics, features, stories, tasks })` for exercising views and tools.
+
+### Dogfood / agent acceptance testing (primary acceptance test)
+
+The strongest acceptance test for kadai is whether agents stay honest to it. We dogfood **within this build session** rather than treating dogfooding as a post-launch step.
+
+**Approach:**
+
+Once phases 1–4 of the MVP build are complete (core data + CLI + MCP + hooks), we run `kadai init` against the kadai project itself, registering kadai's own MCP server in this project's `.mcp.json` and installing the hooks into `.claude/settings.json`. We seed the spine with kadai's own epics/features/stories — using the post-MVP backlog (Section 13) and any remaining MVP work as the initial scope. From that point on, **kadai is built using kadai**.
+
+**Subagent acceptance test:**
+
+With kadai installed and registered, spawn a fresh subagent (via the Agent tool) and assign it a kadai-managed story (e.g., "STORY-N: implement the SSE endpoint for live updates"). Observe in sequence:
+
+1. Subagent calls `kadai.get_active_story()` or `kadai.list_stories(status="ready")` before planning — *driven by the bundled skill's auto-trigger.*
+2. `PreToolUse` hook blocks the subagent's first `Edit`/`Write` because nothing is picked — *the guardrail fires.*
+3. Subagent picks the story via `kadai.pick_story(...)` and `kadai.set_status(..., "in_progress")` and proceeds — *recovers correctly from the block.*
+4. `PostToolUse` hook captures each edit into the story's `changelog.md` — *change capture works.*
+5. Subagent calls `kadai.set_status(..., "review")` after task completion — *the skill's exit-flow guidance lands.*
+6. The web viewer (running in our terminal session) reflects the status change live — *cross-process coordination works.*
+
+If any step fails, the failure point reveals what to fix in kadai's guardrails, MCP surface, skill description, or hook configuration. This test acts as the true integration validation for the agent-facing parts of the system — the parts that conventional unit/integration tests cannot exercise.
+
+**This is the gating test for declaring kadai's MVP "done."** Conventional tests verify code correctness; the subagent acceptance test verifies the *product works as designed* against the audience it's built for.
 
 ---
 
@@ -426,6 +450,9 @@ The slice we'd build first; everything else is post-MVP.
 4. **Core hooks** — `PreToolUse(Edit, Write)` (the guardrail) and `PostToolUse(Edit, Write)` (changelog capture). Skip `UserPromptSubmit` and `Stop` for MVP.
 5. **Read-only web viewer** — Bun HTTP + React SPA, roadmap home + epic/feature/story detail. No drag-drop, no status mutations from UI. Status changes via CLI/MCP/agent.
 6. **Bundled skill + minimal slash commands** — `/kadai-pick`, `/kadai-status`. Skill description tuned for triggering on planning language.
+7. **Dogfood validation** — `kadai init` against the kadai project itself, register kadai's own MCP, populate the spine with kadai's own epics/features/stories (post-MVP backlog from Section 13 + any remaining MVP work), then run the subagent acceptance test (Section 10). MVP is "done" only after the subagent test passes end-to-end.
+
+> **Mid-build transition.** As soon as step 4 lands (core hooks working), we install kadai against this project and start tracking subsequent build work *in kadai* — meaning steps 5 and 6 are themselves the first dogfood. Step 7 is the formal subagent test.
 
 ---
 
