@@ -164,4 +164,7 @@ export const initCommand = new Command('init')
     } else {
       console.log('Next: ' + pc.cyan('kadai add epic'));
     }
+    console.log('');
+    console.log(pc.yellow('⚠ Restart your Claude Code session in this directory'));
+    console.log(pc.yellow('  to load the new MCP server (.mcp.json) and hooks (.claude/settings.json).'));
   });

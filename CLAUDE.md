@@ -34,6 +34,18 @@ Don't write code outside the active plan's task list. If a need emerges that the
 
 This is the safety property that makes the work resumable after compaction.
 
+## Documentation discipline
+
+When you change user-facing behavior, **update the relevant page in [`docs/wiki/`](docs/wiki/) in the same commit**:
+
+- New CLI flag or subcommand → update `docs/wiki/cli-reference.md`
+- New MCP tool, hook, or schema field → update the relevant reference page
+- New common gotcha discovered → add it to `docs/wiki/troubleshooting.md`
+- Concept change (state machine, phases, picked semantics) → update `docs/wiki/concepts.md`
+- Plugin change (skill description, slash command) → update `docs/wiki/plugin.md`
+
+If a change spans multiple pages, that's a sign it's a real concept shift — be sure to update all affected pages plus any relevant code comments. Stale docs are worse than no docs.
+
 ## Tech stack quick reference
 
 - **Language:** TypeScript on **Bun** (runtime + test runner + bundler)

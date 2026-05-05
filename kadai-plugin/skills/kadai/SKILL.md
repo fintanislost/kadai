@@ -25,9 +25,10 @@ This project uses **kadai** for product/feature/story tracking. The spine lives 
 
 ## When work for a story is done
 
-1. Mark it `review`: `kadai.set_status(id, "review")`.
-2. Mention the story ID in commit messages so `kadai sync` (post-MVP) can attribute commits later.
-3. After PR merge, transition to `done`.
+1. **Check docs.** If you changed user-facing behavior (CLI flag, config key, MCP tool surface, hook protocol, plugin), update the relevant page in `docs/wiki/` *in the same commit*. Stale docs are worse than no docs.
+2. Mark it `review`: `kadai.set_status(id, "review")`.
+3. Mention the story ID in commit messages so `kadai sync` (post-MVP) can attribute commits later.
+4. After PR merge, transition to `done`.
 
 ## Spec → feature, plan → story
 
@@ -46,6 +47,7 @@ This is what makes kadai an **archive** as well as a tracker — every story car
 
 ## See also
 
+- User docs: `docs/wiki/` (getting-started, cli-reference, plugin, troubleshooting, concepts)
 - Spec: `docs/superpowers/specs/2026-05-05-kadai-design.md`
 - CLI surface: `kadai --help`
 - Web viewer: `kadai serve`
