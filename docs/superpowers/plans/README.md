@@ -13,8 +13,8 @@ Update the **Status** column as plans complete (and update [`/CLAUDE.md`](../../
 | # | Plan | Status | Ships at end |
 |---|---|---|---|
 | 1 | [Spine + CLI](2026-05-05-kadai-01-spine-and-cli.md) | **DONE** | `kadai init / add / list / status / pick` working from terminal |
-| 2 | [MCP server](2026-05-05-kadai-02-mcp-server.md) | STUB — write next | Agents read/write the spine through MCP tools |
-| 3 | [Hooks (guardrails)](2026-05-05-kadai-03-hooks.md) | STUB | `PreToolUse` blocks off-spine edits; `PostToolUse` captures changelog |
+| 2 | [MCP server](2026-05-05-kadai-02-mcp-server.md) | **DONE** | Agents read/write the spine through MCP tools |
+| 3 | [Hooks (guardrails)](2026-05-05-kadai-03-hooks.md) | STUB — write next | `PreToolUse` blocks off-spine edits; `PostToolUse` captures changelog |
 | 4 | [Web viewer (read-only)](2026-05-05-kadai-04-web-viewer.md) | STUB | Roadmap + drill-down views at localhost |
 | 5 | [Plugin + dogfood](2026-05-05-kadai-05-plugin-and-dogfood.md) | STUB | Bundled skill + slash commands; subagent acceptance test passes → MVP done |
 
