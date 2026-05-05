@@ -162,7 +162,7 @@ git commit -m "chore(web): install web stack deps and scaffold src/web/ [Plan-4 
 - Create: `src/web/frontend/src/styles.css`
 - Modify: `package.json` — add `build:web` script
 
-- [ ] **Step 1: Create `src/web/frontend/index.html`**
+- [x] **Step 1: Create `src/web/frontend/index.html`**
 
 ```html
 <!DOCTYPE html>
@@ -180,7 +180,7 @@ git commit -m "chore(web): install web stack deps and scaffold src/web/ [Plan-4 
 </html>
 ```
 
-- [ ] **Step 2: Create `src/web/frontend/vite.config.ts`**
+- [x] **Step 2: Create `src/web/frontend/vite.config.ts`**
 
 ```typescript
 import { defineConfig } from 'vite';
@@ -204,7 +204,7 @@ export default defineConfig({
 });
 ```
 
-- [ ] **Step 3: Create `src/web/frontend/tailwind.config.js`**
+- [x] **Step 3: Create `src/web/frontend/tailwind.config.js`**
 
 ```javascript
 /** @type {import('tailwindcss').Config} */
@@ -224,7 +224,7 @@ export default {
 };
 ```
 
-- [ ] **Step 4: Create `src/web/frontend/postcss.config.js`**
+- [x] **Step 4: Create `src/web/frontend/postcss.config.js`**
 
 ```javascript
 export default {
@@ -235,7 +235,7 @@ export default {
 };
 ```
 
-- [ ] **Step 5: Create `src/web/frontend/tsconfig.json`**
+- [x] **Step 5: Create `src/web/frontend/tsconfig.json`**
 
 ```json
 {
@@ -260,7 +260,7 @@ export default {
 }
 ```
 
-- [ ] **Step 6: Create `src/web/frontend/src/styles.css`**
+- [x] **Step 6: Create `src/web/frontend/src/styles.css`**
 
 ```css
 @tailwind base;
@@ -276,7 +276,7 @@ html, body, #root {
 }
 ```
 
-- [ ] **Step 7: Update `package.json` — add `build:web` script**
+- [x] **Step 7: Update `package.json` — add `build:web` script**
 
 In `/home/fintan/repos/kadai/package.json`, add to the `scripts` section:
 
@@ -285,7 +285,7 @@ In `/home/fintan/repos/kadai/package.json`, add to the `scripts` section:
     "dev:web": "vite --config src/web/frontend/vite.config.ts"
 ```
 
-- [ ] **Step 8: Verify typecheck still passes**
+- [x] **Step 8: Verify typecheck still passes**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -294,7 +294,7 @@ bun run typecheck
 
 Expected: exit 0. (Vite/tailwind configs are JS, not part of the main TS project, but root tsconfig.json includes `src/**/*` which would pick up frontend tsx files. To prevent root typecheck from failing on JSX before main.tsx exists, the root tsconfig already excludes via the frontend/tsconfig.json scoping — but if errors arise, exclude `src/web/frontend/**` from the root tsconfig's `include` and rely on the frontend tsconfig instead.)
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -315,7 +315,7 @@ git commit -m "chore(web): add vite + tailwind config [Plan-4 Task-2]"
 
 **Goal:** Build a minimal SPA that renders "Kadai" so we know the frontend pipeline works end-to-end. No real routes yet (those come in later tasks).
 
-- [ ] **Step 1: Modify root `/home/fintan/repos/kadai/tsconfig.json`**
+- [x] **Step 1: Modify root `/home/fintan/repos/kadai/tsconfig.json`**
 
 Replace the `"include"` line with:
 
@@ -326,7 +326,7 @@ Replace the `"include"` line with:
 
 (Add the `exclude` array — the frontend has its own tsconfig and a different module/JSX target.)
 
-- [ ] **Step 2: Create `src/web/frontend/src/router.tsx`**
+- [x] **Step 2: Create `src/web/frontend/src/router.tsx`**
 
 ```typescript
 import { createRootRoute, createRoute, createRouter, Outlet } from '@tanstack/react-router';
@@ -352,7 +352,7 @@ declare module '@tanstack/react-router' {
 }
 ```
 
-- [ ] **Step 3: Create `src/web/frontend/src/main.tsx`**
+- [x] **Step 3: Create `src/web/frontend/src/main.tsx`**
 
 ```typescript
 import React from 'react';
@@ -367,7 +367,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 );
 ```
 
-- [ ] **Step 4: Build the frontend**
+- [x] **Step 4: Build the frontend**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -377,7 +377,7 @@ ls src/web/dist/
 
 Expected: `src/web/dist/index.html` and `src/web/dist/assets/index.js` + `src/web/dist/assets/index.css` exist.
 
-- [ ] **Step 5: Verify root typecheck still passes**
+- [x] **Step 5: Verify root typecheck still passes**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -386,7 +386,7 @@ bun run typecheck
 
 Expected: exit 0 (root project doesn't try to compile the frontend).
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -690,7 +690,7 @@ git commit -m "feat(web): add HTTP server with read-only API endpoints [Plan-4 T
 
 **Goal:** Browser-side fetch helpers that call `/api/*`, returning typed results. Types mirror `src/core/types.ts` (duplicated rather than imported because the frontend tsconfig excludes the rest of `src/`).
 
-- [ ] **Step 1: Create types**
+- [x] **Step 1: Create types**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/types.ts`:
 
@@ -744,7 +744,7 @@ export interface Item<F extends AnyFrontmatter = AnyFrontmatter> {
 }
 ```
 
-- [ ] **Step 2: Create API client**
+- [x] **Step 2: Create API client**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/api.ts`:
 
@@ -795,7 +795,7 @@ export async function getPicked(): Promise<Item | null> {
 
 > Note: `getFile(id, filename)` for spec/plan/changelog content is added in Task 9 (when the corresponding API endpoint lands).
 
-- [ ] **Step 3: Verify frontend builds**
+- [x] **Step 3: Verify frontend builds**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -804,7 +804,7 @@ bun run build:web
 
 Expected: clean build.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -923,7 +923,7 @@ git commit -m "feat(web): add Layout and Markdown components [Plan-4 Task-6]"
 
 **Goal:** Roadmap home — phase swim lanes with epic cards. Click an epic → navigate to `/epics/:id`.
 
-- [ ] **Step 1: Create EpicCard**
+- [x] **Step 1: Create EpicCard**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/components/EpicCard.tsx`:
 
@@ -949,7 +949,7 @@ export function EpicCard({ epic }: { epic: Item }) {
 }
 ```
 
-- [ ] **Step 2: Create Home page**
+- [x] **Step 2: Create Home page**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/pages/Home.tsx`:
 
@@ -994,7 +994,7 @@ export function Home() {
 }
 ```
 
-- [ ] **Step 3: Update router with Home + Layout**
+- [x] **Step 3: Update router with Home + Layout**
 
 Replace `/home/fintan/repos/kadai/src/web/frontend/src/router.tsx`:
 
@@ -1044,7 +1044,7 @@ declare module '@tanstack/react-router' {
 }
 ```
 
-- [ ] **Step 4: Build**
+- [x] **Step 4: Build**
 
 ```bash
 cd /home/fintan/repos/kadai && bun run build:web
@@ -1052,7 +1052,7 @@ cd /home/fintan/repos/kadai && bun run build:web
 
 Expected: clean.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1277,7 +1277,7 @@ git commit -m "feat(web): add Epic and Feature detail pages [Plan-4 Task-8]"
 
 > **Note:** Plan 4 MVP intentionally keeps this simple — the API endpoint added here just streams the file contents from disk if the story has the corresponding `spec` / `plan` field set, or 404s.
 
-- [ ] **Step 1: Add `/api/files/:id/:filename` endpoint**
+- [x] **Step 1: Add `/api/files/:id/:filename` endpoint**
 
 In `/home/fintan/repos/kadai/src/web/api.ts`, add a new branch before the `/api/picked` branch:
 
@@ -1305,7 +1305,7 @@ In `/home/fintan/repos/kadai/src/web/api.ts`, add a new branch before the `/api/
 > ```
 > And replace the inline calls accordingly.
 
-- [ ] **Step 2: Add API client function**
+- [x] **Step 2: Add API client function**
 
 In `/home/fintan/repos/kadai/src/web/frontend/src/api.ts`, add at the end:
 
@@ -1318,7 +1318,7 @@ export async function getFile(id: string, filename: 'spec.md' | 'plan.md' | 'cha
 }
 ```
 
-- [ ] **Step 3: Create Story page**
+- [x] **Step 3: Create Story page**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/pages/Story.tsx`:
 
@@ -1420,7 +1420,7 @@ export function Story() {
 }
 ```
 
-- [ ] **Step 4: Register Story page in router**
+- [x] **Step 4: Register Story page in router**
 
 In `/home/fintan/repos/kadai/src/web/frontend/src/router.tsx`, replace the placeholder `storyRoute` with:
 
@@ -1436,7 +1436,7 @@ const storyRoute = createRoute({
 });
 ```
 
-- [ ] **Step 5: Build + run API tests (regression)**
+- [x] **Step 5: Build + run API tests (regression)**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1446,7 +1446,7 @@ bun test tests/web/api.test.ts
 
 Expected: build clean; all 7 API tests still pass.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
