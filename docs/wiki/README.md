@@ -9,6 +9,7 @@ User-facing documentation for kadai. (For design specs and implementation plans,
 - [Plugin (Claude Code)](plugin.md) — install the bundled skill + slash commands
 - [Troubleshooting](troubleshooting.md) — common gotchas
 - [Concepts](concepts.md) — epics → features → stories → tasks, phases, picked, hooks
+- [Post-MVP](post-mvp.md) — what's next; backlog of deferred work
 
 ## What is kadai?
 

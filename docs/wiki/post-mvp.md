@@ -1,0 +1,145 @@
+# Post-MVP
+
+What's deferred from kadai's MVP, in roughly the order it should ship. Update this doc as items move (in-progress / shipped / scope-changed). When a feature ships, also update its sibling page in this wiki (`cli-reference.md`, `concepts.md`, etc).
+
+## Verification approach
+
+For anything touching hooks, MCP, the bundled skill, or change-capture: run the **`kadai-dogfood-test` skill** against a fresh temp dir to verify end-to-end after the unit tests pass. The skill spawns a real `claude -p` session in a temp project — same approach as Path A in [the dogfood acceptance test](../dogfood-acceptance-test.md).
+
+For pure CLI/web/docs changes: `bun test` + `bun run typecheck` + targeted smoke is sufficient.
+
+## Shipping plan (proposed)
+
+The post-MVP work is organized as a series of focused plans, each ending in something visibly more useful. Order is by user-felt impact, not implementation complexity.
+
+### Plan 6 — Workflow completion (CLI + slash command parity) 🟢 **next**
+
+Closes the immediate gaps that real-world use surfaced. Without these, the workflow feels half-built — agents reach for things that don't exist.
+
+- **`kadai set-status <id> <status> [--reason]`** — arbitrary status mutations from the CLI. Closes the Path A test gap (currently `kadai pick` is the only CLI status mutation, and only to `in_progress`).
+- **`kadai init -y` creates the first epic** with a default title — currently `--yes` skips epic creation entirely, leaving an empty spine.
+- **`kadai unpick` exists, but `/kadai-unpick` slash command** is missing — add it.
+- **`/kadai-add <kind>`** — guided creation slash command (uses the kadai MCP `create_*` tools with prompts for missing fields).
+- **`/kadai-set-status STORY-001 review`** — slash companion to the new CLI command.
+
+Estimate: small. ~6-8 tasks, mostly CLI + plugin file additions.
+
+### Plan 7 — Web viewer interactivity
+
+Makes the web viewer not just a read-only roadmap. Status changes from the UI become possible.
+
+- **Status changers in story detail right rail** — buttons to move state (calls the new `/api/items/:id/status` endpoint, which calls `set_status`).
+- **Drag-drop kanban** in feature detail — drop a story card on a different column → status change.
+- **Attach UI** — upload spec.md / plan.md from the story detail (calls `/api/items/:id/attach-spec`).
+
+Estimate: medium. New API endpoints + frontend interactivity. Requires writable API endpoints (currently all `/api/*` is read-only).
+
+### Plan 8 — Live updates (SSE)
+
+The web viewer auto-refreshes when the spine changes (CLI, MCP, or another browser tab).
+
+- Filesystem watcher on `.kadai/` (chokidar) → SSE event stream
+- React hooks subscribe and invalidate on relevant changes
+- Replaces manual page reloads
+
+Estimate: small-medium. Mostly server-side SSE infra + a React hook.
+
+### Plan 9 — Search
+
+Spine-wide full-text search.
+
+- API endpoint backed by the existing MCP `search` tool
+- Search box in the web viewer top bar that's currently a placeholder
+- Result page (`/search?q=...`)
+
+Estimate: small. The MCP `search` tool already does the heavy lifting.
+
+### Plan 10 — Git integration (`kadai sync`)
+
+Closes the loop on the "archive" promise — kadai records what was changed, when, and by which commit.
+
+- `kadai sync` CLI scrapes git log for `STORY-NNN` references in commit messages
+- Auto-appends matching commits to that story's `changelog.md` with SHA + date + message
+- (Optional flag) auto-transitions story to `done` on PR merge
+- Idempotent — re-running adds only new commits
+
+Estimate: medium. Needs git plumbing + dedup logic + tests against a real git repo fixture.
+
+### Plan 11 — Hook polish
+
+The two remaining hooks from spec §5.2.
+
+- **`UserPromptSubmit` hook** — injects "Active: STORY-042 — title. Spec: …. Plan step: …" into the prompt context when a story is picked.
+- **`Stop` hook** — if a story was picked and the turn ended without a status update, reminds.
+
+Estimate: small. Same shape as the existing two hooks.
+
+### Plan 12 — Distribution polish
+
+- `bun build --compile` actually exercised — single-binary distribution tested
+- Asset embedding into the binary (currently `kadai serve` reads `src/web/dist/` at runtime; would let the binary ship standalone)
+- Curl install script (`curl … | sh`)
+- Brew formula
+- npm package publish
+
+Estimate: medium. Build pipeline + distribution channels.
+
+### Plan 13 — Developer ergonomics
+
+The "minor but real" gaps surfaced during MVP build.
+
+- ID counter writes via `writeFileAtomic` (one of the few non-atomic writes in the codebase)
+- Tailwind typography plugin (so markdown content renders with `prose` styling)
+- Replace `as any` casts in CLI with typed discriminated-union narrowing helpers
+- Replace `@ts-ignore` on dynamic `import('./add')` in `init.ts` with proper static import
+- `kadai uninstall` — implementation (currently in CLI listing but not built)
+- `kadai reindex` — rebuild `.index.json` cache (post-MVP per spec)
+- Phase config migration when phases renamed/removed
+- Sparse-ordering re-densification when midpoints tighten (`needsRedensify` exists but isn't called)
+
+Estimate: small per item; medium-large if done together. Could be cherry-picked individually.
+
+### Plan 14 — Multi-project + stretch
+
+Lower-priority but interesting.
+
+- Multi-project switcher in web viewer (browse multiple kadai-managed projects from one UI)
+- Activity feed (global stream of changes across all epics)
+- Per-phase comparison view (side-by-side scope diffing — "MVP vs full")
+- Markdown-only mode (run kadai without MCP/hooks for users who just want files + viewer)
+- `record_change` MCP tool (currently the PostToolUse hook writes directly to changelog; a tool would let agents add manual annotations)
+- Comprehensive Playwright E2E (currently one smoke test)
+
+Estimate: large. Skip until earlier plans are solid.
+
+---
+
+## Backlog (categorized, not yet sequenced)
+
+This is the canonical list. New items get added here as they're discovered. Items move into the shipping plans above as they're scheduled.
+
+### Surfaced from real use
+
+- `kadai init -y` creates no epic → empty spine after init
+- `kadai set-status` CLI missing → testing without MCP is awkward
+- `/kadai-add`, `/kadai-set-status`, `/kadai-unpick` slash commands missing
+- `kadai status` ascii output column alignment is loose
+
+### From spec §13 (the original list)
+
+See above sections — Plans 7-14 cover all of spec §13.
+
+### Adapted during build (technical debt)
+
+- `as any` casts in CLI for union fields
+- `@ts-ignore` on dynamic import in init.ts
+- ID counter writes not atomic
+- Tailwind typography not installed
+- Asset embedding into compiled binary deferred
+- `bun build --compile` never exercised end-to-end
+
+---
+
+## Recently shipped (as items move out of this list)
+
+(Empty — kadai's MVP shipped as 5 plans, none of which have post-MVP follow-ups yet. As we ship Plans 6+, document here so the backlog and the wins are both visible.)
