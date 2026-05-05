@@ -3,3 +3,7 @@ node_modules/
 dist/
 .DS_Store
 *.log
+src/web/dist/
+src/web/frontend/.vite/
+test-results/
+playwright-report/
