@@ -248,7 +248,7 @@ git commit -m "feat(core): add file lock to nextId counter writes [Plan-2 Task-2
 
 **Goal:** Server bootstrap that loads an empty tool registry and stands up an MCP stdio server. No tools yet; that comes in Tasks 4+. Each subsequent task plugs handlers into the registry.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `/home/fintan/repos/kadai/tests/mcp/registry.test.ts`:
 
@@ -297,7 +297,7 @@ test('registerTool rejects duplicate names', () => {
 });
 ```
 
-- [ ] **Step 2: Run the test (should fail)**
+- [x] **Step 2: Run the test (should fail)**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test tests/mcp/registry.test.ts
@@ -305,7 +305,7 @@ cd /home/fintan/repos/kadai && bun test tests/mcp/registry.test.ts
 
 Expected: FAIL — modules not found.
 
-- [ ] **Step 3: Implement types + registry**
+- [x] **Step 3: Implement types + registry**
 
 Create `/home/fintan/repos/kadai/src/mcp/types.ts`:
 
@@ -352,7 +352,7 @@ export function _resetRegistry(): void {
 }
 ```
 
-- [ ] **Step 4: Implement server bootstrap**
+- [x] **Step 4: Implement server bootstrap**
 
 Create `/home/fintan/repos/kadai/src/mcp/server.ts`:
 
@@ -412,7 +412,7 @@ export async function runServer(rootDir: string): Promise<void> {
 }
 ```
 
-- [ ] **Step 5: Run the registry test**
+- [x] **Step 5: Run the registry test**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test tests/mcp/registry.test.ts
@@ -420,7 +420,7 @@ cd /home/fintan/repos/kadai && bun test tests/mcp/registry.test.ts
 
 Expected: 3 tests pass.
 
-- [ ] **Step 6: Verify typecheck**
+- [x] **Step 6: Verify typecheck**
 
 ```bash
 cd /home/fintan/repos/kadai && bun run typecheck
@@ -428,7 +428,7 @@ cd /home/fintan/repos/kadai && bun run typecheck
 
 Expected: exit 0.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add src/mcp/types.ts src/mcp/registry.ts src/mcp/server.ts tests/mcp/registry.test.ts docs/superpowers/plans/2026-05-05-kadai-02-mcp-server.md
