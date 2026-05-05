@@ -312,7 +312,7 @@ git commit -m "feat(plugin): add /kadai-pick slash command [Plan-5 Task-3]"
 
 **Files:** Create `kadai-plugin/commands/kadai-status.md`
 
-- [ ] **Step 1: Create the command**
+- [x] **Step 1: Create the command**
 
 Create `/home/fintan/repos/kadai/kadai-plugin/commands/kadai-status.md`:
 
@@ -345,7 +345,7 @@ kadai status
 This produces the same information (formatted with colors).
 ````
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -354,7 +354,7 @@ cat kadai-plugin/commands/kadai-status.md | head -5
 
 Expected: YAML frontmatter present.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -362,7 +362,7 @@ git add kadai-plugin/commands/kadai-status.md docs/superpowers/plans/2026-05-05-
 git commit -m "feat(plugin): add /kadai-status slash command [Plan-5 Task-4]"
 ```
 
-## Update Task 4 checkboxes (3 boxes) in plan.
+## Update Task 4 checkboxes (3 boxes) in plan. [DONE]
 
 ---
 
