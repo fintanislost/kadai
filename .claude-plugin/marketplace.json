@@ -1,0 +1,20 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "kadai",
+  "description": "Kadai — local-first product spine for projects driven by agentic coding. Single-plugin marketplace exposing the kadai skill + slash commands.",
+  "owner": {
+    "name": "Fintan"
+  },
+  "plugins": [
+    {
+      "name": "kadai",
+      "description": "Auto-triggering skill + slash commands for kadai (the local-first product spine for agentic coding). Use after running `kadai init` in a project.",
+      "author": {
+        "name": "Fintan"
+      },
+      "category": "productivity",
+      "source": "./kadai-plugin",
+      "homepage": "https://github.com/fintan/kadai"
+    }
+  ]
+}

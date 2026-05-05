@@ -15,13 +15,20 @@ A Claude Code plugin for the [kadai](https://github.com/fintan/kadai) product sp
 
 ## Install
 
-```bash
-# From a Claude Code session:
-/plugin install /path/to/kadai-plugin
+Claude Code plugins come from **marketplaces**. The kadai repo is itself a single-plugin marketplace (defined by `.claude-plugin/marketplace.json` at the repo root). Two steps:
+
+```
+# 1. Register the kadai repo as a marketplace
+/plugin marketplace add /path/to/kadai-repo
+
+# 2. Install the kadai plugin from that marketplace
+/plugin install kadai@kadai
 /reload-plugins
 ```
 
-After installing, the skill auto-triggers on relevant prompts. The slash commands `/kadai-pick` and `/kadai-status` are available.
+After installing, the skill auto-triggers on relevant prompts. The slash commands `/kadai-pick` and `/kadai-status` become available.
+
+Verify: `/help` should list the `kadai` skill among installed skills, and `/kadai-pick STORY-001` should be a known command (even if it errors because no story exists).
 
 ## Uninstall
 

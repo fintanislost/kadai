@@ -10,14 +10,24 @@ The kadai-plugin/ directory is an installable Claude Code plugin.
 
 ## Install
 
+Claude Code plugins come from **marketplaces** — a directory with a `marketplace.json` listing one or more plugins. The kadai repo IS its own single-plugin marketplace (declared at `.claude-plugin/marketplace.json`).
+
 In a Claude Code session:
 
 ```
-/plugin install /path/to/kadai-repo/kadai-plugin
+# 1. Register the kadai repo as a marketplace
+/plugin marketplace add /path/to/kadai-repo
+
+# 2. Install the kadai plugin from it
+/plugin install kadai@kadai
 /reload-plugins
 ```
 
+The first step adds the kadai marketplace to Claude Code's known marketplaces (recorded in `~/.claude/plugins/known_marketplaces.json`). The second installs the `kadai` plugin from it.
+
 This is **per-user** — the plugin is loaded for your Claude Code, not per-project. The plugin's slash commands and skill are then available in any project where kadai has been initialized.
+
+> **Why a marketplace and not a direct path install?** Claude Code's plugin install model is built around marketplaces (a single source can publish many plugins, with versioning, etc.). Even for a one-plugin source like kadai, the marketplace abstraction is required — `/plugin install <local-path>` is not a supported syntax.
 
 ## Verify
 

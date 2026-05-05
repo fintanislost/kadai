@@ -42,6 +42,20 @@ Or add `~/.bun/bin` to your shell's PATH (`.bashrc` / `.zshrc`).
 2. **Add the path to the allowlist** (if it's a permanently-allowed path like `docs/`): `kadai config guardrail.allowed_paths` shows the current list; edit `.kadai/config.toml` to add to it.
 3. **Bypass for one session** (one-off escape): set `KADAI_BYPASS=1` in your shell. Optionally `KADAI_BYPASS_REASON="..."` for the audit log at `.kadai/bypass.log`.
 
+## "/kadai-pick or /kadai-status returns 'Unknown command'"
+
+**Cause:** The kadai plugin isn't actually installed. Claude Code plugins come from **marketplaces** — `/plugin install <local-path>` is not supported. You need to register the kadai repo as a marketplace first.
+
+**Fix:**
+
+```
+/plugin marketplace add /path/to/kadai-repo
+/plugin install kadai@kadai
+/reload-plugins
+```
+
+Verify with `/help` — the `kadai` skill should appear in the available skills list.
+
 ## "The MCP server isn't appearing in my Claude Code"
 
 **Causes:**

@@ -30,14 +30,17 @@ kadai --help       # lists all subcommands
 
 ## 2. Install the Claude Code plugin (one-time per Claude Code installation)
 
-In a Claude Code session:
+Claude Code plugins come from **marketplaces**. The kadai repo is itself a single-plugin marketplace (declared by `.claude-plugin/marketplace.json` at the repo root). In a Claude Code session:
 
 ```
-/plugin install /path/to/kadai-repo/kadai-plugin
+/plugin marketplace add /path/to/kadai-repo
+/plugin install kadai@kadai
 /reload-plugins
 ```
 
 This loads the `kadai` skill (auto-triggers on planning language) and the `/kadai-pick` / `/kadai-status` slash commands.
+
+Verify: `/help` should list the `kadai` skill, and `/kadai-pick STORY-001` should be a known command.
 
 ## 3. Initialize a project
 
