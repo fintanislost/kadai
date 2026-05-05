@@ -1409,7 +1409,7 @@ git commit -m "feat(core): add item writer with slug + atomic write [Plan-1 Task
 
 **Goal:** `walkSpine(rootDir)` enumerates all items in deterministic order. `findById(rootDir, id)` looks up a single item.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `tests/core/spine.test.ts`:
 
@@ -1470,7 +1470,7 @@ test('findById returns null for missing ID', () => {
 });
 ```
 
-- [ ] **Step 2: Run the test (should fail)**
+- [x] **Step 2: Run the test (should fail)**
 
 ```bash
 bun test tests/core/spine.test.ts
@@ -1478,7 +1478,7 @@ bun test tests/core/spine.test.ts
 
 Expected: FAIL.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `src/core/spine.ts`:
 
@@ -1552,7 +1552,7 @@ export function findById(rootDir: string, id: string): Item | null {
 }
 ```
 
-- [ ] **Step 4: Run the test (should pass)**
+- [x] **Step 4: Run the test (should pass)**
 
 ```bash
 bun test tests/core/spine.test.ts
@@ -1560,7 +1560,7 @@ bun test tests/core/spine.test.ts
 
 Expected: PASS — 5 tests.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/core/spine.ts tests/core/spine.test.ts
@@ -1667,7 +1667,7 @@ git commit -m "feat(config): add config types and defaults [Plan-1 Task-13]"
 
 **Goal:** TOML config load/save with defaults merge.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `tests/config/load.test.ts`:
 
@@ -1710,7 +1710,7 @@ test('loadConfig merges partial overrides with defaults', () => {
 });
 ```
 
-- [ ] **Step 2: Run the test (should fail)**
+- [x] **Step 2: Run the test (should fail)**
 
 ```bash
 bun test tests/config/load.test.ts
@@ -1718,7 +1718,7 @@ bun test tests/config/load.test.ts
 
 Expected: FAIL.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `src/config/load.ts`:
 
@@ -1758,7 +1758,7 @@ function mergeConfig(base: Config, override: Partial<Config>): Config {
 }
 ```
 
-- [ ] **Step 4: Run the test (should pass)**
+- [x] **Step 4: Run the test (should pass)**
 
 ```bash
 bun test tests/config/load.test.ts
@@ -1766,10 +1766,10 @@ bun test tests/config/load.test.ts
 
 Expected: PASS — 3 tests.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
-git add src/config/load.ts tests/config/load.test.ts
+git add src/config/load.ts tests/config/load.test.ts docs/superpowers/plans/2026-05-05-kadai-01-spine-and-cli.md
 git commit -m "feat(config): add TOML loader/saver with defaults merge [Plan-1 Task-14]"
 ```
 
