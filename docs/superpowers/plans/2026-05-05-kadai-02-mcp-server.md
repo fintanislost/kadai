@@ -445,7 +445,7 @@ git commit -m "feat(mcp): add server bootstrap and tool registry framework [Plan
 
 **Goal:** Five list tools (`list_phases`, `list_epics`, `list_features`, `list_stories`, `list_tasks`) registered in the registry. Filter inputs (phase, status, parent IDs).
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `/home/fintan/repos/kadai/tests/mcp/handlers/reads.test.ts`:
 
@@ -524,7 +524,7 @@ test('list_tasks filters by story_id', async () => {
 });
 ```
 
-- [ ] **Step 2: Run the test (should fail)**
+- [x] **Step 2: Run the test (should fail)**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test tests/mcp/handlers/reads.test.ts
@@ -532,7 +532,7 @@ cd /home/fintan/repos/kadai && bun test tests/mcp/handlers/reads.test.ts
 
 Expected: FAIL — module not found.
 
-- [ ] **Step 3: Implement read handlers**
+- [x] **Step 3: Implement read handlers**
 
 Create `/home/fintan/repos/kadai/src/mcp/handlers/reads.ts`:
 
@@ -636,7 +636,7 @@ export function registerReadTools(): void {
 }
 ```
 
-- [ ] **Step 4: Run the tests (should pass)**
+- [x] **Step 4: Run the tests (should pass)**
 
 ```bash
 cd /home/fintan/repos/kadai && bun test tests/mcp/handlers/reads.test.ts
@@ -644,7 +644,7 @@ cd /home/fintan/repos/kadai && bun test tests/mcp/handlers/reads.test.ts
 
 Expected: 6 tests pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/mcp/handlers/reads.ts tests/mcp/handlers/reads.test.ts docs/superpowers/plans/2026-05-05-kadai-02-mcp-server.md
