@@ -2,6 +2,7 @@ import { Command } from 'commander';
 import pc from 'picocolors';
 import { spawn } from 'node:child_process';
 import { startServer } from '../web/server';
+import { registerCommand, listCommand, unregisterCommand } from './serve-projects';
 
 function openBrowser(url: string): void {
   const opener =
@@ -25,3 +26,7 @@ export const serveCommand = new Command('serve')
       process.exit(0);
     });
   });
+
+serveCommand.addCommand(registerCommand);
+serveCommand.addCommand(listCommand);
+serveCommand.addCommand(unregisterCommand);

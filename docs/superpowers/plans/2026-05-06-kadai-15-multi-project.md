@@ -309,7 +309,7 @@ EOF
 
 **Goal:** Three new subcommands of `kadai serve` for managing the registry. `kadai serve` itself stays a runnable command (not just a parent group); the subcommands are listed as `kadai serve register|list|unregister`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/cli/serve-projects.test.ts`:
 
@@ -365,7 +365,7 @@ test('runListProjects returns the same shape as loadKnownProjects', () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -374,7 +374,7 @@ bun test tests/cli/serve-projects.test.ts
 
 Expected: FAIL — `runRegister`/`runUnregister`/`runListProjects` not exported.
 
-- [ ] **Step 3: Implement serve-projects.ts**
+- [x] **Step 3: Implement serve-projects.ts**
 
 Create `/home/fintan/repos/kadai/src/cli/serve-projects.ts`:
 
@@ -455,7 +455,7 @@ export const unregisterCommand = new Command('unregister')
   });
 ```
 
-- [ ] **Step 4: Mount the subcommands on serveCommand**
+- [x] **Step 4: Mount the subcommands on serveCommand**
 
 Read `/home/fintan/repos/kadai/src/cli/serve.ts`. Add this import alongside others:
 
@@ -473,7 +473,7 @@ serveCommand.addCommand(unregisterCommand);
 
 NOTE: Commander treats a parent command with both `.action(...)` AND subcommands by treating the action as the default. So `kadai serve` (no args) still runs the server; `kadai serve register foo` runs the register subcommand. Verify in Step 5.
 
-- [ ] **Step 5: Run tests + smoke**
+- [x] **Step 5: Run tests + smoke**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -487,11 +487,11 @@ kadai serve unregister --help
 
 Expected: 5 new tests pass; full suite 326 (321 + 5); typecheck clean; help output shows all three subcommands with their flags.
 
-- [ ] **Step 6: Tick the step checkboxes for Task 2 in the plan**
+- [x] **Step 6: Tick the step checkboxes for Task 2 in the plan**
 
 Tick all step checkboxes for Task 2.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
