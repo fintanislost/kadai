@@ -175,6 +175,32 @@ test('attaching a spec.md uploads and renders it', async ({ page }) => {
   await expect(page.locator('text=Uploaded spec')).toBeVisible({ timeout: 5000 });
 });
 
+test('searching from the top bar lists matches and links to detail pages', async ({ page }) => {
+  await page.goto(serverUrl);
+  await page.waitForLoadState('load');
+
+  // Type into the top-bar SearchBox.
+  const searchInput = page.locator('input[type="search"]');
+  await searchInput.fill('Authentication');
+  await searchInput.press('Enter');
+
+  // We should land on /search?q=Authentication.
+  await page.waitForURL(/\/search\?q=Authentication/);
+  await page.waitForLoadState('load');
+
+  // Heading reflects the query.
+  await expect(page.locator('h1', { hasText: '"Authentication"' })).toBeVisible();
+
+  // The seeded epic "Authentication" should match by title.
+  await expect(page.locator('text=EPIC-001').first()).toBeVisible({ timeout: 5000 });
+
+  // Click the result card → navigate to the epic detail page.
+  await page.locator('a', { hasText: 'Authentication' }).first().click();
+  await page.waitForURL(/\/epics\/EPIC-001/);
+  await page.waitForLoadState('load');
+  await expect(page.locator('h1', { hasText: 'Authentication' })).toBeVisible();
+});
+
 test('home page auto-refreshes when an epic is added via the API', async ({ page }) => {
   await page.goto(serverUrl);
   await page.waitForLoadState('load');

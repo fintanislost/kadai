@@ -918,7 +918,7 @@ EOF
 
 **Goal:** One end-to-end flow: type a query in the top-bar SearchBox, press Enter, see results, click into one.
 
-- [ ] **Step 1: Add the E2E test**
+- [x] **Step 1: Add the E2E test**
 
 APPEND to `/home/fintan/repos/kadai/tests/web/e2e.pw.ts`:
 
@@ -957,7 +957,7 @@ test('searching from the top bar lists matches and links to detail pages', async
 });
 ```
 
-- [ ] **Step 2: Build the SPA + run Playwright**
+- [x] **Step 2: Build the SPA + run Playwright**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -967,7 +967,7 @@ bunx playwright test
 
 Expected: 8/8 tests pass (3 Plan 4 + 3 Plan 7 + 1 Plan 8 + 1 new Plan 9).
 
-- [ ] **Step 3: Verify the unit suite**
+- [x] **Step 3: Verify the unit suite**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -976,11 +976,11 @@ bun test
 
 Expected: 230 pass (no change — bun test doesn't pick up `.pw.ts`).
 
-- [ ] **Step 4: Tick the 4 checkboxes for Task 6 in the plan**
+- [x] **Step 4: Tick the 4 checkboxes for Task 6 in the plan**
 
 Tick all 4 step checkboxes for Task 6.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
