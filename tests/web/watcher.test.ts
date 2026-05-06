@@ -82,3 +82,24 @@ test('startWatcher stop() prevents subsequent events', async () => {
 
   expect(fired).toBe(false);
 });
+
+test('startWatcher fires events for files in deeply nested directories that exist at startup', async () => {
+  // Mirror a realistic kadai layout: .kadai/epics/X/features/Y/stories/Z/story.md
+  const deepDir = join(tmp, '.kadai', 'epics', 'EPIC-001-x', 'features', 'FEAT-001-y', 'stories', 'STORY-001-z');
+  mkdirSync(deepDir, { recursive: true });
+  const deepFile = join(deepDir, 'story.md');
+  writeFileSync(deepFile, '---\nid: STORY-001\nstatus: ready\n---\n');
+
+  // NOW start the watcher — the deep path already exists.
+  const bus = new EventBus();
+  stop = startWatcher(tmp, bus, { debounceMs: 30 });
+
+  // Give inotify a moment to settle the registration on every existing subdir.
+  await new Promise(r => setTimeout(r, 100));
+
+  // Edit the deep file — this should fire a spine event.
+  writeFileSync(deepFile, '---\nid: STORY-001\nstatus: in_progress\n---\n');
+
+  const event = await waitForEvent(bus, 1500);
+  expect(event.scope).toBe('spine');
+});

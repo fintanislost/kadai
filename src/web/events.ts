@@ -87,15 +87,21 @@ export function startWatcher(rootDir: string, bus: EventBus, opts: WatcherOption
     } catch { /* directory may not exist */ }
   }
 
-  // Watch kadaiDir root and all existing immediate subdirectories.
-  try {
-    addDirWatch(kadaiDir);
-    for (const entry of readdirSync(kadaiDir)) {
-      const full = join(kadaiDir, entry);
+  // Watch kadaiDir root and all existing subdirectories recursively.
+  function walkAndWatch(dir: string): void {
+    addDirWatch(dir);
+    let entries: string[];
+    try { entries = readdirSync(dir); } catch { return; }
+    for (const entry of entries) {
+      const full = join(dir, entry);
       try {
-        if (statSync(full).isDirectory()) addDirWatch(full);
-      } catch { /* skip */ }
+        if (statSync(full).isDirectory()) walkAndWatch(full);
+      } catch { /* entry may have been removed concurrently */ }
     }
+  }
+
+  try {
+    walkAndWatch(kadaiDir);
   } catch {
     // .kadai may not exist yet — return a noop stop so the caller doesn't crash.
     return () => {};
