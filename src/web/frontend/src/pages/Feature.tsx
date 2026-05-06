@@ -55,6 +55,7 @@ export function Feature() {
 
   const allowed = transitions?.allowed ?? [];
   const primaryAction: Status | null =
+    allowed.includes('review') ? 'review' :
     allowed.includes('in_progress') ? 'in_progress' :
     allowed.includes('done') ? 'done' :
     allowed[0] ?? null;
@@ -74,6 +75,18 @@ export function Feature() {
     setStories(prev => prev.map(s => (s.data as { id: string }).id === storyId ? { ...s, data: { ...s.data, status: newStatus } } : s));
   }
 
+  async function move(target: Status) {
+    if (!feature) return;
+    const previous = (feature.data as { status: Status }).status;
+    setFeature(prev => prev ? { ...prev, data: { ...prev.data, status: target } } : prev);
+    try {
+      await setItemStatus(id, target, activeSlug);
+      getTransitions(id, activeSlug).then(setTransitions);
+    } catch {
+      setFeature(prev => prev ? { ...prev, data: { ...prev.data, status: previous } } : prev);
+    }
+  }
+
   return (
     <div className="space-y-7 max-w-[1200px] mx-auto px-4">
       <Breadcrumb crumbs={crumbs} current={d.id} activeSlug={activeSlug} />
@@ -90,7 +103,7 @@ export function Feature() {
         } : undefined}
         actions={primaryAction && (
           <button
-            onClick={() => setItemStatus(id, primaryAction, activeSlug).then(() => getItem(id, activeSlug).then(setFeature))}
+            onClick={() => move(primaryAction)}
             className="bg-accent text-accent-fg font-semibold px-4 py-2.5 rounded-lg text-[13px] hover:bg-[#99f6e4] transition-colors"
           >Mark {primaryAction.replace('_', ' ')}</button>
         )}
@@ -156,7 +169,7 @@ export function Feature() {
 
           <div className="space-y-6">
             <Card title="Documents">
-              <DocumentRow kind="spec" attached={!!spec} meta={spec ? `${spec.split(/\n/).length} lines` : undefined} />
+              <DocumentRow kind="spec" attached={!!spec} meta={spec ? `${spec.split(/\n/).filter(Boolean).length} lines` : undefined} />
             </Card>
           </div>
         </div>

@@ -199,8 +199,8 @@ export function Story() {
 
           <div className="space-y-6">
             <Card title="Documents">
-              <DocumentRow kind="spec"      attached={!!spec}      meta={spec ? `${spec.split(/\n/).length} lines` : undefined} />
-              <DocumentRow kind="plan"      attached={!!plan}      meta={plan ? `${plan.split(/\n/).length} lines` : undefined} />
+              <DocumentRow kind="spec"      attached={!!spec}      meta={spec ? `${spec.split(/\n/).filter(Boolean).length} lines` : undefined} />
+              <DocumentRow kind="plan"      attached={!!plan}      meta={plan ? `${plan.split(/\n/).filter(Boolean).length} lines` : undefined} />
               <DocumentRow kind="changelog" attached={!!changelog} meta={changelog ? `${changelog.split(/\n/).filter(Boolean).length} entries` : 'no entries'} />
             </Card>
 
