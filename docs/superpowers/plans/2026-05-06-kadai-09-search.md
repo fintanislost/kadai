@@ -82,7 +82,7 @@ kadai-plugin/.claude-plugin/plugin.json                   # MODIFIED: 0.4.0 → 
 
 **Goal:** A pure `searchSpine(rootDir, query): SearchResult[]` that walks the spine, matches case-insensitively against title / body / acceptance criteria, and returns rich result records with snippet excerpts and match offsets. MCP keeps its `Item[]` contract by mapping back through `findById`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/core/search.test.ts`:
 
@@ -194,7 +194,7 @@ test('searchSpine: result includes phase + status + kind for downstream renderin
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -203,7 +203,7 @@ bun test tests/core/search.test.ts
 
 Expected: FAIL with "Cannot find module ../../src/core/search".
 
-- [ ] **Step 3: Implement core/search.ts**
+- [x] **Step 3: Implement core/search.ts**
 
 Create `/home/fintan/repos/kadai/src/core/search.ts`:
 
@@ -329,7 +329,7 @@ export function searchSpine(rootDir: string, query: string): SearchResult[] {
 }
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -338,7 +338,7 @@ bun test tests/core/search.test.ts
 
 Expected: 11 tests pass.
 
-- [ ] **Step 5: Refactor MCP handler to delegate**
+- [x] **Step 5: Refactor MCP handler to delegate**
 
 Replace `/home/fintan/repos/kadai/src/mcp/handlers/search.ts` ENTIRELY with:
 
@@ -370,7 +370,7 @@ export function registerSearchTools(): void {
 }
 ```
 
-- [ ] **Step 6: Run the full suite + typecheck**
+- [x] **Step 6: Run the full suite + typecheck**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -380,11 +380,11 @@ bun run typecheck
 
 Expected: 226 tests pass (215 prior + 11 new). Typecheck clean.
 
-- [ ] **Step 7: Tick the 7 checkboxes for Task 1 in the plan**
+- [x] **Step 7: Tick the 7 checkboxes for Task 1 in the plan**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-09-search.md`, find Task 1 and tick all 7 step checkboxes.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
