@@ -254,3 +254,22 @@ test('GET /api/activity?limit=10 caps the result count', async () => {
   const json = await r.json();
   expect(json.length).toBeLessThanOrEqual(10);
 });
+
+test('GET /api/compare?a=mvp&b=v1 returns the comparison shape', async () => {
+  const r = await fetch(`${base()}/api/compare?a=mvp&b=v1`);
+  expect(r.status).toBe(200);
+  const json = await r.json();
+  expect(json.a.phase).toBe('mvp');
+  expect(json.b.phase).toBe('v1');
+  expect(Array.isArray(json.common.titles)).toBe(true);
+});
+
+test('GET /api/compare with missing a or b returns 400', async () => {
+  const r = await fetch(`${base()}/api/compare?a=mvp`);
+  expect(r.status).toBe(400);
+});
+
+test('GET /api/compare with non-existent phase returns 404', async () => {
+  const r = await fetch(`${base()}/api/compare?a=mvp&b=nope`);
+  expect(r.status).toBe(404);
+});

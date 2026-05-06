@@ -9,6 +9,7 @@ import { setStatus } from '../core/operations';
 import { legalNextStates } from '../core/state-machine';
 import { searchSpine } from '../core/search';
 import { buildActivity } from '../core/activity';
+import { comparePhases } from '../core/compare';
 import type { Item } from '../core/types';
 import type { ItemKind, Status } from '../core/state-machine';
 import type { EventBus } from './events';
@@ -53,6 +54,20 @@ export async function handleApi(req: Request, rootDir: string, bus?: EventBus): 
     const limitParam = url.searchParams.get('limit');
     const limit = limitParam !== null ? Math.max(1, Math.min(1000, parseInt(limitParam, 10) || 100)) : undefined;
     return Response.json(buildActivity(rootDir, { limit }));
+  }
+
+  if (path === '/api/compare' && req.method === 'GET') {
+    const a = url.searchParams.get('a');
+    const b = url.searchParams.get('b');
+    if (!a || !b) {
+      return Response.json({ error: 'Both a and b query params are required' }, { status: 400 });
+    }
+    try {
+      return Response.json(comparePhases(rootDir, a, b));
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e);
+      return Response.json({ error: msg }, { status: 404 });
+    }
   }
 
   if (path === '/api/events' && req.method === 'GET') {

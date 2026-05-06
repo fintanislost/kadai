@@ -6,6 +6,7 @@ import { Feature } from './pages/Feature';
 import { Story } from './pages/Story';
 import { Search } from './pages/Search';
 import { Activity } from './pages/Activity';
+import { Compare } from './pages/Compare';
 
 const rootRoute = createRootRoute({
   component: Layout,
@@ -50,7 +51,17 @@ const activityRoute = createRoute({
   component: Activity,
 });
 
-const routeTree = rootRoute.addChildren([homeRoute, epicRoute, featureRoute, storyRoute, searchRoute, activityRoute]);
+const compareRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/compare',
+  component: Compare,
+  validateSearch: (s: Record<string, unknown>): { a?: string; b?: string } => ({
+    a: typeof s.a === 'string' ? s.a : undefined,
+    b: typeof s.b === 'string' ? s.b : undefined,
+  }),
+});
+
+const routeTree = rootRoute.addChildren([homeRoute, epicRoute, featureRoute, storyRoute, searchRoute, activityRoute, compareRoute]);
 
 export const router = createRouter({ routeTree });
 

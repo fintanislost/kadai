@@ -120,3 +120,25 @@ export async function getActivity(limit = 100): Promise<ActivityEntry[]> {
   if (!r.ok) throw new Error(`/api/activity → ${r.status}`);
   return r.json() as Promise<ActivityEntry[]>;
 }
+
+export interface ComparedItem {
+  id: string;
+  kind: ItemKind;
+  title: string;
+  status: Status;
+}
+
+export interface CompareResult {
+  a: { phase: string; items: ComparedItem[] };
+  b: { phase: string; items: ComparedItem[] };
+  common: { titles: string[] };
+}
+
+export async function comparePhasesApi(a: string, b: string): Promise<CompareResult> {
+  const r = await fetch(`/api/compare?a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}`);
+  if (!r.ok) {
+    const json = await r.json().catch(() => ({ error: `HTTP ${r.status}` }));
+    throw new Error(json.error ?? `HTTP ${r.status}`);
+  }
+  return r.json() as Promise<CompareResult>;
+}

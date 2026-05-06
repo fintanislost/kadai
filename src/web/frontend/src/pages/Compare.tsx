@@ -1,0 +1,76 @@
+import { useEffect, useState } from 'react';
+import { Link, useSearch } from '@tanstack/react-router';
+import { listPhases, comparePhasesApi, type CompareResult } from '../api';
+import type { PhaseConfig } from '../types';
+
+const ROUTE_BY_KIND: Record<string, string> = {
+  epic: '/epics/$id',
+  feature: '/features/$id',
+  story: '/stories/$id',
+  task: '/stories/$id',
+};
+
+export function Compare() {
+  const search = useSearch({ from: '/compare' }) as { a?: string; b?: string };
+  const a = search.a ?? '';
+  const b = search.b ?? '';
+  const [phases, setPhases] = useState<PhaseConfig[]>([]);
+  const [result, setResult] = useState<CompareResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => { listPhases().then(setPhases); }, []);
+  useEffect(() => {
+    if (!a || !b) return;
+    setError(null);
+    comparePhasesApi(a, b).then(setResult).catch(e => setError(e instanceof Error ? e.message : String(e)));
+  }, [a, b]);
+
+  if (!a || !b) {
+    return (
+      <div className="space-y-4">
+        <div className="text-xs text-muted">Compare</div>
+        <h1 className="text-2xl font-bold">Pick two phases to compare</h1>
+        <div className="text-muted text-sm">URL params: <code>?a=&lt;phase&gt;&b=&lt;phase&gt;</code>. Available phases: {phases.map(p => p.slug).join(', ')}.</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <div className="text-xs text-muted">Compare</div>
+        <h1 className="text-2xl font-bold">{a} vs {b}</h1>
+        {result && <div className="text-xs text-muted mt-1">{result.common.titles.length} common title{result.common.titles.length !== 1 ? 's' : ''}</div>}
+      </div>
+      {error && <div className="text-red-400 text-sm">{error}</div>}
+      {result && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {[result.a, result.b].map((side, idx) => (
+            <div key={idx} className="bg-panel rounded p-3 space-y-2">
+              <div className="text-sm font-bold">{side.phase} <span className="text-xs text-muted">({side.items.length})</span></div>
+              <ul className="space-y-1">
+                {side.items.map(item => {
+                  const inCommon = result.common.titles.includes(item.title);
+                  return (
+                    <li key={item.id}>
+                      <Link
+                        to={ROUTE_BY_KIND[item.kind] ?? '/'}
+                        params={{ id: item.id }}
+                        className={`block text-xs p-1.5 rounded ${inCommon ? 'bg-amber-900/30 hover:bg-amber-900/50' : 'bg-zinc-800 hover:bg-zinc-700'}`}
+                      >
+                        <span className="text-muted text-[10px] uppercase mr-2">{item.kind}</span>
+                        <span className="text-muted text-[10px] mr-2">{item.id}</span>
+                        <span>{item.title}</span>
+                        <span className="ml-2 text-[10px] text-muted">[{item.status}]</span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

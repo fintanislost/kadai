@@ -761,7 +761,7 @@ EOF
 
 **Goal:** Side-by-side comparison of two phases. Useful for "MVP vs Future" scoping. Endpoint returns `{ a: { phase, items[] }, b: { phase, items[] }, common: { titles[] } }` where `common` is items whose titles match across both phases (a rough overlap signal). Page renders two columns + a small header showing the overlap count.
 
-- [ ] **Step 1: Write the failing test for the core**
+- [x] **Step 1: Write the failing test for the core**
 
 Create `/home/fintan/repos/kadai/tests/core/compare.test.ts`:
 
@@ -820,7 +820,7 @@ test('comparePhases returns empty arrays when phases exist but contain no items'
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -829,7 +829,7 @@ bun test tests/core/compare.test.ts
 
 Expected: FAIL — `comparePhases` not exported.
 
-- [ ] **Step 3: Implement core/compare.ts**
+- [x] **Step 3: Implement core/compare.ts**
 
 Create `/home/fintan/repos/kadai/src/core/compare.ts`:
 
@@ -894,7 +894,7 @@ export function comparePhases(rootDir: string, aSlug: string, bSlug: string): Co
 }
 ```
 
-- [ ] **Step 4: Run core tests**
+- [x] **Step 4: Run core tests**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -903,7 +903,7 @@ bun test tests/core/compare.test.ts
 
 Expected: 4 tests pass.
 
-- [ ] **Step 5: Add the API endpoint + tests**
+- [x] **Step 5: Add the API endpoint + tests**
 
 Append to `/home/fintan/repos/kadai/tests/web/api.test.ts`:
 
@@ -960,7 +960,7 @@ bun test tests/web/api.test.ts
 
 Expected: all pass.
 
-- [ ] **Step 6: Add client wrapper + page**
+- [x] **Step 6: Add client wrapper + page**
 
 Append to `/home/fintan/repos/kadai/src/web/frontend/src/api.ts`:
 
@@ -1093,7 +1093,7 @@ Add a top-bar link in `Layout.tsx` next to the Activity link:
 <Link to="/compare" className="text-sm text-muted hover:text-zinc-300">Compare</Link>
 ```
 
-- [ ] **Step 7: Build + verify**
+- [x] **Step 7: Build + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1104,11 +1104,11 @@ bun test
 
 Expected: build clean, typecheck clean, 312 pass (305 + 4 core + 3 api).
 
-- [ ] **Step 8: Tick the step checkboxes for Task 4 in the plan**
+- [x] **Step 8: Tick the step checkboxes for Task 4 in the plan**
 
 Tick all step checkboxes for Task 4.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
