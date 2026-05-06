@@ -60,22 +60,26 @@ function TreeRow({ node, currentId, activeSlug }: { node: Node; currentId: strin
     >
       <KindIcon kind={node.item.kind} size={14} />
       <IdPill id={data.id} />
-      <span className={`text-[13.5px] flex-1 ${isHere ? 'text-text-primary font-medium' : 'text-text-primary'}`}>{data.title}</span>
+      <span className={`text-[13.5px] flex-1 text-text-primary ${isHere ? 'font-medium' : ''}`}>{data.title}</span>
       <StatusBadge status={data.status} />
       {isHere && <span className="text-[11px] text-accent ml-2">← here</span>}
     </div>
   );
 
+  const isUnclickable = isHere || node.item.kind === 'task';
   return (
     <>
-      {isHere ? content : (
+      {isUnclickable ? content : (
         activeSlug ? (
           <Link to={route.multi as never} params={{ slug: activeSlug, id: data.id } as never} className="block">{content}</Link>
         ) : (
           <Link to={route.single as never} params={{ id: data.id } as never} className="block">{content}</Link>
         )
       )}
-      {node.children.map((c, i) => <TreeRow key={`${c.item.kind}-${(c.item.data as unknown as {id:string}).id}-${i}`} node={c} currentId={currentId} activeSlug={activeSlug} />)}
+      {node.children.map(c => {
+        const cid = (c.item.data as unknown as { id: string }).id;
+        return <TreeRow key={`${c.item.kind}-${cid}`} node={c} currentId={currentId} activeSlug={activeSlug} />;
+      })}
     </>
   );
 }

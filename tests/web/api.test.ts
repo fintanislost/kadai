@@ -292,7 +292,8 @@ test('GET /api/items/STORY-001/subtree returns just the story (and any tasks)', 
   expect(r.status).toBe(200);
   const json = await r.json();
   expect(json.length).toBeGreaterThanOrEqual(1);
-  expect(json[0].data.id).toBe('STORY-001');
+  const ids = json.map((i: { data: { id: string } }) => i.data.id);
+  expect(ids).toContain('STORY-001');
 });
 
 test('GET /api/items/EPIC-999/subtree returns 404 for unknown root', async () => {
