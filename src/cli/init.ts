@@ -6,6 +6,7 @@ import prompts from 'prompts';
 import { saveConfig } from '../config/load';
 import { DEFAULT_CONFIG } from '../config/defaults';
 import { writeFileAtomic } from '../core/files';
+import { runAdd } from './add';
 
 export interface InitOptions {
   rootDir: string;
@@ -173,8 +174,6 @@ export const initCommand = new Command('init')
     console.log(pc.green('✓ kadai initialized in ' + rootDir));
 
     if (createFirstEpic && firstEpicTitle) {
-      // @ts-ignore
-      const { runAdd } = await import('./add');
       const epicId = runAdd({
         rootDir,
         kind: 'epic',

@@ -3,6 +3,7 @@ import pc from 'picocolors';
 import { walkSpine } from '../core/spine';
 import { readPicked } from '../core/picked';
 import type { Item } from '../core/types';
+import { getId, getTitle } from '../core/item-helpers';
 
 export interface StatusReport {
   picked: Item | null;
@@ -24,21 +25,18 @@ export const statusCommand = new Command('status')
   .action(() => {
     const s = computeStatus(process.cwd());
     if (s.picked) {
-      const d = s.picked.data as any;
-      console.log(pc.bold('Picked: ') + pc.green(d.id) + ' — ' + d.title);
+      console.log(pc.bold('Picked: ') + pc.green(getId(s.picked)) + ' — ' + getTitle(s.picked));
     } else {
       console.log(pc.bold('Picked: ') + pc.dim('(nothing)'));
     }
 
     console.log('\n' + pc.bold('In progress (' + s.inProgress.length + '):'));
     for (const item of s.inProgress) {
-      const d = item.data as any;
-      console.log('  ' + d.id.padEnd(12) + ' ' + d.title);
+      console.log('  ' + getId(item).padEnd(12) + ' ' + getTitle(item));
     }
 
     console.log('\n' + pc.bold('Ready stories (' + s.readyStories.length + '):'));
     for (const item of s.readyStories) {
-      const d = item.data as any;
-      console.log('  ' + d.id.padEnd(12) + ' ' + d.title);
+      console.log('  ' + getId(item).padEnd(12) + ' ' + getTitle(item));
     }
   });

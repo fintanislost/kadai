@@ -351,7 +351,7 @@ EOF
 
 **Goal:** Replace every `(item.data as any).<field>` access in the three named CLI files with the typed helpers from Task 1, and convert the dynamic `import('./add')` in `init.ts` to a top-of-file static import. No new tests — the existing CLI tests cover behavior; this is pure refactor.
 
-- [ ] **Step 1: Convert init.ts dynamic import to static**
+- [x] **Step 1: Convert init.ts dynamic import to static**
 
 Read `/home/fintan/repos/kadai/src/cli/init.ts`. At the top of the file, alongside the other CLI imports, add:
 
@@ -379,7 +379,7 @@ Becomes:
 
 (Remove the `// @ts-ignore` line, the dynamic import line, and any leftover blank line.)
 
-- [ ] **Step 2: Update list.ts**
+- [x] **Step 2: Update list.ts**
 
 Read `/home/fintan/repos/kadai/src/cli/list.ts`. At the top, add:
 
@@ -400,7 +400,7 @@ Replace each `(item.data as any).<field>` with the appropriate helper:
 
 If the file has any other untyped accesses you find while editing, fix them with the same helpers.
 
-- [ ] **Step 3: Update add.ts**
+- [x] **Step 3: Update add.ts**
 
 Read `/home/fintan/repos/kadai/src/cli/add.ts`. At the top, add:
 
@@ -426,7 +426,7 @@ With:
 
 (`?? 0` because `getOrder` returns `number | undefined` and `nextOrder` expects `Ordered { order: number }`; tasks have no order, but tasks won't pass the kind filter.)
 
-- [ ] **Step 4: Update status.ts**
+- [x] **Step 4: Update status.ts**
 
 Read `/home/fintan/repos/kadai/src/cli/status.ts`. At the top, add:
 
@@ -436,7 +436,7 @@ import { getId, getTitle, getStatus, getPhase, getParent } from '../core/item-he
 
 Replace each `const d = ... as any;` block. Show each line of access becoming `getX(item)` directly. There are 3 such blocks in the file (around lines 27, 35, 41 per the grep). Apply the same pattern as list.ts Step 2.
 
-- [ ] **Step 5: Run tests to verify nothing broke**
+- [x] **Step 5: Run tests to verify nothing broke**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -452,11 +452,11 @@ grep -nE "as any|@ts-ignore" src/cli/init.ts src/cli/list.ts src/cli/add.ts src/
 
 Expected output: nothing (all gone).
 
-- [ ] **Step 6: Tick the step checkboxes for Task 2 in the plan**
+- [x] **Step 6: Tick the step checkboxes for Task 2 in the plan**
 
 Tick all step checkboxes for Task 2.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

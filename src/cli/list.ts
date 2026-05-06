@@ -3,6 +3,7 @@ import pc from 'picocolors';
 import { walkSpine } from '../core/spine';
 import type { Item } from '../core/types';
 import type { ItemKind, Status } from '../core/state-machine';
+import { getPhase, getParent, getId, getTitle, getStatus, getOrder } from '../core/item-helpers';
 
 export interface ListOptions {
   rootDir: string;
@@ -15,9 +16,9 @@ export interface ListOptions {
 export function runList(opts: ListOptions): Item[] {
   return walkSpine(opts.rootDir).filter(item => {
     if (item.kind !== opts.kind) return false;
-    if (opts.phase && (item.data as any).phase !== opts.phase) return false;
+    if (opts.phase && getPhase(item) !== opts.phase) return false;
     if (opts.status && item.data.status !== opts.status) return false;
-    if (opts.parent && (item.data as any).parent !== opts.parent) return false;
+    if (opts.parent && getParent(item) !== opts.parent) return false;
     return true;
   });
 }
@@ -41,11 +42,10 @@ export const listCommand = new Command('list')
       return;
     }
     for (const item of items) {
-      const d = item.data as any;
-      const phase = d.phase ? pc.cyan(d.phase) : pc.dim('—');
-      const order = d.order ? String(d.order).padStart(3) : '   ';
+      const phase = getPhase(item) ? pc.cyan(getPhase(item)!) : pc.dim('—');
+      const order = getOrder(item) ? String(getOrder(item)).padStart(3) : '   ';
       console.log(
-        `${pc.bold(d.id.padEnd(12))} ${phase.padEnd(20)} ${order}  ${pc.yellow(d.status.padEnd(12))}  ${d.title}`,
+        `${pc.bold(getId(item).padEnd(12))} ${phase.padEnd(20)} ${order}  ${pc.yellow(getStatus(item).padEnd(12))}  ${getTitle(item)}`,
       );
     }
   });

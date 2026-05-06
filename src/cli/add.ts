@@ -8,6 +8,7 @@ import { findById, walkSpine } from '../core/spine';
 import { nextOrder } from '../core/ordering';
 import type { ItemKind } from '../core/state-machine';
 import type { AnyFrontmatter } from '../core/types';
+import { getPhase, getParent, getOrder } from '../core/item-helpers';
 
 export interface AddOptions {
   rootDir: string;
@@ -63,9 +64,9 @@ export function runAdd(opts: AddOptions): string {
       data.order = opts.order;
     } else {
       const siblings = walkSpine(opts.rootDir).filter(
-        i => i.kind === opts.kind && (i.data as any).phase === opts.phase
-          && (!opts.parent || (i.data as any).parent === opts.parent),
-      ).map(i => ({ order: (i.data as any).order as number }));
+        i => i.kind === opts.kind && getPhase(i) === opts.phase
+          && (!opts.parent || getParent(i) === opts.parent),
+      ).map(i => ({ order: getOrder(i) ?? 0 }));
       data.order = nextOrder(siblings);
     }
   }
