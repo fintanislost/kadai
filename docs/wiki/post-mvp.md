@@ -12,17 +12,7 @@ For pure CLI/web/docs changes: `bun test` + `bun run typecheck` + targeted smoke
 
 The post-MVP work is organized as a series of focused plans, each ending in something visibly more useful. Order is by user-felt impact, not implementation complexity.
 
-### Plan 9 — Search 🟢 **next**
-
-Spine-wide full-text search.
-
-- API endpoint backed by the existing MCP `search` tool
-- Search box in the web viewer top bar that's currently a placeholder
-- Result page (`/search?q=...`)
-
-Estimate: small. The MCP `search` tool already does the heavy lifting.
-
-### Plan 10 — Git integration (`kadai sync`)
+### Plan 10 — Git integration (`kadai sync`) 🟢 **next**
 
 Closes the loop on the "archive" promise — kadai records what was changed, when, and by which commit.
 
@@ -106,6 +96,15 @@ See above sections — Plans 7-14 cover all of spec §13.
 ---
 
 ## Recently shipped (as items move out of this list)
+
+### Plan 9 — Search (shipped 2026-05-06)
+
+- `GET /api/search?q=...` returning `SearchResult[]` (id, kind, title, phase, status, matchType, snippet + match offsets)
+- `src/core/search.ts` — `searchSpine()` + `makeSnippet()`; title matches sort before acceptance + body
+- MCP `search` tool refactored to delegate to core (preserves `Item[]` return contract)
+- SearchBox in the top bar; `/search?q=...` results page with `<mark>` highlighting
+- 1 new Playwright E2E flow (8 total now)
+- Plugin version bumped to 0.5.0
 
 ### Plan 8 — Live updates (SSE) (shipped 2026-05-06)
 

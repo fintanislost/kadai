@@ -398,3 +398,36 @@ data: {"scope":"spine"}
 ### Verdict: PASS
 
 Web viewer auto-refreshes without manual reload.
+
+---
+
+## Search run — Plan 9 verification — 2026-05-06
+
+Spot-checked the new search endpoint via curl against a real `kadai serve` process.
+
+- `GET /api/search?q=Magic` → 1 result, STORY-001, matchType=title ✅
+- `GET /api/search?q=Email` → 1 result, FEAT-001, matchType=title ✅
+- `GET /api/search?q=a` → `[]` (under 2-char minimum) ✅
+- `GET /api/search` (missing q) → HTTP 400 with error message ✅
+- `bun test` → 230/0 pass ✅
+- `bunx playwright test` → 8/8 pass (3 Plan 4 + 3 Plan 7 + 1 Plan 8 + 1 Plan 9) ✅
+
+### Curl output (verbatim)
+
+```
+=== GET /api/search?q=Magic ===
+[{"id":"STORY-001","kind":"story","title":"Magic link delivery","phase":"mvp","status":"ready","matchType":"title","snippet":"Magic link delivery","matchStart":0,"matchEnd":5}]
+
+=== GET /api/search?q=Email ===
+[{"id":"FEAT-001","kind":"feature","title":"Email login","phase":"mvp","status":"ready","matchType":"title","snippet":"Email login","matchStart":0,"matchEnd":5}]
+
+=== GET /api/search?q=a (under min length) ===
+[]
+
+=== GET /api/search (missing q) ===
+HTTP 400
+```
+
+### Verdict: PASS
+
+Spine search works end-to-end through the API and the new /search results page.

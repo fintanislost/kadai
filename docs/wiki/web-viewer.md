@@ -9,6 +9,8 @@ Run `kadai serve` (after `bun run build:web` in the kadai repo) to launch the lo
 - `/features/:id` — feature detail with a kanban board of its stories.
 - `/stories/:id` — story detail with tabs (story, spec, plan, changelog, tasks) and a status changer right rail.
 
+The header has a **search box** — type a query (min 2 chars), press Enter to land on `/search?q=...` with full-spine results. See [api-reference.md#search](api-reference.md#search) for the underlying endpoint.
+
 ## Interactivity (Plan 7+)
 
 The viewer is no longer read-only. From the story page right rail you can move the story to any legal next status. From the feature page kanban you can drag a story card across columns to change its status. From the spec/plan tabs you can upload a markdown file via the **Attach** button — the file is moved into the item directory and the frontmatter is updated.

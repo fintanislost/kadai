@@ -1008,7 +1008,7 @@ EOF
 - Append: `docs/dogfood-acceptance-test.md`
 - Modify: `docs/superpowers/plans/2026-05-06-kadai-09-search.md`
 
-- [ ] **Step 1: Update api-reference.md**
+- [x] **Step 1: Update api-reference.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/api-reference.md`, find the "Read endpoints" table. Add this row at the bottom (after the `/api/events` row):
 
@@ -1044,7 +1044,7 @@ Results are sorted: title matches first, then acceptance-criteria matches, then 
 The MCP `search` tool is still available and continues to return `Item[]` (full frontmatter + body) for backwards compatibility.
 ```
 
-- [ ] **Step 2: Update web-viewer.md**
+- [x] **Step 2: Update web-viewer.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/web-viewer.md`, find the "Layout" section (or the most appropriate place near the top). Add:
 
@@ -1052,7 +1052,7 @@ In `/home/fintan/repos/kadai/docs/wiki/web-viewer.md`, find the "Layout" section
 The header has a **search box** — type a query (min 2 chars), press Enter to land on `/search?q=...` with full-spine results. See [api-reference.md#search](api-reference.md#search) for the underlying endpoint.
 ```
 
-- [ ] **Step 3: Update post-mvp.md**
+- [x] **Step 3: Update post-mvp.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`:
 
@@ -1077,11 +1077,11 @@ In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`:
 - Plugin version bumped to 0.5.0
 ```
 
-- [ ] **Step 4: Bump plugin version**
+- [x] **Step 4: Bump plugin version**
 
 In `/home/fintan/repos/kadai/kadai-plugin/.claude-plugin/plugin.json`, change `"version": "0.4.0"` to `"version": "0.5.0"`.
 
-- [ ] **Step 5: Dogfood verification**
+- [x] **Step 5: Dogfood verification**
 
 ```bash
 TMP=$(mktemp -d -t kadai-plan9-XXXXXX)
@@ -1123,7 +1123,7 @@ Expected:
 
 CAPTURE the actual output to cite in Step 6.
 
-- [ ] **Step 6: Append a section to docs/dogfood-acceptance-test.md**
+- [x] **Step 6: Append a section to docs/dogfood-acceptance-test.md**
 
 APPEND:
 
@@ -1149,7 +1149,7 @@ Spine search works end-to-end through the API and the new /search results page.
 
 (Use actual numbers from your run if they differ.)
 
-- [ ] **Step 7: Run all the final checks**
+- [x] **Step 7: Run all the final checks**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1161,13 +1161,13 @@ bunx playwright test
 
 Expected: every step exits clean.
 
-- [ ] **Step 8: Tick the Task 7 checkboxes + Plan 9 self-review checklist**
+- [x] **Step 8: Tick the Task 7 checkboxes + Plan 9 self-review checklist**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-09-search.md`:
 - Tick all 9 step checkboxes for Task 7
 - Tick all checkboxes in the "Plan 9 self-review checklist" section near the bottom
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1190,16 +1190,16 @@ EOF
 
 ## Plan 9 self-review checklist
 
-- [ ] All 7 tasks completed; checkboxes ticked.
-- [ ] `bun test` passes (~230 tests).
-- [ ] `bun run typecheck` passes.
-- [ ] `bunx playwright test` passes (8/8).
-- [ ] `GET /api/search?q=...` returns `SearchResult[]` with snippets + offsets (verified in Task 7 dogfood).
-- [ ] MCP `search` tool still returns `Item[]` (backwards compatible).
-- [ ] Top-bar SearchBox + `/search?q=...` page render and link correctly (verified in Task 6 E2E).
-- [ ] Plugin v0.5.0 in the manifest.
-- [ ] post-mvp.md: Plan 9 in "Recently shipped"; Plan 10 marked 🟢 **next**.
-- [ ] api-reference.md and web-viewer.md updated.
+- [x] All 7 tasks completed; checkboxes ticked.
+- [x] `bun test` passes (~230 tests).
+- [x] `bun run typecheck` passes.
+- [x] `bunx playwright test` passes (8/8).
+- [x] `GET /api/search?q=...` returns `SearchResult[]` with snippets + offsets (verified in Task 7 dogfood).
+- [x] MCP `search` tool still returns `Item[]` (backwards compatible).
+- [x] Top-bar SearchBox + `/search?q=...` page render and link correctly (verified in Task 6 E2E).
+- [x] Plugin v0.5.0 in the manifest.
+- [x] post-mvp.md: Plan 9 in "Recently shipped"; Plan 10 marked 🟢 **next**.
+- [x] api-reference.md and web-viewer.md updated.
 
 ---
 

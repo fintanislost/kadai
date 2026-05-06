@@ -16,6 +16,7 @@ The kadai web viewer (`kadai serve`) exposes a small HTTP API at `/api/*`. All p
 | `GET` | `/api/picked` | `Item \| null` |
 | `GET` | `/api/files/:id/(spec.md\|plan.md\|changelog.md)` | `text/plain` of the file contents |
 | `GET` | `/api/events` | `text/event-stream` of `data: {"scope":"spine\|picked\|config"}` lines |
+| `GET` | `/api/search?q=<query>` | `SearchResult[]` (or `[]` for queries < 2 chars; 400 if `q` is missing) |
 
 ## Write endpoints
 
@@ -61,3 +62,27 @@ curl -X POST http://localhost:7777/api/items/STORY-001/attach \
 - `{"scope":"config"}` — `.kadai/config.toml` changed
 
 A `:` comment heartbeat is sent every 15 seconds so proxies don't kill idle connections. Browsers consume this via `EventSource`; the kadai web viewer re-runs all `useEffect` data fetches on every `spine` event.
+
+## Search
+
+`GET /api/search?q=<query>` does a case-insensitive substring match across each item's title, body, and acceptance_criteria. Min query length is 2 characters; shorter queries return `[]`.
+
+`SearchResult` shape:
+
+```json
+{
+  "id": "STORY-042",
+  "kind": "story",
+  "title": "Magic link delivery",
+  "phase": "mvp",
+  "status": "ready",
+  "matchType": "body",
+  "snippet": "…the magic-link email is sent via SES with a signed token…",
+  "matchStart": 28,
+  "matchEnd": 31
+}
+```
+
+Results are sorted: title matches first, then acceptance-criteria matches, then body matches. Within a match-type, original spine order is preserved. The `snippet` is ~80 chars centered on the first match in the source field; `matchStart`/`matchEnd` are offsets into `snippet` (NOT the source field) so the renderer can highlight without a second search.
+
+The MCP `search` tool is still available and continues to return `Item[]` (full frontmatter + body) for backwards compatibility.
