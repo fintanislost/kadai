@@ -36,7 +36,9 @@ export function Hero({ kind, id, title, status, phase, metaRight, progress, acti
             <div className="flex items-baseline justify-between gap-3 mb-2.5">
               <span className="section-label">{progress.label}</span>
               <span className="text-xs text-text-secondary">
-                {progress.done} of {progress.total} done{progress.inProgress > 0 ? ` · ${progress.inProgress} in progress` : ''}
+                {progress.done} of {progress.total} done
+                {progress.inProgress > 0 ? ` · ${progress.inProgress} in progress` : ''}
+                {progress.ready > 0 ? ` · ${progress.ready} ready` : ''}
               </span>
             </div>
             <ProgressBar done={progress.done} inProgress={progress.inProgress} total={progress.total} />

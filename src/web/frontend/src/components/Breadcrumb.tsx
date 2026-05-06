@@ -18,7 +18,7 @@ export function Breadcrumb({ crumbs, current, activeSlug, className = '' }: Prop
   return (
     <nav className={`text-[12.5px] text-text-tertiary flex items-center gap-2 mb-5 ${className}`} aria-label="Breadcrumb">
       {crumbs.map((c, i) => (
-        <span key={i} className="flex items-center gap-2">
+        <span key={`${i}-${c.label}`} className="flex items-center gap-2">
           {c.to && c.toMulti && c.params ? (
             activeSlug ? (
               <Link

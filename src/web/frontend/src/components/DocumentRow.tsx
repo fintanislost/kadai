@@ -19,7 +19,7 @@ export function DocumentRow({ kind, attached, meta, onClick }: Props) {
   return (
     <div
       onClick={onClick}
-      className={`flex items-center justify-between px-5 py-3.5 border-b border-white/[0.06] last:border-b-0 transition-colors ${onClick ? 'hover:bg-white/[0.02] cursor-pointer' : ''}`}
+      className={`group flex items-center justify-between px-5 py-3.5 border-b border-white/[0.06] last:border-b-0 transition-colors ${onClick ? 'hover:bg-white/[0.02] cursor-pointer' : ''}`}
     >
       <div className="flex items-center gap-3">
         <Icon size={16} className="text-text-tertiary shrink-0" />
