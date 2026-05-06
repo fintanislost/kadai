@@ -583,7 +583,7 @@ git commit -m "feat(plugin): add /kadai-unpick slash command [Plan-6 Task-5]"
 
 **Goal:** Bump the plugin version so users running `/plugin update` get the new commands. Mark Plan 6 work shipped in the backlog doc.
 
-- [ ] **Step 1: Bump plugin version**
+- [x] **Step 1: Bump plugin version**
 
 In `/home/fintan/repos/kadai/kadai-plugin/.claude-plugin/plugin.json`, change:
 
@@ -597,7 +597,7 @@ to:
   "version": "0.2.0",
 ```
 
-- [ ] **Step 2: Update post-MVP backlog**
+- [x] **Step 2: Update post-MVP backlog**
 
 In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`:
 
@@ -622,7 +622,7 @@ In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`:
 
 (d) Remove the corresponding items from the "Surfaced from real use" subsection of the Backlog.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

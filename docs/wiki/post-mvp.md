@@ -12,19 +12,7 @@ For pure CLI/web/docs changes: `bun test` + `bun run typecheck` + targeted smoke
 
 The post-MVP work is organized as a series of focused plans, each ending in something visibly more useful. Order is by user-felt impact, not implementation complexity.
 
-### Plan 6 — Workflow completion (CLI + slash command parity) 🟢 **next**
-
-Closes the immediate gaps that real-world use surfaced. Without these, the workflow feels half-built — agents reach for things that don't exist.
-
-- **`kadai set-status <id> <status> [--reason]`** — arbitrary status mutations from the CLI. Closes the Path A test gap (currently `kadai pick` is the only CLI status mutation, and only to `in_progress`).
-- **`kadai init -y` creates the first epic** with a default title — currently `--yes` skips epic creation entirely, leaving an empty spine.
-- **`kadai unpick` exists, but `/kadai-unpick` slash command** is missing — add it.
-- **`/kadai-add <kind>`** — guided creation slash command (uses the kadai MCP `create_*` tools with prompts for missing fields).
-- **`/kadai-set-status STORY-001 review`** — slash companion to the new CLI command.
-
-Estimate: small. ~6-8 tasks, mostly CLI + plugin file additions.
-
-### Plan 7 — Web viewer interactivity
+### Plan 7 — Web viewer interactivity 🟢 **next**
 
 Makes the web viewer not just a read-only roadmap. Status changes from the UI become possible.
 
@@ -120,9 +108,6 @@ This is the canonical list. New items get added here as they're discovered. Item
 
 ### Surfaced from real use
 
-- `kadai init -y` creates no epic → empty spine after init
-- `kadai set-status` CLI missing → testing without MCP is awkward
-- `/kadai-add`, `/kadai-set-status`, `/kadai-unpick` slash commands missing
 - `kadai status` ascii output column alignment is loose
 
 ### From spec §13 (the original list)
@@ -142,4 +127,11 @@ See above sections — Plans 7-14 cover all of spec §13.
 
 ## Recently shipped (as items move out of this list)
 
-(Empty — kadai's MVP shipped as 5 plans, none of which have post-MVP follow-ups yet. As we ship Plans 6+, document here so the backlog and the wins are both visible.)
+### Plan 6 — Workflow completion (shipped 2026-05-05)
+
+- `kadai set-status <id> <status> [--reason]` — arbitrary status mutations from CLI
+- `kadai init -y` now creates EPIC-001 "Project setup" so the spine is usable immediately
+- `/kadai-add <kind>` — guided creation slash command
+- `/kadai-set-status <id> <status>` — slash companion to the new CLI
+- `/kadai-unpick` — slash companion to `kadai unpick`
+- Plugin version bumped to 0.2.0
