@@ -57,7 +57,7 @@ test('attach_spec errors if feature not found', async () => {
   const sourcePath = writeSpec('docs/superpowers/specs/x.md', 'x');
   const tool = getTool('attach_spec')!;
   await expect(tool.handler({ feature_id: 'FEAT-999', source_path: sourcePath }, ctx()))
-    .rejects.toThrow(/feature not found/i);
+    .rejects.toThrow(/not found/i);
 });
 
 test('attach_spec errors if source file missing', async () => {

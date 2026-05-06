@@ -254,7 +254,7 @@ EOF
 
 **Goal:** Move the spec/plan attach logic out of the MCP-only `mcp/handlers/attach.ts` and into `core/attach.ts` so it's reusable. The MCP handlers become thin wrappers, just like Plan 6 Task 1's `set-status` CLI wrapped existing core. Pure refactor — no behavior change in MCP, no new functionality yet.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `/home/fintan/repos/kadai/tests/core/attach.test.ts`:
 
@@ -334,7 +334,7 @@ test('attachFile rejects plan on an epic', () => {
 });
 ```
 
-- [ ] **Step 2: Run test — should fail on missing module**
+- [x] **Step 2: Run test — should fail on missing module**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -343,7 +343,7 @@ bun test tests/core/attach.test.ts
 
 Expected: FAIL with "Cannot find module ../../src/core/attach".
 
-- [ ] **Step 3: Implement core/attach.ts**
+- [x] **Step 3: Implement core/attach.ts**
 
 Create `/home/fintan/repos/kadai/src/core/attach.ts`:
 
@@ -405,7 +405,7 @@ export function attachFile(
 }
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -414,7 +414,7 @@ bun test tests/core/attach.test.ts
 
 Expected: 7 tests pass.
 
-- [ ] **Step 5: Refactor MCP handlers to delegate**
+- [x] **Step 5: Refactor MCP handlers to delegate**
 
 Replace `/home/fintan/repos/kadai/src/mcp/handlers/attach.ts` entirely with:
 
@@ -452,7 +452,7 @@ export function registerAttachTools(): void {
 }
 ```
 
-- [ ] **Step 6: Run the full suite to verify no MCP regression**
+- [x] **Step 6: Run the full suite to verify no MCP regression**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -461,7 +461,7 @@ bun test
 
 Expected: all tests pass (including any existing MCP attach tests).
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
