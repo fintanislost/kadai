@@ -653,7 +653,7 @@ EOF
 
 **Goal:** Add typed client wrappers for the three new endpoints. No tests — these are thin fetch wrappers exercised by the Playwright E2E in Task 8.
 
-- [ ] **Step 1: Add the new functions**
+- [x] **Step 1: Add the new functions**
 
 Append to `/home/fintan/repos/kadai/src/web/frontend/src/api.ts`:
 
@@ -700,7 +700,7 @@ export async function attachFile(id: string, kind: 'spec' | 'plan', file: File):
 
 (Note: `Item` is already imported at the top of the file. Add only the `Status` import.)
 
-- [ ] **Step 2: Verify typecheck passes**
+- [x] **Step 2: Verify typecheck passes**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -709,7 +709,7 @@ bun run typecheck
 
 Expected: clean exit (no TS errors).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

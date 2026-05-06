@@ -1,4 +1,4 @@
-import type { Item, PhaseConfig } from './types';
+import type { Item, PhaseConfig, Status } from './types';
 
 async function get<T>(path: string): Promise<T> {
   const r = await fetch(path);
@@ -46,4 +46,41 @@ export async function getFile(id: string, filename: 'spec.md' | 'plan.md' | 'cha
   if (r.status === 404) return null;
   if (!r.ok) throw new Error(`/api/files/${id}/${filename} → ${r.status}`);
   return r.text();
+}
+
+export interface Transitions {
+  current: Status;
+  allowed: Status[];
+}
+
+export async function getTransitions(id: string): Promise<Transitions | null> {
+  const r = await fetch(`/api/items/${id}/transitions`);
+  if (r.status === 404) return null;
+  if (!r.ok) throw new Error(`/api/items/${id}/transitions → ${r.status}`);
+  return r.json() as Promise<Transitions>;
+}
+
+export async function setItemStatus(id: string, status: Status): Promise<Item> {
+  const r = await fetch(`/api/items/${id}/status`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status }),
+  });
+  if (!r.ok) {
+    const json = await r.json().catch(() => ({ error: `HTTP ${r.status}` }));
+    throw new Error(json.error ?? `HTTP ${r.status}`);
+  }
+  return r.json() as Promise<Item>;
+}
+
+export async function attachFile(id: string, kind: 'spec' | 'plan', file: File): Promise<Item> {
+  const form = new FormData();
+  form.append('kind', kind);
+  form.append('file', file);
+  const r = await fetch(`/api/items/${id}/attach`, { method: 'POST', body: form });
+  if (!r.ok) {
+    const json = await r.json().catch(() => ({ error: `HTTP ${r.status}` }));
+    throw new Error(json.error ?? `HTTP ${r.status}`);
+  }
+  return r.json() as Promise<Item>;
 }
