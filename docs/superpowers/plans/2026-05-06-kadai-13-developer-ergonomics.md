@@ -81,7 +81,7 @@ kadai-plugin/.claude-plugin/plugin.json         # MODIFIED: 0.8.0 → 0.9.0
 
 **Goal:** Two small core improvements bundled because they're both pure-data, easy to test, easy to land. (1) `nextId` now writes the counter file via `writeFileAtomic` (tmp + rename) on top of the existing `proper-lockfile` advisory lock — eliminates the partial-write window if the process is killed mid-write. (2) Typed accessor helpers (`getPhase`, `getParent`, etc.) take an `Item` and return `string | undefined`, replacing the `(item.data as any).phase` pattern throughout the CLI in Task 2.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 For ID atomicity — APPEND to `/home/fintan/repos/kadai/tests/core/ids.test.ts`:
 
@@ -172,7 +172,7 @@ test('getSpec / getPlan return the attached filename or undefined', () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -181,7 +181,7 @@ bun test tests/core/ids.test.ts tests/core/item-helpers.test.ts
 
 Expected: `ids.test.ts` new test passes already (writeFileSync is also atomic enough to satisfy the JSON-parseability test, but we want belt-and-suspenders); `item-helpers.test.ts` fails with "Cannot find module ../../src/core/item-helpers".
 
-- [ ] **Step 3: Update ids.ts to use writeFileAtomic**
+- [x] **Step 3: Update ids.ts to use writeFileAtomic**
 
 Edit `/home/fintan/repos/kadai/src/core/ids.ts`. Replace:
 
@@ -244,7 +244,7 @@ function writeCounters(path: string, counters: Counters): void {
 }
 ```
 
-- [ ] **Step 4: Implement item-helpers.ts**
+- [x] **Step 4: Implement item-helpers.ts**
 
 Create `/home/fintan/repos/kadai/src/core/item-helpers.ts`:
 
@@ -302,7 +302,7 @@ export function getPlan(item: Item): string | undefined {
 
 The single `as unknown as Indexable` keeps the unsafe cast contained to one place; consumers get typed accessors with no extra assertions.
 
-- [ ] **Step 5: Run tests to verify everything passes**
+- [x] **Step 5: Run tests to verify everything passes**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -313,11 +313,11 @@ bun run typecheck
 
 Expected: 282 pass (275 + 7 new — 1 ids + 6 helpers if a new helper test was added; if your count differs by ±1, that's fine, capture the actual number).
 
-- [ ] **Step 6: Tick the step checkboxes for Task 1 in the plan**
+- [x] **Step 6: Tick the step checkboxes for Task 1 in the plan**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-13-developer-ergonomics.md`, find Task 1 and tick all step checkboxes.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

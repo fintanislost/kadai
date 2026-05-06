@@ -1,6 +1,6 @@
 import { test, expect, beforeEach, afterEach } from 'bun:test';
 import { nextId, formatId, parseId } from '../../src/core/ids';
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdtempSync, rmSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -51,4 +51,18 @@ test('nextId is safe under concurrent calls', async () => {
   const ids = await Promise.all(promises);
   const unique = new Set(ids);
   expect(unique.size).toBe(10);
+});
+
+test('nextId writes the counter file atomically (no partial-content window)', () => {
+  const atomicTmp = mkdtempSync(join(tmpdir(), 'kadai-ids-atomic-'));
+  try {
+    for (let i = 0; i < 5; i++) {
+      nextId('story', atomicTmp);
+      const content = readFileSync(join(atomicTmp, '.kadai', '.counters.json'), 'utf8');
+      const parsed = JSON.parse(content);
+      expect(parsed.story).toBe(i + 1);
+    }
+  } finally {
+    rmSync(atomicTmp, { recursive: true, force: true });
+  }
 });

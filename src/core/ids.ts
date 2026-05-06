@@ -1,6 +1,7 @@
-import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { existsSync, readFileSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import lockfile from 'proper-lockfile';
+import { writeFileAtomic } from './files';
 import type { ItemKind } from './state-machine';
 
 const COUNTERS_FILE = '.counters.json';
@@ -29,7 +30,7 @@ function ensureCounterFile(rootDir: string): string {
   const path = counterPath(rootDir);
   if (!existsSync(path)) {
     mkdirSync(dirname(path), { recursive: true });
-    writeFileSync(path, JSON.stringify({ epic: 0, feature: 0, story: 0, task: 0 }, null, 2) + '\n');
+    writeFileAtomic(path, JSON.stringify({ epic: 0, feature: 0, story: 0, task: 0 }, null, 2) + '\n');
   }
   return path;
 }
@@ -39,7 +40,7 @@ function readCounters(path: string): Counters {
 }
 
 function writeCounters(path: string, counters: Counters): void {
-  writeFileSync(path, JSON.stringify(counters, null, 2) + '\n', 'utf8');
+  writeFileAtomic(path, JSON.stringify(counters, null, 2) + '\n');
 }
 
 export function nextId(kind: ItemKind, rootDir: string): string {
