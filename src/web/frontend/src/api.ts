@@ -1,50 +1,69 @@
 import type { Item, PhaseConfig, Status, ItemKind } from './types';
+import type { ProjectInfo } from './project';
 
-async function get<T>(path: string): Promise<T> {
-  const r = await fetch(path);
-  if (!r.ok) throw new Error(`${path} → ${r.status}`);
-  return r.json() as Promise<T>;
+function withBase(slug: string | null | undefined, path: string): string {
+  return slug ? `/api/p/${slug}${path}` : `/api${path}`;
 }
 
-export async function listPhases(): Promise<PhaseConfig[]> {
-  return get<PhaseConfig[]>('/api/phases');
+export async function listPhases(slug?: string | null): Promise<PhaseConfig[]> {
+  const url = withBase(slug, '/phases');
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`${url} → ${r.status}`);
+  return r.json() as Promise<PhaseConfig[]>;
 }
 
-export async function listEpics(filters: { phase?: string; status?: string } = {}): Promise<Item[]> {
+export async function listEpics(filters: { phase?: string; status?: string } = {}, slug?: string | null): Promise<Item[]> {
   const qs = new URLSearchParams(filters as Record<string, string>).toString();
-  return get<Item[]>(`/api/epics${qs ? '?' + qs : ''}`);
+  const url = withBase(slug, `/epics${qs ? '?' + qs : ''}`);
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`${url} → ${r.status}`);
+  return r.json() as Promise<Item[]>;
 }
 
-export async function listFeatures(filters: { epic_id?: string; phase?: string; status?: string } = {}): Promise<Item[]> {
+export async function listFeatures(filters: { epic_id?: string; phase?: string; status?: string } = {}, slug?: string | null): Promise<Item[]> {
   const qs = new URLSearchParams(filters as Record<string, string>).toString();
-  return get<Item[]>(`/api/features${qs ? '?' + qs : ''}`);
+  const url = withBase(slug, `/features${qs ? '?' + qs : ''}`);
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`${url} → ${r.status}`);
+  return r.json() as Promise<Item[]>;
 }
 
-export async function listStories(filters: { feature_id?: string; phase?: string; status?: string } = {}): Promise<Item[]> {
+export async function listStories(filters: { feature_id?: string; phase?: string; status?: string } = {}, slug?: string | null): Promise<Item[]> {
   const qs = new URLSearchParams(filters as Record<string, string>).toString();
-  return get<Item[]>(`/api/stories${qs ? '?' + qs : ''}`);
+  const url = withBase(slug, `/stories${qs ? '?' + qs : ''}`);
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`${url} → ${r.status}`);
+  return r.json() as Promise<Item[]>;
 }
 
-export async function listTasks(filters: { story_id?: string; status?: string } = {}): Promise<Item[]> {
+export async function listTasks(filters: { story_id?: string; status?: string } = {}, slug?: string | null): Promise<Item[]> {
   const qs = new URLSearchParams(filters as Record<string, string>).toString();
-  return get<Item[]>(`/api/tasks${qs ? '?' + qs : ''}`);
+  const url = withBase(slug, `/tasks${qs ? '?' + qs : ''}`);
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`${url} → ${r.status}`);
+  return r.json() as Promise<Item[]>;
 }
 
-export async function getItem(id: string): Promise<Item | null> {
-  const r = await fetch(`/api/items/${id}`);
+export async function getItem(id: string, slug?: string | null): Promise<Item | null> {
+  const url = withBase(slug, `/items/${id}`);
+  const r = await fetch(url);
   if (r.status === 404) return null;
-  if (!r.ok) throw new Error(`/api/items/${id} → ${r.status}`);
+  if (!r.ok) throw new Error(`${url} → ${r.status}`);
   return r.json() as Promise<Item>;
 }
 
-export async function getPicked(): Promise<Item | null> {
-  return get<Item | null>('/api/picked');
+export async function getPicked(slug?: string | null): Promise<Item | null> {
+  const url = withBase(slug, '/picked');
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`${url} → ${r.status}`);
+  return r.json() as Promise<Item | null>;
 }
 
-export async function getFile(id: string, filename: 'spec.md' | 'plan.md' | 'changelog.md'): Promise<string | null> {
-  const r = await fetch(`/api/files/${id}/${filename}`);
+export async function getFile(id: string, filename: 'spec.md' | 'plan.md' | 'changelog.md', slug?: string | null): Promise<string | null> {
+  const url = withBase(slug, `/files/${id}/${filename}`);
+  const r = await fetch(url);
   if (r.status === 404) return null;
-  if (!r.ok) throw new Error(`/api/files/${id}/${filename} → ${r.status}`);
+  if (!r.ok) throw new Error(`${url} → ${r.status}`);
   return r.text();
 }
 
@@ -53,15 +72,17 @@ export interface Transitions {
   allowed: Status[];
 }
 
-export async function getTransitions(id: string): Promise<Transitions | null> {
-  const r = await fetch(`/api/items/${id}/transitions`);
+export async function getTransitions(id: string, slug?: string | null): Promise<Transitions | null> {
+  const url = withBase(slug, `/items/${id}/transitions`);
+  const r = await fetch(url);
   if (r.status === 404) return null;
-  if (!r.ok) throw new Error(`/api/items/${id}/transitions → ${r.status}`);
+  if (!r.ok) throw new Error(`${url} → ${r.status}`);
   return r.json() as Promise<Transitions>;
 }
 
-export async function setItemStatus(id: string, status: Status): Promise<Item> {
-  const r = await fetch(`/api/items/${id}/status`, {
+export async function setItemStatus(id: string, status: Status, slug?: string | null): Promise<Item> {
+  const url = withBase(slug, `/items/${id}/status`);
+  const r = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status }),
@@ -73,11 +94,12 @@ export async function setItemStatus(id: string, status: Status): Promise<Item> {
   return r.json() as Promise<Item>;
 }
 
-export async function attachFile(id: string, kind: 'spec' | 'plan', file: File): Promise<Item> {
+export async function attachFile(id: string, kind: 'spec' | 'plan', file: File, slug?: string | null): Promise<Item> {
   const form = new FormData();
   form.append('kind', kind);
   form.append('file', file);
-  const r = await fetch(`/api/items/${id}/attach`, { method: 'POST', body: form });
+  const url = withBase(slug, `/items/${id}/attach`);
+  const r = await fetch(url, { method: 'POST', body: form });
   if (!r.ok) {
     const json = await r.json().catch(() => ({ error: `HTTP ${r.status}` }));
     throw new Error(json.error ?? `HTTP ${r.status}`);
@@ -97,8 +119,9 @@ export interface SearchResult {
   matchEnd: number;
 }
 
-export async function searchSpine(query: string): Promise<SearchResult[]> {
-  const r = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+export async function searchSpine(query: string, slug?: string | null): Promise<SearchResult[]> {
+  const url = withBase(slug, `/search?q=${encodeURIComponent(query)}`);
+  const r = await fetch(url);
   if (!r.ok) {
     const json = await r.json().catch(() => ({ error: `HTTP ${r.status}` }));
     throw new Error(json.error ?? `HTTP ${r.status}`);
@@ -115,9 +138,10 @@ export interface ActivityEntry {
   itemKind: ItemKind;
 }
 
-export async function getActivity(limit = 100): Promise<ActivityEntry[]> {
-  const r = await fetch(`/api/activity?limit=${limit}`);
-  if (!r.ok) throw new Error(`/api/activity → ${r.status}`);
+export async function getActivity(limit = 100, slug?: string | null): Promise<ActivityEntry[]> {
+  const url = withBase(slug, `/activity?limit=${limit}`);
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`${url} → ${r.status}`);
   return r.json() as Promise<ActivityEntry[]>;
 }
 
@@ -134,11 +158,18 @@ export interface CompareResult {
   common: { titles: string[] };
 }
 
-export async function comparePhasesApi(a: string, b: string): Promise<CompareResult> {
-  const r = await fetch(`/api/compare?a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}`);
+export async function comparePhasesApi(a: string, b: string, slug?: string | null): Promise<CompareResult> {
+  const url = withBase(slug, `/compare?a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}`);
+  const r = await fetch(url);
   if (!r.ok) {
     const json = await r.json().catch(() => ({ error: `HTTP ${r.status}` }));
     throw new Error(json.error ?? `HTTP ${r.status}`);
   }
   return r.json() as Promise<CompareResult>;
+}
+
+export async function listProjects(): Promise<ProjectInfo[]> {
+  const r = await fetch('/api/projects');
+  if (!r.ok) return [];
+  return r.json() as Promise<ProjectInfo[]>;
 }

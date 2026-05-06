@@ -7,6 +7,7 @@ import { Story } from './pages/Story';
 import { Search } from './pages/Search';
 import { Activity } from './pages/Activity';
 import { Compare } from './pages/Compare';
+import { Projects } from './pages/Projects';
 
 const rootRoute = createRootRoute({
   component: Layout,
@@ -61,7 +62,13 @@ const compareRoute = createRoute({
   }),
 });
 
-const routeTree = rootRoute.addChildren([homeRoute, epicRoute, featureRoute, storyRoute, searchRoute, activityRoute, compareRoute]);
+const projectsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/projects',
+  component: Projects,
+});
+
+const routeTree = rootRoute.addChildren([homeRoute, epicRoute, featureRoute, storyRoute, searchRoute, activityRoute, compareRoute, projectsRoute]);
 
 export const router = createRouter({ routeTree });
 

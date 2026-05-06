@@ -832,7 +832,7 @@ EOF
 
 **Goal:** A `ProjectModeProvider` at the root detects mode by calling `/api/projects` once. If empty → single-project mode (existing routes work). If non-empty → multi-project mode is active, app shows picker at `/`. `useProject()` hook returns the active slug (parsed from URL `/p/<slug>/...`) or `null` for single mode.
 
-- [ ] **Step 1: Create project.tsx**
+- [x] **Step 1: Create project.tsx**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/project.tsx`:
 
@@ -902,7 +902,7 @@ export function apiBase(activeSlug: string | null): string {
 }
 ```
 
-- [ ] **Step 2: Update src/web/frontend/src/api.ts to be slug-aware**
+- [x] **Step 2: Update src/web/frontend/src/api.ts to be slug-aware**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/api.ts`. The existing wrappers all hard-code `/api/...`. Refactor each to take an optional slug and prepend `/api/p/<slug>/...` instead.
 
@@ -930,7 +930,7 @@ export async function listProjects(): Promise<ProjectInfo[]> {
 
 (`ProjectInfo` is exported from `./project`. Add `import type { ProjectInfo } from './project';` at the top.)
 
-- [ ] **Step 3: Create the picker page**
+- [x] **Step 3: Create the picker page**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/pages/Projects.tsx`:
 
@@ -973,7 +973,7 @@ export function Projects() {
 }
 ```
 
-- [ ] **Step 4: Wire ProjectModeProvider + Projects route**
+- [x] **Step 4: Wire ProjectModeProvider + Projects route**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/router.tsx` and `Layout.tsx`.
 
@@ -997,7 +997,7 @@ const projectsRoute = createRoute({
 
 Add `projectsRoute` to `addChildren([...])`.
 
-- [ ] **Step 5: Update Layout to show project context in multi-mode**
+- [x] **Step 5: Update Layout to show project context in multi-mode**
 
 In `Layout.tsx`, inside the header, add a conditional rendering block (alongside the existing Search/Activity/Compare links):
 
@@ -1021,7 +1021,7 @@ In `Layout.tsx`, inside the header, add a conditional rendering block (alongside
 
 (Yes the IIFE inside JSX is awkward — alternative is to pull this into a small `<ProjectIndicator />` component. Either is fine; do whichever reads better given the existing Layout shape.)
 
-- [ ] **Step 6: Build + verify**
+- [x] **Step 6: Build + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1033,11 +1033,11 @@ bun test
 
 Expected: build clean, typecheck clean, 332 tests pass.
 
-- [ ] **Step 7: Tick the step checkboxes for Task 4 in the plan**
+- [x] **Step 7: Tick the step checkboxes for Task 4 in the plan**
 
 Tick all step checkboxes for Task 4.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
