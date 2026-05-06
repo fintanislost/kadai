@@ -12,16 +12,16 @@ If you're a fresh Claude session, read in this order:
 
 ## Active plan
 
-> 🎉 **MVP COMPLETE** — all 5 plans shipped.
+> ✅ **Plans 1-7 shipped.** kadai-plugin is at v0.3.0.
 >
 > What's working today:
-> - `kadai init / add / list / status / pick / unpick / phases / config` — full CLI
+> - `kadai init / add / list / get / status / pick / unpick / set-status / phases / config` — full CLI
 > - `kadai mcp` — stdio MCP server with 18 typed tools
 > - `kadai hook pre-tool-use / post-tool-use` — Claude Code hooks (guardrail + changelog capture)
-> - `kadai serve` — localhost web viewer (roadmap home + epic/feature/story detail)
-> - `kadai-plugin/` — installable Claude Code plugin (skill + `/kadai-pick` + `/kadai-status`)
+> - `kadai serve` — localhost web viewer with **writable** API (status changes, drag-drop kanban, spec/plan upload)
+> - `kadai-plugin/` — installable Claude Code plugin (skill + `/kadai-pick` + `/kadai-status` + `/kadai-add` + `/kadai-set-status` + `/kadai-unpick`)
 >
-> **Next:** post-MVP work (spec §13). Optionally install kadai against this repo (Plan 5 Task 7) and seed the post-MVP backlog as a `kadai-self` epic. From then on, work is self-tracked through kadai.
+> **Next plan:** Plan 8 — Live updates (SSE). See [`docs/wiki/post-mvp.md`](docs/wiki/post-mvp.md) for the full backlog.
 
 When a plan completes, update both this section *and* the plans index status column to point to the next plan.
 
