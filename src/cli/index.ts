@@ -12,6 +12,7 @@ import { mcpCommand } from './mcp';
 import { hookCommand } from './hook';
 import { serveCommand } from './serve';
 import { getCommand } from './get';
+import { syncCommand } from './sync';
 
 const program = new Command();
 program
@@ -32,5 +33,6 @@ program.addCommand(mcpCommand);
 program.addCommand(hookCommand);
 program.addCommand(serveCommand);
 program.addCommand(getCommand);
+program.addCommand(syncCommand);
 
 program.parseAsync(process.argv);

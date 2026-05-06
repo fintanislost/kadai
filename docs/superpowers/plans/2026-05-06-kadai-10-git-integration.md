@@ -588,7 +588,7 @@ EOF
 
 **Goal:** Thin CLI over `syncChangelogs`. Prints a one-line summary plus a per-item breakdown when there are appends. Flags: `--since <ref>`, `--dry-run`, `--branch <name>`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/cli/sync.test.ts`:
 
@@ -650,7 +650,7 @@ test('runSync --dry-run reports counts but does not modify changelogs', () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -659,7 +659,7 @@ bun test tests/cli/sync.test.ts
 
 Expected: FAIL with "Cannot find module ../../src/cli/sync".
 
-- [ ] **Step 3: Implement src/cli/sync.ts**
+- [x] **Step 3: Implement src/cli/sync.ts**
 
 Create `/home/fintan/repos/kadai/src/cli/sync.ts`:
 
@@ -704,7 +704,7 @@ export const syncCommand = new Command('sync')
   });
 ```
 
-- [ ] **Step 4: Register in src/cli/index.ts**
+- [x] **Step 4: Register in src/cli/index.ts**
 
 Read `/home/fintan/repos/kadai/src/cli/index.ts`. Add this import alongside the existing command imports:
 
@@ -718,7 +718,7 @@ Add this line alongside the other `program.addCommand(...)` lines:
 program.addCommand(syncCommand);
 ```
 
-- [ ] **Step 5: Run tests + typecheck + smoke**
+- [x] **Step 5: Run tests + typecheck + smoke**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -730,11 +730,11 @@ kadai sync --help
 
 Expected: 3 sync.test.ts tests pass; full suite 252 pass (249 + 3); typecheck clean; help output shows the three flags.
 
-- [ ] **Step 6: Tick the 5 checkboxes for Task 3 in the plan**
+- [x] **Step 6: Tick the 5 checkboxes for Task 3 in the plan**
 
 Tick all 5 step checkboxes for Task 3.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
