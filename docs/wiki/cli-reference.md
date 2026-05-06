@@ -64,6 +64,20 @@ Pick a story. Two effects:
 
 Only stories can be picked.
 
+## `kadai set-status <id> <status> [--reason]`
+
+Update the status of any item. Validates against the state machine; illegal transitions exit 1 with an error message.
+
+```bash
+kadai set-status STORY-001 in_progress
+kadai set-status STORY-001 review --reason "tests pass, awaiting code review"
+kadai set-status STORY-001 done
+```
+
+The `--reason` flag is accepted (logged in CLI output) but not persisted in MVP — it's reserved for the post-MVP audit log feature.
+
+For programmatic use, the MCP tool `mcp__kadai__set_status` does the same thing.
+
 ## `kadai unpick`
 
 Clear the picked-story flag. Does NOT change status.
