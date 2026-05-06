@@ -42,6 +42,17 @@ Or add `~/.bun/bin` to your shell's PATH (`.bashrc` / `.zshrc`).
 2. **Add the path to the allowlist** (if it's a permanently-allowed path like `docs/`): `kadai config guardrail.allowed_paths` shows the current list; edit `.kadai/config.toml` to add to it.
 3. **Bypass for one session** (one-off escape): set `KADAI_BYPASS=1` in your shell. Optionally `KADAI_BYPASS_REASON="..."` for the audit log at `.kadai/bypass.log`.
 
+## "The guardrail isn't blocking anything — agents write code without picking a story"
+
+**Cause:** Your `[guardrail.allowed_paths]` is too permissive. The default ships with `["docs/", "README.md", ".gitignore", "CLAUDE.md"]` — wide enough that brainstorming and planning docs go in `docs/` without forcing a pick, but narrow enough that source files (`src/`, `app/`, `lib/`) and scripts hit the gate.
+
+If your project has an older default that includes `scripts/`, edit `.kadai/config.toml` and remove it. For strict enforcement (block everything except spec/plan docs):
+
+```toml
+[guardrail]
+allowed_paths = [ ".gitignore", "CLAUDE.md", "README.md", "docs/superpowers/" ]
+```
+
 ## "/kadai-pick or /kadai-status returns 'Unknown command'"
 
 **Cause:** The kadai plugin isn't actually installed. Claude Code plugins come from **marketplaces** — `/plugin install <local-path>` is not supported. You need to register the kadai repo as a marketplace first.

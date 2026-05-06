@@ -1,6 +1,6 @@
 ---
 name: kadai
-description: "Use when planning, implementing, designing, scoping, or working on stories, features, epics, or MVP/v1 work. Required reading before any code changes — kadai enforces a guardrail: edits to non-spine files are blocked unless a story is picked."
+description: "Required when working in any repository that contains a `.kadai/` directory — including brainstorming, designing, scoping, planning, building, or implementing anything (MVPs, features, prototypes, fixes, websites, scripts). Load this skill at the START of the session, before invoking brainstorming/writing-plans or writing any files. Kadai enforces a guardrail (edits outside the spine + allowlist are blocked when no story is picked) and tracks the spec→plan→implementation trail in `.kadai/`. If you skip this skill, you'll write specs/plans into the wrong place and lose the provenance kadai is designed to capture."
 ---
 
 # Kadai workflow

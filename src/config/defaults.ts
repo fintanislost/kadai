@@ -15,7 +15,7 @@ export const DEFAULT_CONFIG: Config = {
     pr_merge_marks_story_done: false,
   },
   guardrail: {
-    allowed_paths: ['docs/', 'scripts/', 'README.md', '.gitignore', 'CLAUDE.md'],
+    allowed_paths: ['.gitignore', 'CLAUDE.md', 'README.md', 'docs/'],
   },
   change_capture: {
     enabled: true,
