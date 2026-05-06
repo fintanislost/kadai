@@ -15,13 +15,13 @@ import { ProjectScopedLink } from '../project';
 const COLUMNS: Status[] = ['backlog', 'ready', 'in_progress', 'blocked', 'review', 'done'];
 
 const COLUMN_BORDER_BY_STATUS: Record<Status, string> = {
-  backlog:     'border-l-status-backlog/50',
-  ready:       'border-l-status-ready/50',
-  in_progress: 'border-l-status-in_progress/50',
-  blocked:     'border-l-status-blocked/50',
-  review:      'border-l-status-review/50',
-  done:        'border-l-status-done/50',
-  cancelled:   'border-l-status-cancelled/50',
+  backlog:     'border-l-status-backlog/40',
+  ready:       'border-l-status-ready/40',
+  in_progress: 'border-l-status-in_progress/40',
+  blocked:     'border-l-status-blocked/40',
+  review:      'border-l-status-review/40',
+  done:        'border-l-status-done/40',
+  cancelled:   'border-l-status-cancelled/40',
 };
 
 interface Props {
@@ -76,9 +76,9 @@ function Column({ status, stories, activeSlug }: { status: Status; stories: Item
     <div
       ref={setNodeRef}
       data-testid={`column-${status}`}
-      className={`bg-panel rounded p-2 border-l-2 ${COLUMN_BORDER_BY_STATUS[status]} ${isOver ? 'ring-2 ring-zinc-400' : ''}`}
+      className={`bg-surface-1 border border-white/[0.06] rounded-xl p-2.5 border-l-2 ${COLUMN_BORDER_BY_STATUS[status]} ${isOver ? 'ring-2 ring-accent/40' : ''}`}
     >
-      <div className="text-xs font-semibold uppercase tracking-wider text-muted mb-2">{status}</div>
+      <div className="text-[10.5px] font-bold uppercase tracking-[0.08em] text-text-tertiary mb-2 px-1">{status}</div>
       <div className="space-y-2">
         {stories.map(s => <Card key={(s.data as any).id} story={s} activeSlug={activeSlug} />)}
       </div>
@@ -96,12 +96,12 @@ function Card({ story, activeSlug }: { story: Item; activeSlug: string | null })
       ref={setNodeRef}
       style={style}
       data-testid={`card-${d.id}`}
-      className={`bg-zinc-800 rounded p-2 text-xs hover:bg-zinc-700 ${isDragging ? 'opacity-50' : ''}`}
+      className={`bg-white/[0.03] border border-white/[0.06] hover:border-white/[0.16] rounded-md p-2.5 text-[12px] transition-colors ${isDragging ? 'opacity-50' : ''}`}
       {...listeners}
       {...attributes}
     >
-      <div className="text-muted text-[10px]">{d.id}</div>
-      <ProjectScopedLink activeSlug={activeSlug} to="/stories/$id" params={{ id: d.id }} className="block">{d.title}</ProjectScopedLink>
+      <div className="text-text-tertiary text-[10px] mb-0.5">{d.id}</div>
+      <ProjectScopedLink activeSlug={activeSlug} to="/stories/$id" params={{ id: d.id }} className="block text-text-primary">{d.title}</ProjectScopedLink>
     </div>
   );
 }

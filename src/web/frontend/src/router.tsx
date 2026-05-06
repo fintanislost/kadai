@@ -29,6 +29,9 @@ const featureRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/features/$id',
   component: Feature,
+  validateSearch: (s: Record<string, unknown>): { view?: 'tree' | 'kanban' } => ({
+    view: s.view === 'tree' ? 'tree' : s.view === 'kanban' ? 'kanban' : undefined,
+  }),
 });
 
 const storyRoute = createRoute({
@@ -88,6 +91,9 @@ const projectFeatureRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/p/$slug/features/$id',
   component: Feature,
+  validateSearch: (s: Record<string, unknown>): { view?: 'tree' | 'kanban' } => ({
+    view: s.view === 'tree' ? 'tree' : s.view === 'kanban' ? 'kanban' : undefined,
+  }),
 });
 
 const projectStoryRoute = createRoute({

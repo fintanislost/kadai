@@ -1222,7 +1222,7 @@ EOF
 
 **Goal:** Feature page becomes Mode A (Stories list) by default. View toggle = [Detail | Tree | Kanban] (3-way for Feature only). Kanban moves to `?view=kanban`. The kanban itself gets the refined token treatment (calmer cards, status border, no over-bright colors).
 
-- [ ] **Step 1: Extend the Feature route's validateSearch**
+- [x] **Step 1: Extend the Feature route's validateSearch**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/router.tsx`. Update `featureRoute` (and `projectFeatureRoute`):
 
@@ -1239,7 +1239,7 @@ const featureRoute = createRoute({
 
 Same shape for `projectFeatureRoute`.
 
-- [ ] **Step 2: Refine KanbanBoard visuals**
+- [x] **Step 2: Refine KanbanBoard visuals**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/components/KanbanBoard.tsx`. Update the column wrapper className to use the new tokens (replace existing border/bg classes):
 
@@ -1282,7 +1282,7 @@ function Card({ story }: { story: Item }) {
 
 (The drag/drop logic and per-status column color stays as-is.)
 
-- [ ] **Step 3: Rebuild Feature.tsx**
+- [x] **Step 3: Rebuild Feature.tsx**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/pages/Feature.tsx` first. Replace the file with:
 
@@ -1455,7 +1455,7 @@ export function Feature() {
 }
 ```
 
-- [ ] **Step 4: Build + verify**
+- [x] **Step 4: Build + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1467,11 +1467,11 @@ bun test
 
 Expected: clean.
 
-- [ ] **Step 5: Tick the step checkboxes for Task 5 in the plan**
+- [x] **Step 5: Tick the step checkboxes for Task 5 in the plan**
 
 Tick all step checkboxes for Task 5.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
