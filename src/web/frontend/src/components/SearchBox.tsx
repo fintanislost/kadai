@@ -24,7 +24,7 @@ export function SearchBox({ initialQuery = '' }: Props) {
         onChange={e => setValue(e.target.value)}
         placeholder="Search…"
         aria-label="Search the kadai spine"
-        className="bg-zinc-900 border border-zinc-700 rounded text-sm px-3 py-1 w-48 focus:outline-none focus:border-zinc-500"
+        className="bg-bg border border-white/[0.10] rounded-md text-[13px] px-3 py-1.5 w-full focus:outline-none focus:border-white/[0.20] text-text-primary placeholder:text-text-tertiary"
       />
     </form>
   );
