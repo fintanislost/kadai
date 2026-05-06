@@ -83,7 +83,7 @@ kadai-plugin/.claude-plugin/plugin.json             # MODIFIED: 1.0.0 → 1.1.0
 
 **Goal:** Pure data layer for the `~/.kadai/known-projects.json` registry. Exports `loadKnownProjects(home?)`, `saveKnownProjects(home, list)`, `registerProject(home, project)` (throws on duplicate slug), `unregisterProject(home, slug)`. The `home` parameter defaults to `os.homedir()` and is overridable for tests.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/core/projects.test.ts`:
 
@@ -171,7 +171,7 @@ test('loadKnownProjects ignores malformed JSON gracefully', () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -180,7 +180,7 @@ bun test tests/core/projects.test.ts
 
 Expected: FAIL with "Cannot find module ../../src/core/projects".
 
-- [ ] **Step 3: Implement core/projects.ts**
+- [x] **Step 3: Implement core/projects.ts**
 
 Create `/home/fintan/repos/kadai/src/core/projects.ts`:
 
@@ -255,7 +255,7 @@ export function unregisterProject(home: string, slug: string): void {
 }
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -264,7 +264,7 @@ bun test tests/core/projects.test.ts
 
 Expected: 7 tests pass.
 
-- [ ] **Step 5: Run the full suite + typecheck**
+- [x] **Step 5: Run the full suite + typecheck**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -274,11 +274,11 @@ bun run typecheck
 
 Expected: 321 pass (314 + 7). Typecheck clean.
 
-- [ ] **Step 6: Tick the step checkboxes for Task 1 in the plan**
+- [x] **Step 6: Tick the step checkboxes for Task 1 in the plan**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-15-multi-project.md`, find Task 1 and tick all step checkboxes.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
