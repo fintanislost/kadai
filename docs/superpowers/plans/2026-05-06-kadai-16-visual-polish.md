@@ -205,7 +205,7 @@ EOF
 
 **Goal:** Four small reusable building blocks. Tasks 3-5 roll them out across pages.
 
-- [ ] **Step 1: Install lucide-react**
+- [x] **Step 1: Install lucide-react**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -220,7 +220,7 @@ grep '"lucide-react"' package.json
 
 Expected: a `"lucide-react": "^0.460.x"` line in dependencies.
 
-- [ ] **Step 2: Create StatusBadge.tsx**
+- [x] **Step 2: Create StatusBadge.tsx**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/components/StatusBadge.tsx`:
 
@@ -255,7 +255,7 @@ export function StatusBadge({ status, size = 'xs', className = '' }: Props) {
 }
 ```
 
-- [ ] **Step 3: Create KindIcon.tsx**
+- [x] **Step 3: Create KindIcon.tsx**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/components/KindIcon.tsx`:
 
@@ -291,7 +291,7 @@ export function KindIcon({ kind, size = 14, className = '', colored = true }: Pr
 }
 ```
 
-- [ ] **Step 4: Create Skeleton.tsx**
+- [x] **Step 4: Create Skeleton.tsx**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/components/Skeleton.tsx`:
 
@@ -322,7 +322,7 @@ export function SkeletonStack({ rows = 4, className = '' }: { rows?: number; cla
 }
 ```
 
-- [ ] **Step 5: Create EmptyState.tsx**
+- [x] **Step 5: Create EmptyState.tsx**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/components/EmptyState.tsx`:
 
@@ -350,7 +350,7 @@ export function EmptyState({ icon: Icon, title, hint, action, className = '' }: 
 }
 ```
 
-- [ ] **Step 6: Build + verify**
+- [x] **Step 6: Build + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -361,7 +361,7 @@ bun test
 
 Expected: build clean, typecheck clean, 332 tests pass (no functional change).
 
-- [ ] **Step 7: Tick the step checkboxes for Task 2 in the plan**
+- [x] **Step 7: Tick the step checkboxes for Task 2 in the plan**
 
 Tick all step checkboxes for Task 2.
 
