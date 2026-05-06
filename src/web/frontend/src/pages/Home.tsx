@@ -59,7 +59,7 @@ export function Home() {
             <div className="flex flex-wrap gap-2">
               {phases.map(p => (
                 <span key={p.slug}
-                  className="px-2.5 py-1 rounded-full text-[11px] font-medium tracking-wide uppercase ring-1"
+                  className="px-2.5 py-1 rounded-full text-[11px] font-medium tracking-wide uppercase border"
                   style={{ background: p.color + '15', color: p.color, borderColor: p.color + '40' }}
                 >
                   {p.display} <span className="opacity-60 ml-1">{epics.filter(e => (e.data as { phase: string }).phase === p.slug).length}</span>
