@@ -23,10 +23,10 @@ export function Projects() {
           <li key={p.slug}>
             <a
               href={`/p/${p.slug}/`}
-              className="block bg-panel border border-zinc-800 rounded p-3 hover:border-zinc-600"
+              className="block bg-surface-1 border border-white/[0.06] rounded p-3 hover:border-white/[0.16]"
             >
               <div className="font-bold">{p.name}</div>
-              <div className="text-xs text-muted mt-1">{p.slug} · {p.rootDir}</div>
+              <div className="text-xs text-text-tertiary mt-1">{p.slug} · {p.rootDir}</div>
             </a>
           </li>
         ))}

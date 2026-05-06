@@ -52,15 +52,15 @@ export function Search() {
   return (
     <div className="space-y-4">
       <div>
-        <div className="text-xs text-muted">Search results</div>
+        <div className="text-xs text-text-tertiary">Search results</div>
         <h1 className="text-2xl font-bold">{q ? `"${q}"` : 'Type a query in the top bar'}</h1>
       </div>
 
       {q.length > 0 && q.length < 2 && (
-        <div className="text-muted italic">Type at least 2 characters.</div>
+        <div className="text-text-tertiary italic">Type at least 2 characters.</div>
       )}
 
-      {loading && <div className="text-muted italic">Searching…</div>}
+      {loading && <div className="text-text-tertiary italic">Searching…</div>}
       {error && <div className="text-red-400 text-sm">{error}</div>}
 
       {!loading && !error && q.length >= 2 && results.length === 0 && (
@@ -76,19 +76,19 @@ export function Search() {
               activeSlug={activeSlug}
               to={route}
               params={{ id: r.id }}
-              className="block bg-panel border border-zinc-800 rounded p-3 hover:border-zinc-600"
+              className="block bg-surface-1 border border-white/[0.06] rounded p-3 hover:border-white/[0.16]"
             >
               <div className="flex items-center gap-3">
                 <KindIcon kind={r.kind} size={14} />
-                <span className="text-xs text-muted uppercase">{r.kind}</span>
-                <span className="text-xs text-muted">{r.id}</span>
-                {r.phase && <span className="text-xs bg-zinc-800 px-2 py-0.5 rounded">{r.phase}</span>}
+                <span className="text-xs text-text-tertiary uppercase">{r.kind}</span>
+                <span className="text-xs text-text-tertiary">{r.id}</span>
+                {r.phase && <span className="text-xs bg-white/[0.03] px-2 py-0.5 rounded">{r.phase}</span>}
                 <StatusBadge status={r.status} />
-                <span className="ml-auto text-[10px] text-muted">{r.matchType} match</span>
+                <span className="ml-auto text-[10px] text-text-tertiary">{r.matchType} match</span>
               </div>
               <div className="mt-1 font-medium">{r.title}</div>
               {r.matchType !== 'title' && (
-                <div className="mt-1 text-sm text-zinc-400">
+                <div className="mt-1 text-sm text-text-secondary">
                   <Highlighted snippet={r.snippet} matchStart={r.matchStart} matchEnd={r.matchEnd} />
                 </div>
               )}

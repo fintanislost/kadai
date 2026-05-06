@@ -1897,23 +1897,23 @@ EOF
 
 For each page: read it, find any explicit `bg-zinc-*`, `bg-panel`, `text-zinc-*`, `border-zinc-*`, hardcoded grays — replace with the new token names. Wrap any "sectioned panel" content in `<Card>`. Most of these pages are already structurally fine; this is a search-and-replace pass.
 
-- [ ] **Step 1: Update Search.tsx**
+- [x] **Step 1: Update Search.tsx**
 
 Open `/home/fintan/repos/kadai/src/web/frontend/src/pages/Search.tsx`. Find the `<Link>` cards rendered in the result list. Replace `bg-panel border border-zinc-800 hover:border-zinc-600` with `bg-surface-1 border border-white/[0.06] hover:border-white/[0.16]`. Replace any `text-muted` with `text-text-tertiary`. Other classes can stay.
 
-- [ ] **Step 2: Update Activity.tsx**
+- [x] **Step 2: Update Activity.tsx**
 
 Open `/home/fintan/repos/kadai/src/web/frontend/src/pages/Activity.tsx`. Wrap the entries list in a `<Card title="Recent activity" count={...}>` (with the entry rows as children). Update kind-badge classes to use `bg-status-ready/10` / `bg-status-review/10` / `bg-status-in_progress/10` (was `bg-blue-900/40` etc.).
 
-- [ ] **Step 3: Update Compare.tsx**
+- [x] **Step 3: Update Compare.tsx**
 
 Open `/home/fintan/repos/kadai/src/web/frontend/src/pages/Compare.tsx`. Replace `bg-panel rounded p-3` (the side cards) with the `<Card>` component. Replace `bg-amber-900/30 hover:bg-amber-900/50` (the overlap rows) with `bg-accent/10 hover:bg-accent/15 ring-1 ring-accent/20`. Replace `bg-zinc-800` (non-overlap rows) with `bg-white/[0.03] hover:bg-white/[0.05]`.
 
-- [ ] **Step 4: Update Projects.tsx**
+- [x] **Step 4: Update Projects.tsx**
 
 Open `/home/fintan/repos/kadai/src/web/frontend/src/pages/Projects.tsx`. Replace project-card classes (`bg-panel border border-zinc-800 hover:border-zinc-600`) with `bg-surface-1 border border-white/[0.06] hover:border-white/[0.16]`.
 
-- [ ] **Step 5: Build + verify**
+- [x] **Step 5: Build + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1925,11 +1925,11 @@ bun test
 
 Expected: clean.
 
-- [ ] **Step 6: Tick the step checkboxes for Task 8 in the plan**
+- [x] **Step 6: Tick the step checkboxes for Task 8 in the plan**
 
 Tick all step checkboxes for Task 8.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
