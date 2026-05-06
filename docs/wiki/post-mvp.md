@@ -12,22 +12,7 @@ For pure CLI/web/docs changes: `bun test` + `bun run typecheck` + targeted smoke
 
 The post-MVP work is organized as a series of focused plans, each ending in something visibly more useful. Order is by user-felt impact, not implementation complexity.
 
-### Plan 13 — Developer ergonomics 🟢 **next**
-
-The "minor but real" gaps surfaced during MVP build.
-
-- ID counter writes via `writeFileAtomic` (one of the few non-atomic writes in the codebase)
-- Tailwind typography plugin (so markdown content renders with `prose` styling)
-- Replace `as any` casts in CLI with typed discriminated-union narrowing helpers
-- Replace `@ts-ignore` on dynamic `import('./add')` in `init.ts` with proper static import
-- `kadai uninstall` — implementation (currently in CLI listing but not built)
-- `kadai reindex` — rebuild `.index.json` cache (post-MVP per spec)
-- Phase config migration when phases renamed/removed
-- Sparse-ordering re-densification when midpoints tighten (`needsRedensify` exists but isn't called)
-
-Estimate: small per item; medium-large if done together. Could be cherry-picked individually.
-
-### Plan 14 — Multi-project + stretch
+### Plan 14 — Multi-project + stretch 🟢 **next**
 
 Lower-priority but interesting.
 
@@ -66,6 +51,17 @@ See above sections — Plans 7-14 cover all of spec §13.
 ---
 
 ## Recently shipped (as items move out of this list)
+
+### Plan 13 — Developer ergonomics (shipped 2026-05-06)
+
+- `nextId` writes the counter file via `writeFileAtomic` (on top of the existing `proper-lockfile` advisory lock)
+- `core/item-helpers.ts` — typed `getPhase` / `getParent` / `getOrder` etc. accessors; CLI files migrated off `(item.data as any)` casts
+- `init.ts` — `// @ts-ignore` removed; `runAdd` is a static top-of-file import
+- `kadai uninstall [--keep-spine] [--yes]` — reverse of `init`
+- `kadai phases rename` migrates referencing items; `kadai phases remove --move-to <slug>` migrates before removing (refuses without --move-to when items would be orphaned)
+- `@tailwindcss/typography` — markdown content renders with `prose prose-invert prose-sm` styling
+- 19 new tests (1 ids + 7 helpers + 6 uninstall + 5 phase-migration)
+- Plugin version bumped to 0.9.0
 
 ### Plan 12 — Distribution polish (shipped 2026-05-06)
 

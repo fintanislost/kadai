@@ -29,6 +29,10 @@ Each epic, feature, and story has a `phase:` and an `order:` (sparse — 10, 20,
 
 The roadmap-primary web view (`kadai serve` → `/`) groups items by phase, ordered within each phase band.
 
+### Phase migration
+
+Phases live in `.kadai/config.toml` and are referenced by every epic / feature / story via the `phase:` frontmatter field. When you `kadai phases rename mvp v1 V1` or `kadai phases remove mvp --move-to v1`, kadai walks the spine and rewrites every affected item's frontmatter so no item is ever orphaned with a phase slug that no longer exists. Removing a phase that has items without `--move-to` is refused.
+
 ## State machine
 
 ```

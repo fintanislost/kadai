@@ -118,7 +118,7 @@ Manage the project's phase config.
 |---|---|
 | `list` (default) | — |
 | `add <slug> <display> [color]` | color defaults to `#888888` |
-| `remove <slug>` | |
+| `remove <slug>` | `[--move-to <slug>]` migrates items to the target phase first; otherwise errors when items reference the phase. |
 | `rename <oldSlug> <newSlug> <newDisplay>` | |
 
 ## `kadai config <expr>`
@@ -166,3 +166,27 @@ Start the localhost web viewer.
 | `--no-open` | Don't auto-open the browser |
 
 Requires `bun run build:web` to have built `src/web/dist/` (one-time per source checkout).
+
+## `kadai uninstall [options]`
+
+Reverse of `kadai init`. Removes:
+
+- `.kadai/` directory (unless `--keep-spine`)
+- the `kadai` entry from `.mcp.json` (preserving any sibling MCP servers)
+- all four `kadai hook ...` entries from `.claude/settings.json` (preserving sibling hooks)
+- the `## Kadai` section from `CLAUDE.md`
+
+| Flag | Effect |
+|---|---|
+| `--keep-spine` | preserve `.kadai/` (only remove integration: MCP, hooks, CLAUDE.md section) |
+| `-y, --yes` | skip the confirmation prompt |
+
+Example:
+
+```bash
+kadai uninstall              # interactive — prompts before deleting .kadai/
+kadai uninstall --keep-spine # remove integration, keep the spine for re-init later
+kadai uninstall -y           # delete everything, no prompt
+```
+
+A subsequent `kadai init` will re-create the integration.

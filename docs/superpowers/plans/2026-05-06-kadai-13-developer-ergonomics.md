@@ -1102,7 +1102,7 @@ EOF
 - Append: `docs/dogfood-acceptance-test.md`
 - Modify: `docs/superpowers/plans/2026-05-06-kadai-13-developer-ergonomics.md`
 
-- [ ] **Step 1: Update cli-reference.md**
+- [x] **Step 1: Update cli-reference.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/cli-reference.md`, find the existing `## kadai phases` section. Update the `remove` row to mention `--move-to`:
 
@@ -1142,7 +1142,7 @@ Also add a note near the existing `## kadai add` section explaining that frontma
 
 Actually skip that internal-only detail — leave the user-facing docs focused on user-facing behavior.
 
-- [ ] **Step 2: Update concepts.md**
+- [x] **Step 2: Update concepts.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/concepts.md`, find the section about phases (or add one if absent). Add this paragraph:
 
@@ -1152,7 +1152,7 @@ In `/home/fintan/repos/kadai/docs/wiki/concepts.md`, find the section about phas
 Phases live in `.kadai/config.toml` and are referenced by every epic / feature / story via the `phase:` frontmatter field. When you `kadai phases rename mvp v1 V1` or `kadai phases remove mvp --move-to v1`, kadai walks the spine and rewrites every affected item's frontmatter so no item is ever orphaned with a phase slug that no longer exists. Removing a phase that has items without `--move-to` is refused.
 ```
 
-- [ ] **Step 3: Update post-mvp.md**
+- [x] **Step 3: Update post-mvp.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`:
 
@@ -1179,11 +1179,11 @@ In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`:
 - Plugin version bumped to 0.9.0
 ```
 
-- [ ] **Step 4: Bump plugin version**
+- [x] **Step 4: Bump plugin version**
 
 In `/home/fintan/repos/kadai/kadai-plugin/.claude-plugin/plugin.json`, change `"version": "0.8.0"` to `"version": "0.9.0"`.
 
-- [ ] **Step 5: Dogfood verification**
+- [x] **Step 5: Dogfood verification**
 
 ```bash
 TMP=$(mktemp -d -t kadai-plan13-XXXXXX)
@@ -1226,7 +1226,7 @@ Expected:
 
 CAPTURE the actual output for the log entry.
 
-- [ ] **Step 6: Append a section to docs/dogfood-acceptance-test.md**
+- [x] **Step 6: Append a section to docs/dogfood-acceptance-test.md**
 
 APPEND:
 
@@ -1253,7 +1253,7 @@ Tech-debt drained: atomic counter writes, no `as any`/`@ts-ignore` in CLI, unins
 
 (Use actual numbers from your run.)
 
-- [ ] **Step 7: Run all the final checks**
+- [x] **Step 7: Run all the final checks**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1265,13 +1265,13 @@ bunx playwright test
 
 Expected: every step exits clean.
 
-- [ ] **Step 8: Tick the Task 6 checkboxes + Plan 13 self-review checklist**
+- [x] **Step 8: Tick the Task 6 checkboxes + Plan 13 self-review checklist**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-13-developer-ergonomics.md`:
 - Tick all step checkboxes for Task 6
 - Tick all checkboxes in the "Plan 13 self-review checklist" section
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1294,18 +1294,18 @@ EOF
 
 ## Plan 13 self-review checklist
 
-- [ ] All 6 tasks completed; checkboxes ticked.
-- [ ] `bun test` passes (~293 tests).
-- [ ] `bun run typecheck` passes.
-- [ ] `bunx playwright test` passes (8/8 — no regression from refactors).
-- [ ] `grep -nE "as any|@ts-ignore" src/cli/init.ts src/cli/list.ts src/cli/add.ts src/cli/status.ts` is empty.
-- [ ] `kadai uninstall` works (verified in Task 6 dogfood).
-- [ ] `kadai phases rename` migrates items (verified in Task 6 dogfood).
-- [ ] `kadai phases remove` refuses without `--move-to`, succeeds with it (verified in Task 6 dogfood).
-- [ ] Markdown renders with `prose` styling in the SPA (Task 5 visual check).
-- [ ] Plugin v0.9.0 in the manifest.
-- [ ] post-mvp.md: Plan 13 in "Recently shipped"; Plan 14 marked 🟢 **next**.
-- [ ] cli-reference.md and concepts.md updated.
+- [x] All 6 tasks completed; checkboxes ticked.
+- [x] `bun test` passes (~293 tests).
+- [x] `bun run typecheck` passes.
+- [x] `bunx playwright test` passes (8/8 — no regression from refactors).
+- [x] `grep -nE "as any|@ts-ignore" src/cli/init.ts src/cli/list.ts src/cli/add.ts src/cli/status.ts` is empty.
+- [x] `kadai uninstall` works (verified in Task 6 dogfood).
+- [x] `kadai phases rename` migrates items (verified in Task 6 dogfood).
+- [x] `kadai phases remove` refuses without `--move-to`, succeeds with it (verified in Task 6 dogfood).
+- [x] Markdown renders with `prose` styling in the SPA (Task 5 visual check).
+- [x] Plugin v0.9.0 in the manifest.
+- [x] post-mvp.md: Plan 13 in "Recently shipped"; Plan 14 marked 🟢 **next**.
+- [x] cli-reference.md and concepts.md updated.
 
 ---
 

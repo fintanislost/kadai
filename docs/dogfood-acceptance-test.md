@@ -563,3 +563,45 @@ Built the kadai binary end-to-end and verified it works against a temp project.
 ### Verdict: PASS
 
 The binary is shippable. Real GitHub Releases + brew formula publish are one-shot user actions.
+
+---
+
+## Developer ergonomics run — Plan 13 verification — 2026-05-06
+
+Verified the new behaviors end-to-end:
+
+- `kadai phases rename mvp beta Beta` — every item's frontmatter updated to `phase: beta` ✅
+- `kadai phases remove beta` — errored with "3 items reference phase beta — pass --move-to" (no --move-to) ✅
+- `kadai phases remove beta --move-to v1` — items migrated to v1, beta removed from config ✅
+- `kadai uninstall --keep-spine -y` — .mcp.json gone, .claude/settings.json gone, CLAUDE.md stripped (file removed as Kadai section was sole content), .kadai/ preserved ✅
+- `bun test` → 294/0 pass ✅
+- `bun run build:web` clean (typography plugin compiled) ✅
+- `bunx playwright test` → 8/8 pass (no regression from the refactors) ✅
+
+### Dogfood output (verbatim)
+
+```
+=== Phase migration: rename mvp → beta ===
+✓ renamed mvp → beta
+EPIC-001     beta                  10  ready         Project setup
+STORY-001    beta                  10  ready         S
+
+=== Phase migration: try to remove beta (should error — items reference it) ===
+error: 3 items reference phase "beta" — pass --move-to <other-slug> to migrate, or move them first.
+(expected non-zero exit)
+
+=== Phase migration: remove beta with --move-to v1 ===
+✓ removed phase beta (migrated to v1)
+EPIC-001     v1                    10  ready         Project setup
+
+=== Uninstall (preserving spine, no prompt) ===
+✓ kadai integration removed (spine preserved)
+MCP entry?  missing
+Hook?       missing
+Claude.md?  missing
+Spine?      present
+```
+
+### Verdict: PASS
+
+Tech-debt drained: atomic counter writes, no `as any`/`@ts-ignore` in CLI, uninstall + safe phase migration, prose markdown styling.
