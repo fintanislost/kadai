@@ -77,7 +77,7 @@ docs/wiki/post-mvp.md                      # MODIFIED — move Plan 6 items to "
 
 **Goal:** `kadai set-status <id> <status> [--reason <text>]` — thin CLI wrapper over the existing `setStatus` core operation. Validates the transition; exits non-zero with stderr message on illegal transition or unknown ID.
 
-- [ ] **Step 1: Failing test**
+- [x] **Step 1: Failing test**
 
 Create `/home/fintan/repos/kadai/tests/cli/set-status.test.ts`:
 
@@ -123,9 +123,9 @@ test('runSetStatus accepts story review transition (story-only state)', () => {
 });
 ```
 
-- [ ] **Step 2:** `bun test tests/cli/set-status.test.ts` — expect FAIL.
+- [x] **Step 2:** `bun test tests/cli/set-status.test.ts` — expect FAIL.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `/home/fintan/repos/kadai/src/cli/set-status.ts`:
 
@@ -166,9 +166,9 @@ export const setStatusCommand = new Command('set-status')
   });
 ```
 
-- [ ] **Step 4:** `bun test tests/cli/set-status.test.ts` — expect 4 PASS.
+- [x] **Step 4:** `bun test tests/cli/set-status.test.ts` — expect 4 PASS.
 
-- [ ] **Step 5: Register in CLI entry**
+- [x] **Step 5: Register in CLI entry**
 
 In `/home/fintan/repos/kadai/src/cli/index.ts`, add the import + registration (alongside the existing commands):
 
@@ -179,7 +179,7 @@ import { setStatusCommand } from './set-status';
 program.addCommand(setStatusCommand);
 ```
 
-- [ ] **Step 6: Smoke-test the CLI**
+- [x] **Step 6: Smoke-test the CLI**
 
 ```bash
 TMP=$(mktemp -d) && cd "$TMP" && \
@@ -194,7 +194,7 @@ TMP=$(mktemp -d) && cd "$TMP" && \
 
 Expected: first set-status succeeds (status → in_progress); second fails with "Illegal transition" + exit 1; third fails with "Item not found" + exit 1.
 
-- [ ] **Step 7: Update docs**
+- [x] **Step 7: Update docs**
 
 In `/home/fintan/repos/kadai/docs/wiki/cli-reference.md`, add a new section after `kadai pick`:
 
@@ -214,7 +214,7 @@ The `--reason` flag is accepted (logged in CLI output) but not persisted in MVP 
 For programmatic use, the MCP tool `mcp__kadai__set_status` does the same thing.
 ```
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -235,7 +235,7 @@ git commit -m "feat(cli): add 'kadai set-status' command [Plan-6 Task-1]"
 
 **Goal:** `kadai init -y` should leave the spine in a usable state. Currently it creates `.kadai/` but no epic — so the next thing the user runs (`kadai add feature --parent EPIC-001`) errors. Fix: with `--yes`, also create EPIC-001 titled "Project setup" using the same code path the wizard uses.
 
-- [ ] **Step 1: Add a failing test**
+- [x] **Step 1: Add a failing test**
 
 Append to `/home/fintan/repos/kadai/tests/cli/init.test.ts`:
 
@@ -254,9 +254,9 @@ test('runInit with skipFirstEpic=false creates EPIC-001 (matches what -y does af
 });
 ```
 
-- [ ] **Step 2:** `bun test tests/cli/init.test.ts` — should PASS already (this is a documenting test; the building block already works).
+- [x] **Step 2:** `bun test tests/cli/init.test.ts` — should PASS already (this is a documenting test; the building block already works).
 
-- [ ] **Step 3: Modify the init action handler**
+- [x] **Step 3: Modify the init action handler**
 
 In `/home/fintan/repos/kadai/src/cli/init.ts`, replace the `initCommand.action` body with:
 
@@ -321,9 +321,9 @@ In `/home/fintan/repos/kadai/src/cli/init.ts`, replace the `initCommand.action` 
 
 (Only one line changed semantically — `createFirstEpic = yes` instead of `false` — but the surrounding `let firstEpicTitle = yes ? 'Project setup' : ''` is the second change. The rest is identical to before.)
 
-- [ ] **Step 4:** `bun test tests/cli/init.test.ts` — all PASS (existing tests unchanged).
+- [x] **Step 4:** `bun test tests/cli/init.test.ts` — all PASS (existing tests unchanged).
 
-- [ ] **Step 5: Smoke-test the new behavior**
+- [x] **Step 5: Smoke-test the new behavior**
 
 ```bash
 TMP=$(mktemp -d) && cd "$TMP" && \
@@ -335,7 +335,7 @@ TMP=$(mktemp -d) && cd "$TMP" && \
 
 Expected: `kadai init -y` now creates EPIC-001 "Project setup"; subsequent `kadai add feature --epic EPIC-001` succeeds without "parent not found".
 
-- [ ] **Step 6: Update docs**
+- [x] **Step 6: Update docs**
 
 In `/home/fintan/repos/kadai/docs/wiki/cli-reference.md`, update the `kadai init` section's `-y` row:
 
@@ -349,7 +349,7 @@ To:
 | `-y, --yes` | Skip prompts, use defaults; creates EPIC-001 titled "Project setup" so the spine is usable immediately |
 ```
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -741,13 +741,13 @@ git commit -m "test(dogfood): Plan 6 verification via claude -p shell method [Pl
 
 ## Plan 6 self-review checklist
 
-- [ ] All 7 tasks above completed; checkboxes ticked.
-- [ ] `bun test` passes (~181+ tests including the 4 new set-status tests).
-- [ ] `bun run typecheck` passes.
-- [ ] `kadai set-status` works end-to-end (smoke test in Task 1 step 6).
-- [ ] `kadai init -y` creates EPIC-001 (smoke test in Task 2 step 5).
-- [ ] Plugin v0.2.0 in the manifest.
-- [ ] post-mvp.md updated: Plan 6 in "Recently shipped"; Plan 7 marked 🟢 **next**.
+- [x] All 7 tasks above completed; checkboxes ticked.
+- [x] `bun test` passes (182/0 — including the 4 new set-status tests).
+- [x] `bun run typecheck` passes.
+- [x] `kadai set-status` works end-to-end (verified in Task 7 dogfood: STORY-001 → review via CLI).
+- [x] `kadai init -y` creates EPIC-001 (verified in Task 7 dogfood: "Project setup" auto-created).
+- [x] Plugin v0.2.0 in the manifest.
+- [x] post-mvp.md updated: Plan 6 in "Recently shipped"; Plan 7 marked 🟢 **next**.
 - [x] Dogfood verification (Task 7) ran or was documented as user-manual.
 
 ---
