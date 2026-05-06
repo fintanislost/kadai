@@ -5,12 +5,15 @@
 html, body, #root {
   height: 100%;
   margin: 0;
-  background: #1e1e22;
-  color: #e4e4e7;
-  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  background: #0c0c0e;
+  color: #f4f4f5;
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'Cascadia Code', Menlo, monospace;
+  font-feature-settings: 'cv11', 'ss01';
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Skeleton loader — used by <Skeleton> with `animate-shimmer`. */
+/* Skeleton loader */
 .skeleton {
   background: linear-gradient(
     90deg,
@@ -21,19 +24,18 @@ html, body, #root {
   background-size: 200% 100%;
 }
 
-/* Section-label utility: uppercase, tracked, muted. Replaces ad-hoc
-   `text-xs font-bold uppercase tracking-wider text-muted` chains. */
+/* Section-label utility */
 .section-label {
-  font-size: 0.6875rem;     /* 11px */
+  font-size: 0.6875rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: rgb(156 163 175);  /* matches text-muted */
+  letter-spacing: 0.08em;
+  color: rgb(113 113 122);
 }
 .section-label-sm {
-  font-size: 0.625rem;      /* 10px */
+  font-size: 0.625rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: rgb(156 163 175);
+  letter-spacing: 0.08em;
+  color: rgb(113 113 122);
 }

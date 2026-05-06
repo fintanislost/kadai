@@ -116,7 +116,7 @@ kadai-plugin/.claude-plugin/plugin.json                   # MODIFIED: 1.2.0 → 
 
 **Goal:** Land the foundation visuals so subsequent tasks build on top of them. No new components yet — just tokens, font, topbar, and refined StatusBadge.
 
-- [ ] **Step 1: Install JetBrains Mono via @fontsource**
+- [x] **Step 1: Install JetBrains Mono via @fontsource**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -130,7 +130,7 @@ grep '"@fontsource/jetbrains-mono"' package.json
 
 Expected: a `"@fontsource/jetbrains-mono": "^5.0.x"` line.
 
-- [ ] **Step 2: Import the font in main.tsx**
+- [x] **Step 2: Import the font in main.tsx**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/main.tsx`. Add these imports near the top:
 
@@ -141,7 +141,7 @@ import '@fontsource/jetbrains-mono/600.css';
 import '@fontsource/jetbrains-mono/700.css';
 ```
 
-- [ ] **Step 3: Update tailwind.config.js with refined tokens**
+- [x] **Step 3: Update tailwind.config.js with refined tokens**
 
 Replace `/home/fintan/repos/kadai/src/web/frontend/tailwind.config.js` ENTIRELY with:
 
@@ -198,7 +198,7 @@ export default {
 };
 ```
 
-- [ ] **Step 4: Update styles.css**
+- [x] **Step 4: Update styles.css**
 
 Replace `/home/fintan/repos/kadai/src/web/frontend/src/styles.css` ENTIRELY with:
 
@@ -246,7 +246,7 @@ html, body, #root {
 }
 ```
 
-- [ ] **Step 5: Refresh Layout.tsx topbar**
+- [x] **Step 5: Refresh Layout.tsx topbar**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/components/Layout.tsx`. Replace the `<header>` element entirely (keep the `ProjectModeProvider` / `LiveUpdatesProvider` wrappers and the `<main>` body unchanged):
 
@@ -281,7 +281,7 @@ Read `/home/fintan/repos/kadai/src/web/frontend/src/components/Layout.tsx`. Repl
 
 (Keep the existing data-loading useEffect for `picked` and `phases`; the phase pills are removed from the topbar — they move to the Home hero in Task 7.)
 
-- [ ] **Step 6: Refresh StatusBadge.tsx**
+- [x] **Step 6: Refresh StatusBadge.tsx**
 
 Replace `/home/fintan/repos/kadai/src/web/frontend/src/components/StatusBadge.tsx` ENTIRELY with:
 
@@ -318,7 +318,7 @@ export function StatusBadge({ status, size = 'xs', className = '' }: Props) {
 }
 ```
 
-- [ ] **Step 7: Build + verify**
+- [x] **Step 7: Build + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -329,11 +329,11 @@ bun test
 
 Expected: build clean, typecheck clean, all unit tests pass. Some E2E selectors will likely break (specifically `text=Picked:` / phase-pill assertions in the topbar) — those will be fixed in Task 9.
 
-- [ ] **Step 8: Tick the step checkboxes for Task 1 in the plan**
+- [x] **Step 8: Tick the step checkboxes for Task 1 in the plan**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-17-web-viewer-redesign.md`, find Task 1 and tick all step checkboxes.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

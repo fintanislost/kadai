@@ -1,13 +1,13 @@
 import type { Status } from '../types';
 
-const BG_BY_STATUS: Record<Status, string> = {
-  backlog:     'bg-status-backlog/20 text-status-backlog ring-1 ring-status-backlog/30',
-  ready:       'bg-status-ready/20 text-status-ready ring-1 ring-status-ready/30',
-  in_progress: 'bg-status-in_progress/20 text-status-in_progress ring-1 ring-status-in_progress/30',
-  blocked:     'bg-status-blocked/20 text-status-blocked ring-1 ring-status-blocked/30',
-  review:      'bg-status-review/20 text-status-review ring-1 ring-status-review/30',
-  done:        'bg-status-done/20 text-status-done ring-1 ring-status-done/30',
-  cancelled:   'bg-status-cancelled/30 text-zinc-400 ring-1 ring-status-cancelled/40 line-through opacity-70',
+const COLORS: Record<Status, { bg: string; text: string; ring: string }> = {
+  backlog:     { bg: 'bg-white/[0.04]',                 text: 'text-status-backlog',     ring: 'ring-white/10' },
+  ready:       { bg: 'bg-status-ready/10',              text: 'text-status-ready',       ring: 'ring-status-ready/20' },
+  in_progress: { bg: 'bg-status-in_progress/10',        text: 'text-status-in_progress', ring: 'ring-status-in_progress/20' },
+  blocked:     { bg: 'bg-status-blocked/10',            text: 'text-status-blocked',     ring: 'ring-status-blocked/20' },
+  review:      { bg: 'bg-status-review/10',             text: 'text-status-review',      ring: 'ring-status-review/20' },
+  done:        { bg: 'bg-status-done/10',               text: 'text-status-done',        ring: 'ring-status-done/20' },
+  cancelled:   { bg: 'bg-status-cancelled/20 line-through opacity-70', text: 'text-text-tertiary', ring: 'ring-white/10' },
 };
 
 interface Props {
@@ -17,11 +17,13 @@ interface Props {
 }
 
 export function StatusBadge({ status, size = 'xs', className = '' }: Props) {
-  const sizeClass = size === 'sm' ? 'text-xs px-2 py-0.5' : 'text-[10px] px-1.5 py-0.5';
+  const c = COLORS[status];
+  const sizeClass = size === 'sm' ? 'text-xs px-2 py-0.5' : 'text-[10.5px] px-2 py-[3px]';
   return (
     <span
-      className={`${sizeClass} ${BG_BY_STATUS[status]} rounded font-medium tracking-wide uppercase ${className}`}
+      className={`inline-flex items-center gap-1.5 ${sizeClass} ${c.bg} ${c.text} rounded font-semibold tracking-[0.06em] uppercase ring-1 ring-inset ${c.ring} ${className}`}
     >
+      <span className={`w-[5px] h-[5px] rounded-full bg-current ${status === 'cancelled' ? 'hidden' : ''}`} />
       {status.replace('_', ' ')}
     </span>
   );

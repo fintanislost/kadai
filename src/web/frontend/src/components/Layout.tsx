@@ -35,49 +35,29 @@ export function Layout() {
     <ProjectModeProvider>
       <LiveUpdatesProvider>
         <div className="min-h-screen flex flex-col">
-          <header className="bg-panel/80 backdrop-blur border-b border-zinc-800 px-6 py-2.5">
-            <div className="flex items-center gap-6">
-              {/* LEFT: brand */}
-              <Link to="/" className="font-bold text-lg tracking-tight flex items-center gap-2">
-                <span className="text-emerald-400">●</span> Kadai
+          <header className="bg-surface-1/70 backdrop-blur border-b border-white/[0.06] px-8 py-3">
+            <div className="flex items-center gap-7 max-w-[1400px] mx-auto">
+              <Link to="/" className="font-semibold tracking-tight flex items-center gap-2.5 text-[15px]">
+                <span className="w-[18px] h-[18px] rounded bg-text-primary text-bg flex items-center justify-center text-[11px] font-extrabold tracking-tighter">k</span>
+                Kadai
               </Link>
-
-              {/* MID-LEFT: project context (multi-mode only) */}
               <ProjectIndicator />
-
-              {/* MID: nav */}
-              <nav className="flex items-center gap-4 text-sm">
-                <Link to="/activity" className="text-muted hover:text-zinc-200 transition-colors">Activity</Link>
-                <Link to="/compare" className="text-muted hover:text-zinc-200 transition-colors">Compare</Link>
+              <nav className="flex items-center gap-5 text-[13.5px]">
+                <Link to="/activity" className="text-text-tertiary hover:text-text-primary transition-colors">Activity</Link>
+                <Link to="/compare" className="text-text-tertiary hover:text-text-primary transition-colors">Compare</Link>
               </nav>
-
-              {/* CENTER: search (grows) */}
-              <div className="flex-1 max-w-md">
+              <div className="flex-1 max-w-[380px]">
                 <SearchBox />
               </div>
-
-              {/* RIGHT: phase pills + picked indicator */}
-              <div className="flex items-center gap-3">
-                <div className="hidden md:flex items-center gap-1.5">
-                  {phases.map(p => (
-                    <span
-                      key={p.slug}
-                      className="px-2 py-0.5 rounded-full text-[10px] font-medium tracking-wide uppercase ring-1"
-                      style={{ background: p.color + '15', color: p.color, borderColor: p.color + '40' }}
-                    >
-                      {p.display}
-                    </span>
-                  ))}
-                </div>
-                <div className="text-sm">
-                  {picked ? (
-                    <span className="bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/30 px-3 py-1 rounded-full font-medium">
-                      ● {picked.data.id}
-                    </span>
-                  ) : (
-                    <span className="text-muted text-xs">Nothing picked</span>
-                  )}
-                </div>
+              <div className="text-sm">
+                {picked ? (
+                  <span className="bg-white/[0.04] text-text-secondary border border-white/[0.10] rounded-md px-2.5 py-1 inline-flex items-center gap-1.5 text-xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-status-in_progress" />
+                    Picked: <span className="text-text-primary font-medium">{picked.data.id}</span>
+                  </span>
+                ) : (
+                  <span className="text-text-tertiary text-xs">Nothing picked</span>
+                )}
               </div>
             </div>
           </header>
