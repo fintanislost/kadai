@@ -39,6 +39,18 @@ See above sections — Plans 7-14 cover all of spec §13.
 
 ## Recently shipped (as items move out of this list)
 
+### Plan 16 — Visual polish (shipped 2026-05-06)
+
+- 7-status color palette (`status-backlog/ready/in_progress/blocked/review/done/cancelled`) as Tailwind tokens
+- StatusBadge component rolled out to every status display
+- KindIcon component (lucide-react) on epic/feature/story/task labels everywhere
+- Skeleton loaders replace "Loading or not found…" text on Home / Epic / Feature / Story / Activity
+- EmptyState component with icon + headline + CLI hint replaces every italic placeholder
+- Header refresh: brand + nav + centered search + project context + picked indicator with proper visual hierarchy
+- Typography pass: `.section-label` utility replaces ad-hoc `text-xs font-bold uppercase tracking-wider` chains
+- New runtime dep: `lucide-react` (~10kB tree-shaken)
+- Plugin version bumped to 1.2.0
+
 ### Plan 15 — Multi-project switcher (shipped 2026-05-06)
 
 - `~/.kadai/known-projects.json` registry + `core/projects.ts` helpers

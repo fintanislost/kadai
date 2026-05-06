@@ -365,7 +365,7 @@ Expected: build clean, typecheck clean, 332 tests pass (no functional change).
 
 Tick all step checkboxes for Task 2.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -843,7 +843,7 @@ EOF
 - Append: `docs/dogfood-acceptance-test.md`
 - Modify: `docs/superpowers/plans/2026-05-06-kadai-16-visual-polish.md`
 
-- [ ] **Step 1: Update web-viewer.md**
+- [x] **Step 1: Update web-viewer.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/web-viewer.md`, add a brief section near the top (after the layout description):
 
@@ -856,7 +856,7 @@ In `/home/fintan/repos/kadai/docs/wiki/web-viewer.md`, add a brief section near 
 - **Loading states** use shimmering skeleton placeholders (no spinners, no "Loading..." text).
 ```
 
-- [ ] **Step 2: Update post-mvp.md**
+- [x] **Step 2: Update post-mvp.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`, in the "Recently shipped" section ABOVE `### Plan 15`, insert:
 
@@ -876,11 +876,11 @@ In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`, in the "Recently shipped" s
 
 (Note that this plan was added AFTER the "backlog drained" milestone in Plan 15; that's fine — a polish-pass plan was identified by the user as worth doing on top.)
 
-- [ ] **Step 3: Bump plugin version**
+- [x] **Step 3: Bump plugin version**
 
 In `/home/fintan/repos/kadai/kadai-plugin/.claude-plugin/plugin.json`, change `"version": "1.1.0"` to `"version": "1.2.0"`.
 
-- [ ] **Step 4: Dogfood — visual smoke test**
+- [x] **Step 4: Dogfood — visual smoke test**
 
 ```bash
 TMP=$(mktemp -d -t kadai-plan16-XXXXXX)
@@ -919,7 +919,7 @@ cd / && rm -rf "$TMP"
 
 (In automated runs this is a no-op visual check; capture that the server started + responded to a curl on `/`.)
 
-- [ ] **Step 5: Append a section to docs/dogfood-acceptance-test.md**
+- [x] **Step 5: Append a section to docs/dogfood-acceptance-test.md**
 
 APPEND:
 
@@ -945,7 +945,7 @@ Built the SPA + ran kadai serve against a populated tmp project. Visual smoke ch
 The viewer no longer reads as "early internet." Distinctive status colors, kind icons, and structured empty/loading states give it a proper-product feel.
 ```
 
-- [ ] **Step 6: Run all the final checks**
+- [x] **Step 6: Run all the final checks**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -957,13 +957,13 @@ bunx playwright test
 
 Expected: every step exits clean.
 
-- [ ] **Step 7: Tick the Task 6 checkboxes + Plan 16 self-review checklist**
+- [x] **Step 7: Tick the Task 6 checkboxes + Plan 16 self-review checklist**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-16-visual-polish.md`:
 - Tick all step checkboxes for Task 6
 - Tick all checkboxes in the "Plan 16 self-review checklist" section
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -985,19 +985,19 @@ EOF
 
 ## Plan 16 self-review checklist
 
-- [ ] All 6 tasks completed; checkboxes ticked.
-- [ ] `bun test` passes (332 — no functional change).
-- [ ] `bun run typecheck` passes.
-- [ ] `bunx playwright test` passes (18/18).
-- [ ] Status badges color-coded across all pages.
-- [ ] Kind icons appear on item labels everywhere (epic/feature/story/task).
-- [ ] Skeleton loaders show during data fetch (no more "Loading or not found…" text).
-- [ ] Empty states use structured icon+title+hint format.
-- [ ] Header has clear visual hierarchy (brand / project / nav / search / context / picked).
-- [ ] `.section-label` utility used consistently in pages.
-- [ ] Plugin v1.2.0 in the manifest.
-- [ ] post-mvp.md: Plan 16 in "Recently shipped".
-- [ ] web-viewer.md: visual conventions section added.
+- [x] All 6 tasks completed; checkboxes ticked.
+- [x] `bun test` passes (332 — no functional change).
+- [x] `bun run typecheck` passes.
+- [x] `bunx playwright test` passes (18/18).
+- [x] Status badges color-coded across all pages.
+- [x] Kind icons appear on item labels everywhere (epic/feature/story/task).
+- [x] Skeleton loaders show during data fetch (no more "Loading or not found…" text).
+- [x] Empty states use structured icon+title+hint format.
+- [x] Header has clear visual hierarchy (brand / project / nav / search / context / picked).
+- [x] `.section-label` utility used consistently in pages.
+- [x] Plugin v1.2.0 in the manifest.
+- [x] post-mvp.md: Plan 16 in "Recently shipped".
+- [x] web-viewer.md: visual conventions section added.
 
 ---
 

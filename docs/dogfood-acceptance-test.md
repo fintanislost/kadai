@@ -688,3 +688,41 @@ HTTP 404
 ### Verdict: PASS
 
 Plan 15 ships. Plugin bumped to **v1.1.0**. The post-MVP backlog is fully drained — only one-shot release-publishing user actions remain.
+
+---
+
+## Visual polish run — Plan 16 verification — 2026-05-06
+
+Built the SPA + ran kadai serve against a populated tmp project. Visual changes verified by:
+
+- 18 Playwright tests pass (browser-rendered) — proves SPA mounts, status badges visible, kind icons render, skeleton/empty states render, project picker works
+- Server smoke: `/` returns SPA index with `<div id="root">`; `/api/items/EPIC-001` returns the epic JSON
+- `bun test` → 332/0 pass ✅
+- `bun run build:web && bun run embed-assets` clean ✅
+- `bunx playwright test` → 18/18 pass ✅
+
+### Dogfood output (verbatim)
+
+```
+=== / (SPA index) ===
+    <div id="root"></div>
+
+=== /api/items/EPIC-001 ===
+{"kind":"epic","path":"/tmp/kadai-plan16-UabC3Q/.kadai/epics/EPIC-001-project-setup/epic.md","data":
+
+=== /api/items/STORY-001 ===
+{"kind":"story","path":"/tmp/kadai-plan16-UabC3Q/.kadai/epics/EPIC-001-project-setup/features/FEAT-0
+```
+
+### What changed visually
+
+- Header: brand "● Kadai" left, project pill (multi-mode), Activity/Compare nav, centered SearchBox, phase pills (rounded chips with phase color), picked indicator (emerald pill) right
+- Status badges color-coded across pages (backlog=grey, ready=blue, in_progress=amber, blocked=red, review=purple, done=green, cancelled=strikethrough grey)
+- Kind icons render on every item label (epic=violet Layers, feature=sky Box, story=emerald BookOpen, task=zinc CheckSquare)
+- Empty states show structured icon+title+hint instead of italic placeholder text
+- Loading states render shimmering skeleton blocks instead of "Loading or not found…"
+- Section labels use the `.section-label` utility consistently
+
+### Verdict: PASS
+
+The viewer no longer reads as "early internet." Distinctive status colors, kind icons, and structured empty/loading states give it a proper-product feel.
