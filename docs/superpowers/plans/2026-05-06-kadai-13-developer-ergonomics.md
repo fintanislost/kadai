@@ -751,7 +751,7 @@ EOF
 
 **Goal:** Today, `renamePhase` and `removePhase` only edit `config.toml` — they leave items orphaned with the old phase slug. Make `renamePhase` walk the spine and rewrite each item's frontmatter (`phase: oldSlug → newSlug`); make `removePhase` refuse if items reference the phase, OR migrate items if `--move-to <slug>` is supplied (target must exist).
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/cli/phases-migration.test.ts`:
 
@@ -812,7 +812,7 @@ test('removePhase with moveTo errors when the target phase does not exist', () =
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -821,7 +821,7 @@ bun test tests/cli/phases-migration.test.ts
 
 Expected: tests fail — current `renamePhase` doesn't rewrite items; `removePhase` doesn't refuse, doesn't accept `moveTo`.
 
-- [ ] **Step 3: Update phases.ts to migrate items**
+- [x] **Step 3: Update phases.ts to migrate items**
 
 Read `/home/fintan/repos/kadai/src/cli/phases.ts`. Add these imports near the top:
 
@@ -926,7 +926,7 @@ phasesCommand
   });
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -937,11 +937,11 @@ bun run typecheck
 
 Expected: 5 new tests pass + 293 total (288 + 5). Typecheck clean.
 
-- [ ] **Step 5: Tick the step checkboxes for Task 4 in the plan**
+- [x] **Step 5: Tick the step checkboxes for Task 4 in the plan**
 
 Tick all step checkboxes for Task 4.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
