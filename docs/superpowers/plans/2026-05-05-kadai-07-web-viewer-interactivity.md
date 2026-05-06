@@ -733,7 +733,7 @@ EOF
 
 **Goal:** Add a panel in the story page showing the current status + a button per legal next state. Clicking sends `setItemStatus`; on success the local story state updates; on error a small inline message appears below the buttons. Optimistic UI: button click flips the status immediately; if the server rejects, revert + show the error.
 
-- [ ] **Step 1: Create the StatusPanel component**
+- [x] **Step 1: Create the StatusPanel component**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/components/StatusPanel.tsx`:
 
@@ -800,7 +800,7 @@ export function StatusPanel({ itemId, currentStatus, onStatusChange }: Props) {
 }
 ```
 
-- [ ] **Step 2: Wire StatusPanel into Story.tsx**
+- [x] **Step 2: Wire StatusPanel into Story.tsx**
 
 Edit `/home/fintan/repos/kadai/src/web/frontend/src/pages/Story.tsx`. At the top of the file, add:
 
@@ -901,7 +901,7 @@ return (
 );
 ```
 
-- [ ] **Step 3: Build the SPA + smoke-test in browser**
+- [x] **Step 3: Build the SPA + smoke-test in browser**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -927,7 +927,7 @@ cd / && rm -rf "$TMP"
 
 Expected curl output: `{"current":"ready","allowed":["in_progress","cancelled"]}`
 
-- [ ] **Step 4: Verify typecheck + tests still pass**
+- [x] **Step 4: Verify typecheck + tests still pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -937,7 +937,7 @@ bun test
 
 Expected: clean exit on both.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
