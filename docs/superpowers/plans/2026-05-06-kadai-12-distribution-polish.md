@@ -81,7 +81,7 @@ kadai-plugin/.claude-plugin/plugin.json              # MODIFIED: 0.7.0 → 0.8.0
 
 **Goal:** A small Bun script reads every file under `src/web/dist/` (any depth) and emits a TypeScript module that exports an `EMBEDDED_ASSETS` map of URL-path → file content (string for text, base64 string for binary). `server.ts` dynamically imports that module on first request; if the import fails (file doesn't exist, common in dev/test), it sets the embedded map to `{}` and the existing filesystem code path serves files. This keeps the dev/test loop unaffected while making `bun build --compile` produce a self-contained binary.
 
-- [ ] **Step 1: Write the embedded-assets generator**
+- [x] **Step 1: Write the embedded-assets generator**
 
 Create `/home/fintan/repos/kadai/scripts/embed-assets.ts`:
 
@@ -163,7 +163,7 @@ function main(): void {
 main();
 ```
 
-- [ ] **Step 2: Update .gitignore**
+- [x] **Step 2: Update .gitignore**
 
 Append to `/home/fintan/repos/kadai/.gitignore`:
 
@@ -174,7 +174,7 @@ dist/
 
 (If `dist/` is already ignored, leave it alone — only add what's missing.)
 
-- [ ] **Step 3: Generate the embedded module once to verify the script works**
+- [x] **Step 3: Generate the embedded module once to verify the script works**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -186,7 +186,7 @@ head -20 src/web/embedded-assets.generated.ts
 
 Expected: file exists, contains a `EMBEDDED_ASSETS` map with `/index.html`, `/assets/index.js`, `/assets/index.css` keys.
 
-- [ ] **Step 4: Write the failing tests**
+- [x] **Step 4: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/web/server-embedded.test.ts`:
 
@@ -250,7 +250,7 @@ test('GET /unknown-route returns the SPA index.html (client-side router fallback
 });
 ```
 
-- [ ] **Step 5: Run tests to verify they pass against the existing filesystem path**
+- [x] **Step 5: Run tests to verify they pass against the existing filesystem path**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -259,7 +259,7 @@ bun test tests/web/server-embedded.test.ts
 
 Expected: 4 tests pass (filesystem path is unchanged from before this task).
 
-- [ ] **Step 6: Modify server.ts to prefer embedded assets when available**
+- [x] **Step 6: Modify server.ts to prefer embedded assets when available**
 
 Read `/home/fintan/repos/kadai/src/web/server.ts`. Add this near the top (after the imports):
 
@@ -347,7 +347,7 @@ To:
   }
 ```
 
-- [ ] **Step 7: Run tests to verify they still pass**
+- [x] **Step 7: Run tests to verify they still pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -358,11 +358,11 @@ bun run typecheck
 
 Expected: 4 server-embedded tests pass + full suite 272 (268 + 4 new). Typecheck clean.
 
-- [ ] **Step 8: Tick the 8 step checkboxes for Task 1 in the plan**
+- [x] **Step 8: Tick the 8 step checkboxes for Task 1 in the plan**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-12-distribution-polish.md`, find Task 1 and tick all step checkboxes.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

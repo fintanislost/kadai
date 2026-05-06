@@ -5,5 +5,6 @@ dist/
 *.log
 src/web/dist/
 src/web/frontend/.vite/
+src/web/embedded-assets.generated.ts
 test-results/
 playwright-report/
