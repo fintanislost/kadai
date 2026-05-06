@@ -40,29 +40,31 @@ export function Activity() {
         <div className="text-xs text-text-tertiary">Activity</div>
         <h1 className="text-2xl font-bold">Recent changes</h1>
       </div>
-      {loading && entries.length === 0 && <SkeletonStack rows={6} />}
-      {!loading && entries.length === 0 && (
-        <EmptyState icon={Clock} title="No activity yet" hint="Edits, commits, and notes will appear here as work progresses." />
-      )}
       <Card title="Recent activity" count={entries.length > 0 ? entries.length : undefined}>
-        <ul className="space-y-1.5 px-5 py-3.5">
-          {entries.map((e, i) => (
-            <li key={i} className="flex items-baseline gap-3 text-sm">
-              <span className="text-xs text-text-tertiary font-mono w-44 shrink-0">{e.ts}</span>
-              <span className={`text-[10px] px-1.5 py-0.5 rounded ${KIND_BADGE[e.kind] ?? KIND_BADGE.other}`}>{e.kind}</span>
-              <span className="flex items-center gap-1 shrink-0">
-                <KindIcon kind={e.itemKind} size={12} />
-                <ProjectScopedLink
-                  activeSlug={activeSlug}
-                  to={ROUTE_BY_KIND[e.itemKind] ?? '/'}
-                  params={{ id: e.itemId }}
-                  className="text-xs text-text-tertiary hover:text-text-secondary"
-                >{e.itemId}</ProjectScopedLink>
-              </span>
-              <span className="text-text-secondary truncate">{e.payload}</span>
-            </li>
-          ))}
-        </ul>
+        {loading && entries.length === 0 && <div className="px-5 py-4"><SkeletonStack rows={6} /></div>}
+        {!loading && entries.length === 0 && (
+          <EmptyState icon={Clock} title="No activity yet" hint="Edits, commits, and notes will appear here as work progresses." />
+        )}
+        {entries.length > 0 && (
+          <ul className="space-y-1.5 px-5 py-3.5">
+            {entries.map((e, i) => (
+              <li key={i} className="flex items-baseline gap-3 text-sm">
+                <span className="text-xs text-text-tertiary font-mono w-44 shrink-0">{e.ts}</span>
+                <span className={`text-[10px] px-1.5 py-0.5 rounded ${KIND_BADGE[e.kind] ?? KIND_BADGE.other}`}>{e.kind}</span>
+                <span className="flex items-center gap-1 shrink-0">
+                  <KindIcon kind={e.itemKind} size={12} />
+                  <ProjectScopedLink
+                    activeSlug={activeSlug}
+                    to={ROUTE_BY_KIND[e.itemKind] ?? '/'}
+                    params={{ id: e.itemId }}
+                    className="text-xs text-text-tertiary hover:text-text-secondary"
+                  >{e.itemId}</ProjectScopedLink>
+                </span>
+                <span className="text-text-secondary truncate">{e.payload}</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </Card>
     </div>
   );
