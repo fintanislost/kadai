@@ -13,7 +13,7 @@ Bootstrap a kadai spine in the current directory.
 Touches:
 - `.kadai/{config.toml, README.md, .gitignore, epics/}`
 - `.mcp.json` (merges in the kadai MCP server registration)
-- `.claude/settings.json` (merges in PreToolUse + PostToolUse hooks for `Edit|Write`)
+- `.claude/settings.json` (merges in all four hook entries: PreToolUse, PostToolUse, UserPromptSubmit, Stop)
 - `CLAUDE.md` (appends a `## Kadai` section)
 
 Re-running is safe: nothing is overwritten or duplicated.
@@ -143,12 +143,18 @@ Tool surface (18 tools):
 
 All write tools validate against the schema + state machine.
 
-## `kadai hook (pre-tool-use|post-tool-use)`
+## `kadai hook (pre-tool-use|post-tool-use|user-prompt-submit|stop)`
 
-Hook scripts invoked by Claude Code via `.claude/settings.json`. Read JSON from stdin, exit 0 (allow) or 2 (block, with stderr message).
+Hook scripts invoked by Claude Code via `.claude/settings.json`. Read JSON from stdin, exit 0 (allow / inject) or 2 (block, with stderr message).
 
-- **`pre-tool-use`** — blocks `Edit`/`Write` to paths outside `.kadai/` and the configured allowlist when no story is picked. Honors `KADAI_BYPASS=1` (logged to `.kadai/bypass.log`).
-- **`post-tool-use`** — appends each `Edit`/`Write` to the picked story's `changelog.md` if `change_capture.enabled = true`.
+| Subcommand | Trigger | Effect |
+|---|---|---|
+| `pre-tool-use` | Before `Edit` / `Write` | Blocks edits to paths outside `.kadai/` and the configured allowlist when no story is picked. Honors `KADAI_BYPASS=1` (logged to `.kadai/bypass.log`). |
+| `post-tool-use` | After `Edit` / `Write` | Appends each edit to the picked story's `changelog.md` if `change_capture.enabled = true`. |
+| `user-prompt-submit` | Before each user prompt | Injects an `[kadai-active-story]` context block into the prompt when a story is picked (id, title, phase, status, spec/plan attachments, acceptance criteria). Silent otherwise. |
+| `stop` | After Claude finishes a turn | If the picked story is `in_progress` AND the changelog has fresh entries (within 30 minutes), prints a JSON `{"reason": "..."}` reminder; Claude Code surfaces it on the next prompt. Silent otherwise. |
+
+`kadai init` registers all four entries in `.claude/settings.json` automatically. Re-running `init` is safe (idempotent on hook entries).
 
 ## `kadai serve [options]`
 

@@ -467,3 +467,61 @@ Verified `kadai sync` end-to-end against an ephemeral git repo seeded with kadai
 ### Verdict: PASS
 
 Git → changelog flow is end-to-end correct, idempotent, and dry-run safe.
+
+---
+
+## Hook polish run — Plan 11 verification — 2026-05-06
+
+Verified the two new hook subcommands end-to-end with `echo | kadai hook ...`.
+
+- `kadai init -y` registered all 4 hook events in `.claude/settings.json` ✅
+- `kadai hook user-prompt-submit` with no story picked → silent, exit 0 ✅
+- After `kadai pick STORY-001`, `kadai hook user-prompt-submit` → emitted `[kadai-active-story]` context block with id/title/phase/status ✅
+- `kadai hook stop` with no recent changelog → silent ✅
+- `kadai hook stop` after fresh changelog write → JSON `{"reason":"Picked story STORY-001 is still in_progress..."}` ✅
+- `bun test` → 268/0 pass ✅
+
+### Dogfood output (verbatim)
+
+```
+=== settings.json hooks ===
+{
+  "hooks": {
+    "PreToolUse": [
+      { "matcher": "Edit|Write", "hooks": [{ "type": "command", "command": "kadai hook pre-tool-use" }] }
+    ],
+    "PostToolUse": [
+      { "matcher": "Edit|Write", "hooks": [{ "type": "command", "command": "kadai hook post-tool-use" }] }
+    ],
+    "UserPromptSubmit": [
+      { "matcher": "", "hooks": [{ "type": "command", "command": "kadai hook user-prompt-submit" }] }
+    ],
+    "Stop": [
+      { "matcher": "", "hooks": [{ "type": "command", "command": "kadai hook stop" }] }
+    ]
+  }
+}
+
+=== user-prompt-submit (no story picked) ===
+(exit code: 0)
+
+=== pick STORY-001 ===
+
+=== user-prompt-submit (story picked) ===
+[kadai-active-story]
+STORY-001 — Implement add(a,b)
+phase=mvp status=in_progress parent=FEAT-001
+[/kadai-active-story]
+(exit code: 0)
+
+=== stop hook (no recent changelog) ===
+(exit code: 0)
+
+=== simulate fresh changelog activity, then stop ===
+{"reason":"Picked story STORY-001 is still in_progress. Run `kadai set-status STORY-001 review` (or done) when finished, or `kadai unpick` to step back."}
+(exit code: 0)
+```
+
+### Verdict: PASS
+
+All four hook touchpoints are now wired. Real Claude Code session would inject context on each prompt and remind on stop.

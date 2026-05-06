@@ -682,7 +682,7 @@ EOF
 - Append: `docs/dogfood-acceptance-test.md`
 - Modify: `docs/superpowers/plans/2026-05-06-kadai-11-hook-polish.md`
 
-- [ ] **Step 1: Update cli-reference.md**
+- [x] **Step 1: Update cli-reference.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/cli-reference.md`, find the existing `## kadai hook` section. Replace its contents (or add to it) so it lists all four subcommands:
 
@@ -701,7 +701,7 @@ Hook scripts invoked by Claude Code via `.claude/settings.json`. Read JSON from 
 `kadai init` registers all four entries in `.claude/settings.json` automatically. Re-running `init` is safe (idempotent on hook entries).
 ````
 
-- [ ] **Step 2: Update concepts.md**
+- [x] **Step 2: Update concepts.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/concepts.md`, find an appropriate place (the "Hooks" section if it exists, or near the bottom). Add:
 
@@ -718,7 +718,7 @@ Kadai integrates with Claude Code through four hook events, all dispatched throu
 The first two are gating / capture (always-on while change_capture is enabled). The latter two are observability — they shape what Claude sees but never block work. All are registered automatically by `kadai init` in `.claude/settings.json`.
 ```
 
-- [ ] **Step 3: Update post-mvp.md**
+- [x] **Step 3: Update post-mvp.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`:
 
@@ -742,11 +742,11 @@ In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`:
 - Plugin version bumped to 0.7.0
 ```
 
-- [ ] **Step 4: Bump plugin version**
+- [x] **Step 4: Bump plugin version**
 
 In `/home/fintan/repos/kadai/kadai-plugin/.claude-plugin/plugin.json`, change `"version": "0.6.0"` to `"version": "0.7.0"`.
 
-- [ ] **Step 5: Dogfood verification**
+- [x] **Step 5: Dogfood verification**
 
 ```bash
 TMP=$(mktemp -d -t kadai-plan11-XXXXXX)
@@ -798,7 +798,7 @@ Expected:
 
 CAPTURE the actual output for the log entry.
 
-- [ ] **Step 6: Append a section to docs/dogfood-acceptance-test.md**
+- [x] **Step 6: Append a section to docs/dogfood-acceptance-test.md**
 
 APPEND:
 
@@ -824,7 +824,7 @@ All four hook touchpoints are now wired. Real Claude Code session would inject c
 
 (Use actual outputs from your dogfood run.)
 
-- [ ] **Step 7: Run all the final checks**
+- [x] **Step 7: Run all the final checks**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -836,13 +836,13 @@ bunx playwright test
 
 Expected: every step exits clean. (build:web + playwright are unchanged — no regression.)
 
-- [ ] **Step 8: Tick the Task 4 checkboxes + Plan 11 self-review checklist**
+- [x] **Step 8: Tick the Task 4 checkboxes + Plan 11 self-review checklist**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-11-hook-polish.md`:
 - Tick all 9 step checkboxes for Task 4
 - Tick all checkboxes in the "Plan 11 self-review checklist" section near the bottom
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -865,17 +865,17 @@ EOF
 
 ## Plan 11 self-review checklist
 
-- [ ] All 4 tasks completed; checkboxes ticked.
-- [ ] `bun test` passes (~268 tests).
-- [ ] `bun run typecheck` passes.
-- [ ] `bunx playwright test` passes (8/8 — no change).
-- [ ] `kadai hook user-prompt-submit` injects context when story picked, silent otherwise (verified in Task 4 dogfood).
-- [ ] `kadai hook stop` emits reminder JSON only when story is in_progress + recent changelog activity (verified in Task 4 dogfood).
-- [ ] `kadai init -y` lays down all 4 hook entries in `.claude/settings.json`.
-- [ ] Re-running `init` doesn't duplicate hook entries (idempotent).
-- [ ] Plugin v0.7.0 in the manifest.
-- [ ] post-mvp.md: Plan 11 in "Recently shipped"; Plan 12 marked 🟢 **next**.
-- [ ] cli-reference.md and concepts.md updated.
+- [x] All 4 tasks completed; checkboxes ticked.
+- [x] `bun test` passes (~268 tests).
+- [x] `bun run typecheck` passes.
+- [x] `bunx playwright test` passes (8/8 — no change).
+- [x] `kadai hook user-prompt-submit` injects context when story picked, silent otherwise (verified in Task 4 dogfood).
+- [x] `kadai hook stop` emits reminder JSON only when story is in_progress + recent changelog activity (verified in Task 4 dogfood).
+- [x] `kadai init -y` lays down all 4 hook entries in `.claude/settings.json`.
+- [x] Re-running `init` doesn't duplicate hook entries (idempotent).
+- [x] Plugin v0.7.0 in the manifest.
+- [x] post-mvp.md: Plan 11 in "Recently shipped"; Plan 12 marked 🟢 **next**.
+- [x] cli-reference.md and concepts.md updated.
 
 ---
 

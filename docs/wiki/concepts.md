@@ -68,6 +68,17 @@ The `PreToolUse(Edit, Write)` hook is the teeth: any `Edit` or `Write` to a path
 2. Add the path to `[guardrail.allowed_paths]` in `.kadai/config.toml`
 3. Bypass for one session (`KADAI_BYPASS=1` env var; logged to `.kadai/bypass.log`)
 
+### Hook touchpoints
+
+Kadai integrates with Claude Code through four hook events, all dispatched through the `kadai hook <subcommand>` CLI:
+
+- **`PreToolUse`** (Edit | Write) — blocks edits outside the spine when no story is picked.
+- **`PostToolUse`** (Edit | Write) — captures every edit into the picked story's `changelog.md`.
+- **`UserPromptSubmit`** — injects active-story context (id, title, status, attached spec/plan, acceptance criteria) into every prompt while a story is picked.
+- **`Stop`** — reminds the agent to update status when a turn ended with the story still `in_progress` and recent changelog activity.
+
+The first two are gating / capture (always-on while change_capture is enabled). The latter two are observability — they shape what Claude sees but never block work. All are registered automatically by `kadai init` in `.claude/settings.json`.
+
 ## Spec → feature, plan → story
 
 Kadai is also an **archive**. When you run `/brainstorming` (writes a spec) or `/writing-plans` (writes a plan):

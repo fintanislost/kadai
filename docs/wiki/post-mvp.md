@@ -12,16 +12,7 @@ For pure CLI/web/docs changes: `bun test` + `bun run typecheck` + targeted smoke
 
 The post-MVP work is organized as a series of focused plans, each ending in something visibly more useful. Order is by user-felt impact, not implementation complexity.
 
-### Plan 11 — Hook polish 🟢 **next**
-
-The two remaining hooks from spec §5.2.
-
-- **`UserPromptSubmit` hook** — injects "Active: STORY-042 — title. Spec: …. Plan step: …" into the prompt context when a story is picked.
-- **`Stop` hook** — if a story was picked and the turn ended without a status update, reminds.
-
-Estimate: small. Same shape as the existing two hooks.
-
-### Plan 12 — Distribution polish
+### Plan 12 — Distribution polish 🟢 **next**
 
 - `bun build --compile` actually exercised — single-binary distribution tested
 - Asset embedding into the binary (currently `kadai serve` reads `src/web/dist/` at runtime; would let the binary ship standalone)
@@ -85,6 +76,14 @@ See above sections — Plans 7-14 cover all of spec §13.
 ---
 
 ## Recently shipped (as items move out of this list)
+
+### Plan 11 — Hook polish (shipped 2026-05-06)
+
+- `kadai hook user-prompt-submit` — injects `[kadai-active-story]` block (id, title, phase, status, spec/plan/AC) into prompt context when a story is picked
+- `kadai hook stop` — reminds via `{"reason":"..."}` when a turn ended with the picked story still in_progress + recent changelog activity (30-min window)
+- `kadai init` now lays down all four hook entries (idempotent re-run)
+- 16 new tests (7 user-prompt-submit + 7 stop + 2 init regression)
+- Plugin version bumped to 0.7.0
 
 ### Plan 10 — Git integration (shipped 2026-05-06)
 
