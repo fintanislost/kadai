@@ -12,18 +12,13 @@ For pure CLI/web/docs changes: `bun test` + `bun run typecheck` + targeted smoke
 
 The post-MVP work is organized as a series of focused plans, each ending in something visibly more useful. Order is by user-felt impact, not implementation complexity.
 
-### Plan 14 — Multi-project + stretch 🟢 **next**
+### Plan 15 — Multi-project switcher 🟢 **next**
 
-Lower-priority but interesting.
+Browse multiple kadai-managed projects from one web viewer instance. Discovery via `~/.kadai/known-projects.json` (or similar), a project picker route, root-relative URL changes throughout the SPA.
 
-- Multi-project switcher in web viewer (browse multiple kadai-managed projects from one UI)
-- Activity feed (global stream of changes across all epics)
-- Per-phase comparison view (side-by-side scope diffing — "MVP vs full")
-- Markdown-only mode (run kadai without MCP/hooks for users who just want files + viewer)
-- `record_change` MCP tool (currently the PostToolUse hook writes directly to changelog; a tool would let agents add manual annotations)
-- Comprehensive Playwright E2E (currently one smoke test)
+- Originally bundled in Plan 14 but extracted because the multi-project surface is a substantially different concern.
 
-Estimate: large. Skip until earlier plans are solid.
+Estimate: medium-large.
 
 ---
 
@@ -51,6 +46,16 @@ See above sections — Plans 7-14 cover all of spec §13.
 ---
 
 ## Recently shipped (as items move out of this list)
+
+### Plan 14 — Stretch features (shipped 2026-05-06)
+
+- MCP `record_change` tool — agents append `note`-shaped annotations to the picked story's changelog
+- `kadai init --markdown-only` — spine + README only; skip MCP/hooks/CLAUDE.md integration
+- `GET /api/activity` + `/activity` page — flat reverse-chronological feed across the spine
+- `GET /api/compare?a=&b=` + `/compare` page — side-by-side phase comparison with common-title overlap
+- 6 new Playwright E2E flows (14 total) — illegal-transition error, search→detail click, plan attach, Activity, Compare ×2
+- 20 new unit tests (4 record_change + 3 markdown-only + 4 activity + 4 compare + 5 api: activity/compare)
+- Plugin version bumped to **1.0.0** — post-MVP backlog drained except multi-project + release publishing
 
 ### Plan 13 — Developer ergonomics (shipped 2026-05-06)
 

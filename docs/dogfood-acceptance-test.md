@@ -605,3 +605,36 @@ Spine?      present
 ### Verdict: PASS
 
 Tech-debt drained: atomic counter writes, no `as any`/`@ts-ignore` in CLI, uninstall + safe phase migration, prose markdown styling.
+
+---
+
+## Stretch features run — Plan 14 verification — 2026-05-06
+
+Verified the new behaviors end-to-end:
+
+- `kadai init --yes --markdown-only` — `.kadai/` created with config.toml + README; `.mcp.json`, `.claude/`, `CLAUDE.md` all absent ✅
+- `GET /api/activity` — returned `[]` (no changelogs seeded yet) — valid JSON array ✅
+- `GET /api/compare?a=mvp&b=v1` — returned `{a, b, common}` with `common.titles: ["Math"]` showing the cross-phase overlap ✅
+- `bun test` → 314/0 pass ✅
+- `bun run build:web` clean ✅
+- `bunx playwright test` → 14/14 pass (8 prior + 6 new) ✅
+
+### Dogfood output (verbatim)
+
+```
+=== markdown-only init ===
+.kadai/ contents: config.toml  .counters.json  epics/  .gitignore  README.md
+.mcp.json present? no
+.claude present?   no
+CLAUDE.md present? no
+
+=== /api/activity ===
+[]
+
+=== /api/compare?a=mvp&b=v1 ===
+{"a":{"phase":"mvp","items":[{"id":"EPIC-001","kind":"epic","title":"Project setup","status":"ready"},{"id":"FEAT-001","kind":"feature","title":"Math","status":"ready"},{"id":"STORY-001","kind":"story","title":"Add","status":"ready"}]},"b":{"phase":"v1","items":[{"id":"EPIC-002","kind":"epic","title":"Math","status":"ready"}]},"common":{"titles":["Math"]}}
+```
+
+### Verdict: PASS
+
+Plan 14 ships. Plugin bumped to **v1.0.0**. Post-MVP backlog drained except for the multi-project switcher (extracted to Plan 15) and the one-shot release-publishing user actions.

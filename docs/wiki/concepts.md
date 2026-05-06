@@ -126,3 +126,17 @@ Each story's `changelog.md` is appended to from two sources:
 - **`kadai sync`** — git commits whose message references the item's ID. Format: `` `- 2026-05-06T... `commit` <sha7> <subject>` ``
 
 The shapes are distinct on purpose so a single `changelog.md` can mix both without confusion. `kadai sync` dedups by short SHA, so re-running is safe.
+
+### Markdown-only mode
+
+`kadai init --markdown-only` creates the spine (`/.kadai/`) without installing the integration touch-points: no kadai entry in `.mcp.json`, no hooks in `.claude/settings.json`, no `## Kadai` section in `CLAUDE.md`. The CLI, web viewer, and `record_change` MCP tool still work; the agent guardrails (PreToolUse blocking, PostToolUse changelog capture) just don't fire because they aren't installed. Useful for human-only spine tracking or pre-staging a project for evaluation.
+
+### record_change
+
+The MCP `record_change(message)` tool appends a `note`-shaped line to the picked story's `changelog.md`. Three sources can write to a changelog, each with a distinct line shape:
+
+- `` `Write` <path> `` — PostToolUse hook
+- `` `commit` <sha> <subject> `` — `kadai sync`
+- `` `note` <free text> `` — MCP `record_change`
+
+The Activity page (`/activity` in the web viewer) renders all three uniformly with kind badges.

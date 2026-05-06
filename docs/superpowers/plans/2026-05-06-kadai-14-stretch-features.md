@@ -1276,7 +1276,7 @@ EOF
 - Append: `docs/dogfood-acceptance-test.md`
 - Modify: `docs/superpowers/plans/2026-05-06-kadai-14-stretch-features.md`
 
-- [ ] **Step 1: Update cli-reference.md**
+- [x] **Step 1: Update cli-reference.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/cli-reference.md`, find the existing `## kadai init` section. Add a row to the flag table:
 
@@ -1284,7 +1284,7 @@ In `/home/fintan/repos/kadai/docs/wiki/cli-reference.md`, find the existing `## 
 | `--markdown-only` | Create `.kadai/` + README only; skip `.mcp.json` / `.claude/settings.json` / `CLAUDE.md` integration. For users who just want files + the web viewer (no agent guardrails). |
 ```
 
-- [ ] **Step 2: Update api-reference.md**
+- [x] **Step 2: Update api-reference.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/api-reference.md`, find the "Read endpoints" table. Add two rows:
 
@@ -1333,7 +1333,7 @@ Lines that don't match the canonical shape are silently skipped.
 `common.titles` is a sorted unique list of titles that appear in both phases — a rough scope-overlap signal for "MVP vs Future" planning.
 ````
 
-- [ ] **Step 3: Update web-viewer.md**
+- [x] **Step 3: Update web-viewer.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/web-viewer.md`, find the "Layout" or "Pages" section. Add this paragraph:
 
@@ -1341,7 +1341,7 @@ In `/home/fintan/repos/kadai/docs/wiki/web-viewer.md`, find the "Layout" or "Pag
 The header has links to **Activity** (a flat reverse-chronological stream of all changelog entries across the spine) and **Compare** (side-by-side phase comparison; pass `?a=<phase>&b=<phase>` in the URL or pick from the available phases shown).
 ```
 
-- [ ] **Step 4: Update concepts.md**
+- [x] **Step 4: Update concepts.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/concepts.md`, find the section about hooks/changelogs/init or add a new subsection. Add:
 
@@ -1361,7 +1361,7 @@ The MCP `record_change(message)` tool appends a `note`-shaped line to the picked
 The Activity page (`/activity` in the web viewer) renders all three uniformly with kind badges.
 ```
 
-- [ ] **Step 5: Update post-mvp.md**
+- [x] **Step 5: Update post-mvp.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`:
 
@@ -1391,11 +1391,11 @@ Estimate: medium-large.
 - Plugin version bumped to **1.0.0** — post-MVP backlog drained except multi-project + release publishing
 ```
 
-- [ ] **Step 6: Bump plugin version**
+- [x] **Step 6: Bump plugin version**
 
 In `/home/fintan/repos/kadai/kadai-plugin/.claude-plugin/plugin.json`, change `"version": "0.9.0"` to `"version": "1.0.0"`.
 
-- [ ] **Step 7: Dogfood verification**
+- [x] **Step 7: Dogfood verification**
 
 ```bash
 TMP=$(mktemp -d -t kadai-plan14-XXXXXX)
@@ -1441,7 +1441,7 @@ CAPTURE the output. Expected:
 - /api/activity: returns `[]` (no changelogs yet) or a small list
 - /api/compare: returns `{"a":{"phase":"mvp","items":[...]},"b":{"phase":"v1","items":[...]},"common":{"titles":["Math"]}}`
 
-- [ ] **Step 8: Append a section to docs/dogfood-acceptance-test.md**
+- [x] **Step 8: Append a section to docs/dogfood-acceptance-test.md**
 
 APPEND:
 
@@ -1467,7 +1467,7 @@ Plan 14 ships. Plugin bumped to **v1.0.0**. Post-MVP backlog drained except for 
 
 (Adjust to match your actual run output.)
 
-- [ ] **Step 9: Run all the final checks**
+- [x] **Step 9: Run all the final checks**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1479,13 +1479,13 @@ bunx playwright test
 
 Expected: every step exits clean.
 
-- [ ] **Step 10: Tick the Task 6 checkboxes + Plan 14 self-review checklist**
+- [x] **Step 10: Tick the Task 6 checkboxes + Plan 14 self-review checklist**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-14-stretch-features.md`:
 - Tick all step checkboxes for Task 6
 - Tick all checkboxes in the "Plan 14 self-review checklist" section
 
-- [ ] **Step 11: Commit**
+- [x] **Step 11: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1510,17 +1510,17 @@ EOF
 
 ## Plan 14 self-review checklist
 
-- [ ] All 6 tasks completed; checkboxes ticked.
-- [ ] `bun test` passes (~312 tests).
-- [ ] `bun run typecheck` passes.
-- [ ] `bunx playwright test` passes (14/14).
-- [ ] `record_change` MCP tool works (verified in Task 1 tests).
-- [ ] `kadai init --markdown-only` skips integration files (verified in Task 2 tests + Task 6 dogfood).
-- [ ] `/api/activity` returns the parsed changelog feed (verified in Task 6 dogfood).
-- [ ] `/api/compare` returns `{a, b, common}` (verified in Task 6 dogfood).
-- [ ] Plugin v1.0.0 in the manifest.
-- [ ] post-mvp.md: Plan 14 in "Recently shipped"; Plan 15 (multi-project) marked 🟢 **next**.
-- [ ] cli-reference.md, api-reference.md, web-viewer.md, concepts.md updated.
+- [x] All 6 tasks completed; checkboxes ticked.
+- [x] `bun test` passes (~312 tests).
+- [x] `bun run typecheck` passes.
+- [x] `bunx playwright test` passes (14/14).
+- [x] `record_change` MCP tool works (verified in Task 1 tests).
+- [x] `kadai init --markdown-only` skips integration files (verified in Task 2 tests + Task 6 dogfood).
+- [x] `/api/activity` returns the parsed changelog feed (verified in Task 6 dogfood).
+- [x] `/api/compare` returns `{a, b, common}` (verified in Task 6 dogfood).
+- [x] Plugin v1.0.0 in the manifest.
+- [x] post-mvp.md: Plan 14 in "Recently shipped"; Plan 15 (multi-project) marked 🟢 **next**.
+- [x] cli-reference.md, api-reference.md, web-viewer.md, concepts.md updated.
 
 ---
 

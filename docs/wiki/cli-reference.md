@@ -9,6 +9,7 @@ Bootstrap a kadai spine in the current directory.
 | Flag | Effect |
 |---|---|
 | `-y, --yes` | Skip prompts, use defaults; creates EPIC-001 titled "Project setup" so the spine is usable immediately |
+| `--markdown-only` | Create `.kadai/` + README only; skip `.mcp.json` / `.claude/settings.json` / `CLAUDE.md` integration. For users who just want files + the web viewer (no agent guardrails). |
 
 Touches:
 - `.kadai/{config.toml, README.md, .gitignore, epics/}`
