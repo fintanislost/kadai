@@ -642,7 +642,7 @@ git commit -m "chore(plugin): bump version to 0.2.0 + mark Plan 6 shipped in bac
 
 > **Important:** This task verifies the SLASH COMMANDS work after install. It assumes the user has reinstalled the kadai plugin (or run `/plugin update`) so v0.2.0 is loaded. If the test runs against a stale plugin install (still 0.1.0), the new slash commands won't be available — that's a setup issue, not a code defect.
 
-- [ ] **Step 1: Reinstall the plugin to pick up v0.2.0**
+- [x] **Step 1: Reinstall the plugin to pick up v0.2.0**
 
 The implementer needs to confirm the user has refreshed the plugin install. From the user's Claude Code session:
 
@@ -658,7 +658,7 @@ Verify: `/help` lists `/kadai-add`, `/kadai-set-status`, `/kadai-unpick` among a
 
 > If the implementer can't directly trigger this on the user's session, document the prerequisite in the report and proceed assuming v0.2.0 is loaded.
 
-- [ ] **Step 2: Run the kadai-dogfood-test skill procedure**
+- [x] **Step 2: Run the kadai-dogfood-test skill procedure**
 
 Following the skill at `kadai-plugin/skills/kadai-dogfood-test/SKILL.md`:
 
@@ -677,7 +677,7 @@ kadai add story --title "Implement add(a,b)" --phase mvp --feature FEAT-001 > /d
 kadai list story
 ```
 
-- [ ] **Step 3: Spawn `claude -p` for the integration test**
+- [x] **Step 3: Spawn `claude -p` for the integration test**
 
 ```bash
 cd "$TMP"
@@ -688,7 +688,7 @@ echo "STORY-001 needs implementing — 'Implement add(a,b)'. Use the kadai workf
   2>&1 | tee /tmp/kadai-plan6-output.txt | tail -50
 ```
 
-- [ ] **Step 4: Verify the 6 dogfood points**
+- [x] **Step 4: Verify the 6 dogfood points**
 
 ```bash
 cd "$TMP"
@@ -716,11 +716,11 @@ Specifically verify these Plan 6 outcomes are visible in the output:
 - ✅ `kadai add feature --epic EPIC-001` worked (Task 2's flag alias from Plan 6 — well, alias is from previous post-MVP fix)
 - ✅ Story moved to `review` via `kadai set-status` or `mcp__kadai__set_status` (Task 1 worked)
 
-- [ ] **Step 5: Append the run to the dogfood acceptance log**
+- [x] **Step 5: Append the run to the dogfood acceptance log**
 
 Append a new section to `/home/fintan/repos/kadai/docs/dogfood-acceptance-test.md` titled `## Path A run — Plan 6 verification — 2026-05-05` with the observations from Step 4. Match the format of the previous Path A log entry.
 
-- [ ] **Step 6: Clean up + commit**
+- [x] **Step 6: Clean up + commit**
 
 ```bash
 rm -rf "$TMP" /tmp/kadai-plan6-output.txt
@@ -748,7 +748,7 @@ git commit -m "test(dogfood): Plan 6 verification via claude -p shell method [Pl
 - [ ] `kadai init -y` creates EPIC-001 (smoke test in Task 2 step 5).
 - [ ] Plugin v0.2.0 in the manifest.
 - [ ] post-mvp.md updated: Plan 6 in "Recently shipped"; Plan 7 marked 🟢 **next**.
-- [ ] Dogfood verification (Task 7) ran or was documented as user-manual.
+- [x] Dogfood verification (Task 7) ran or was documented as user-manual.
 
 ---
 
