@@ -415,7 +415,7 @@ EOF
 
 **Goal:** `GET /api/search?q=<query>` returns `SearchResult[]` (or `[]` for `q.length < 2`). 400 if `q` is missing entirely.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 APPEND to `/home/fintan/repos/kadai/tests/web/api.test.ts`:
 
@@ -451,7 +451,7 @@ test('GET /api/search with no q parameter returns 400', async () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -460,7 +460,7 @@ bun test tests/web/api.test.ts
 
 Expected: 4 new tests fail with 404 (route not registered).
 
-- [ ] **Step 3: Implement the endpoint**
+- [x] **Step 3: Implement the endpoint**
 
 Edit `/home/fintan/repos/kadai/src/web/api.ts`. Add this import alongside the existing ones:
 
@@ -480,7 +480,7 @@ Inside `handleApi`, after the `/api/phases` handler (or anywhere before the 404 
   }
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -489,7 +489,7 @@ bun test tests/web/api.test.ts
 
 Expected: all tests pass.
 
-- [ ] **Step 5: Run the full suite + typecheck**
+- [x] **Step 5: Run the full suite + typecheck**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -499,7 +499,7 @@ bun run typecheck
 
 Expected: 230 pass (226 + 4 new). Typecheck clean.
 
-- [ ] **Step 6: Tick the 5 checkboxes for Task 2 in the plan**
+- [x] **Step 6: Tick the 5 checkboxes for Task 2 in the plan**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-09-search.md`, find Task 2 and tick all 5 step checkboxes.
 

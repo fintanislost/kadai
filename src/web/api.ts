@@ -7,6 +7,7 @@ import { loadConfig } from '../config/load';
 import { readPicked } from '../core/picked';
 import { setStatus } from '../core/operations';
 import { legalNextStates } from '../core/state-machine';
+import { searchSpine } from '../core/search';
 import type { Item } from '../core/types';
 import type { ItemKind, Status } from '../core/state-machine';
 import type { EventBus } from './events';
@@ -37,6 +38,14 @@ export async function handleApi(req: Request, rootDir: string, bus?: EventBus): 
 
   if (path === '/api/phases') {
     return Response.json(loadConfig(rootDir).phases);
+  }
+
+  if (path === '/api/search' && req.method === 'GET') {
+    const q = url.searchParams.get('q');
+    if (q === null) {
+      return Response.json({ error: 'Missing required parameter: q' }, { status: 400 });
+    }
+    return Response.json(searchSpine(rootDir, q));
   }
 
   if (path === '/api/events' && req.method === 'GET') {

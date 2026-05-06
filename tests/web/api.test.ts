@@ -210,3 +210,33 @@ test('POST /api/items/:id/attach with bad kind returns 400', async () => {
   });
   expect(r.status).toBe(400);
 });
+
+test('GET /api/search?q=Auth returns matching items', async () => {
+  const r = await fetch(`${base()}/api/search?q=Auth`);
+  expect(r.status).toBe(200);
+  const json = await r.json();
+  expect(Array.isArray(json)).toBe(true);
+  expect(json.length).toBeGreaterThanOrEqual(1);
+  expect(json[0].id).toBe('EPIC-001');
+  expect(json[0].matchType).toBe('title');
+  expect(json[0].snippet).toContain('Auth');
+});
+
+test('GET /api/search?q=a returns empty list (under min query length)', async () => {
+  const r = await fetch(`${base()}/api/search?q=a`);
+  expect(r.status).toBe(200);
+  expect(await r.json()).toEqual([]);
+});
+
+test('GET /api/search?q= returns empty list (empty string)', async () => {
+  const r = await fetch(`${base()}/api/search?q=`);
+  expect(r.status).toBe(200);
+  expect(await r.json()).toEqual([]);
+});
+
+test('GET /api/search with no q parameter returns 400', async () => {
+  const r = await fetch(`${base()}/api/search`);
+  expect(r.status).toBe(400);
+  const json = await r.json();
+  expect(json.error).toMatch(/q/i);
+});
