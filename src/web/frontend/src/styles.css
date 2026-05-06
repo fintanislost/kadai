@@ -9,3 +9,14 @@ html, body, #root {
   color: #e4e4e7;
   font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
+
+/* Skeleton loader — used by <Skeleton> with `animate-shimmer`. */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.10) 50%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  background-size: 200% 100%;
+}

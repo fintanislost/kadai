@@ -95,7 +95,7 @@ The palette (consistent with existing semantic conventions):
 | `done` | `status-done` | `#34d399` | green — shipped |
 | `cancelled` | `status-cancelled` | `#52525b` | dim zinc — out of scope |
 
-- [ ] **Step 1: Update tailwind.config.js**
+- [x] **Step 1: Update tailwind.config.js**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/tailwind.config.js`. Replace it entirely with:
 
@@ -141,7 +141,7 @@ export default {
 
 (Tailwind v3 accepts underscores in arbitrary class names, so `bg-status-in_progress` works.)
 
-- [ ] **Step 2: Update styles.css with the skeleton background**
+- [x] **Step 2: Update styles.css with the skeleton background**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/styles.css`. Append:
 
@@ -158,7 +158,7 @@ Read `/home/fintan/repos/kadai/src/web/frontend/src/styles.css`. Append:
 }
 ```
 
-- [ ] **Step 3: Build the SPA + verify**
+- [x] **Step 3: Build the SPA + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -168,11 +168,11 @@ bun run typecheck
 
 Expected: clean. If Tailwind complains about the underscore in `bg-status-in_progress`, use the `safelist` config option to whitelist these class names. (Most Tailwind v3 setups handle them fine; if not, add a safelist entry.)
 
-- [ ] **Step 4: Tick the step checkboxes for Task 1 in the plan**
+- [x] **Step 4: Tick the step checkboxes for Task 1 in the plan**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-16-visual-polish.md`, find Task 1 and tick all step checkboxes.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
