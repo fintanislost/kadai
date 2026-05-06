@@ -763,7 +763,7 @@ EOF
 - Append: `docs/dogfood-acceptance-test.md`
 - Modify: `docs/superpowers/plans/2026-05-06-kadai-10-git-integration.md`
 
-- [ ] **Step 1: Update cli-reference.md**
+- [x] **Step 1: Update cli-reference.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/cli-reference.md`, find a good place near the other commands (after `kadai unpick` or before `kadai phases` is fine). Add this section:
 
@@ -797,7 +797,7 @@ Distinct from the hook-written format (`` `Write` src/foo.md ``) so the two coex
 When `auto_transitions.pr_merge_marks_story_done = true` (set via `kadai config auto_transitions.pr_merge_marks_story_done=true`), commits whose subject matches `^Merge pull request #N` AND reference a `STORY-NNN` will transition that story to `done` (only if the current status allows the transition).
 ````
 
-- [ ] **Step 2: Update concepts.md**
+- [x] **Step 2: Update concepts.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/concepts.md`, find the section about the changelog (search for "changelog" — there should be a paragraph or table mentioning it). Add this paragraph:
 
@@ -812,7 +812,7 @@ Each story's `changelog.md` is appended to from two sources:
 The shapes are distinct on purpose so a single `changelog.md` can mix both without confusion. `kadai sync` dedups by short SHA, so re-running is safe.
 ```
 
-- [ ] **Step 3: Update post-mvp.md**
+- [x] **Step 3: Update post-mvp.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`:
 
@@ -837,11 +837,11 @@ In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`:
 - Plugin version bumped to 0.6.0
 ```
 
-- [ ] **Step 4: Bump plugin version**
+- [x] **Step 4: Bump plugin version**
 
 In `/home/fintan/repos/kadai/kadai-plugin/.claude-plugin/plugin.json`, change `"version": "0.5.0"` to `"version": "0.6.0"`.
 
-- [ ] **Step 5: Dogfood verification**
+- [x] **Step 5: Dogfood verification**
 
 ```bash
 TMP=$(mktemp -d -t kadai-plan10-XXXXXX)
@@ -899,7 +899,7 @@ Expected:
 
 CAPTURE the output for the log entry.
 
-- [ ] **Step 6: Append a section to docs/dogfood-acceptance-test.md**
+- [x] **Step 6: Append a section to docs/dogfood-acceptance-test.md**
 
 APPEND:
 
@@ -925,7 +925,7 @@ Git → changelog flow is end-to-end correct, idempotent, and dry-run safe.
 
 (Use actual numbers from your run.)
 
-- [ ] **Step 7: Run all the final checks**
+- [x] **Step 7: Run all the final checks**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -937,13 +937,13 @@ bunx playwright test
 
 Expected: every step exits clean. (build:web + playwright are unchanged from Plan 9 — should still pass with no regression.)
 
-- [ ] **Step 8: Tick the Task 4 checkboxes + Plan 10 self-review checklist**
+- [x] **Step 8: Tick the Task 4 checkboxes + Plan 10 self-review checklist**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-10-git-integration.md`:
 - Tick all 9 step checkboxes for Task 4
 - Tick all checkboxes in the "Plan 10 self-review checklist" section near the bottom
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -966,17 +966,17 @@ EOF
 
 ## Plan 10 self-review checklist
 
-- [ ] All 4 tasks completed; checkboxes ticked.
-- [ ] `bun test` passes (~252 tests).
-- [ ] `bun run typecheck` passes.
-- [ ] `bunx playwright test` passes (8/8 — no change).
-- [ ] `kadai sync` works end-to-end (verified in Task 4 dogfood).
-- [ ] Idempotency verified (re-running adds 0 entries).
-- [ ] `--dry-run` does not modify disk.
-- [ ] Auto-transition on PR merge works when config flag enabled (verified in Task 2 tests).
-- [ ] Plugin v0.6.0 in the manifest.
-- [ ] post-mvp.md: Plan 10 in "Recently shipped"; Plan 11 marked 🟢 **next**.
-- [ ] cli-reference.md and concepts.md updated.
+- [x] All 4 tasks completed; checkboxes ticked.
+- [x] `bun test` passes (~252 tests).
+- [x] `bun run typecheck` passes.
+- [x] `bunx playwright test` passes (8/8 — no change).
+- [x] `kadai sync` works end-to-end (verified in Task 4 dogfood).
+- [x] Idempotency verified (re-running adds 0 entries).
+- [x] `--dry-run` does not modify disk.
+- [x] Auto-transition on PR merge works when config flag enabled (verified in Task 2 tests).
+- [x] Plugin v0.6.0 in the manifest.
+- [x] post-mvp.md: Plan 10 in "Recently shipped"; Plan 11 marked 🟢 **next**.
+- [x] cli-reference.md and concepts.md updated.
 
 ---
 

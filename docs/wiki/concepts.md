@@ -102,3 +102,12 @@ Each story directory ends up with: `story.md` + `spec.md` (inherited from featur
 ```
 
 Markdown with YAML frontmatter. Read with `cat`, diff with `git`, edit with any editor — but use `kadai add` for new items so the schema and ID counter stay correct.
+
+### Changelog dual-source
+
+Each story's `changelog.md` is appended to from two sources:
+
+- **PostToolUse hook** — every `Edit`/`Write` while a story is picked. Format: `` `- 2026-05-06T... `Write` src/foo.md` ``
+- **`kadai sync`** — git commits whose message references the item's ID. Format: `` `- 2026-05-06T... `commit` <sha7> <subject>` ``
+
+The shapes are distinct on purpose so a single `changelog.md` can mix both without confusion. `kadai sync` dedups by short SHA, so re-running is safe.

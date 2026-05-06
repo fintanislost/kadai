@@ -12,18 +12,7 @@ For pure CLI/web/docs changes: `bun test` + `bun run typecheck` + targeted smoke
 
 The post-MVP work is organized as a series of focused plans, each ending in something visibly more useful. Order is by user-felt impact, not implementation complexity.
 
-### Plan 10 — Git integration (`kadai sync`) 🟢 **next**
-
-Closes the loop on the "archive" promise — kadai records what was changed, when, and by which commit.
-
-- `kadai sync` CLI scrapes git log for `STORY-NNN` references in commit messages
-- Auto-appends matching commits to that story's `changelog.md` with SHA + date + message
-- (Optional flag) auto-transitions story to `done` on PR merge
-- Idempotent — re-running adds only new commits
-
-Estimate: medium. Needs git plumbing + dedup logic + tests against a real git repo fixture.
-
-### Plan 11 — Hook polish
+### Plan 11 — Hook polish 🟢 **next**
 
 The two remaining hooks from spec §5.2.
 
@@ -96,6 +85,15 @@ See above sections — Plans 7-14 cover all of spec §13.
 ---
 
 ## Recently shipped (as items move out of this list)
+
+### Plan 10 — Git integration (shipped 2026-05-06)
+
+- `kadai sync [--since <ref>] [--branch <name>] [--dry-run]` — scrapes git log for item ID refs and appends to `changelog.md`
+- `src/core/git.ts` — `listCommits()` shells out to `git log` with ASCII record separators
+- `src/core/sync.ts` — `syncChangelogs()` + `extractIdRefs()`; idempotent via short-SHA dedup
+- Auto-transition stories to `done` on `Merge pull request` commits when `auto_transitions.pr_merge_marks_story_done = true`
+- 22 new tests (7 git + 12 sync + 3 CLI)
+- Plugin version bumped to 0.6.0
 
 ### Plan 9 — Search (shipped 2026-05-06)
 

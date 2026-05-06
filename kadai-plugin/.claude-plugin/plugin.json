@@ -1,7 +1,7 @@
 {
   "name": "kadai",
   "description": "Auto-triggering skill + slash commands for kadai (the local-first product spine for projects driven by agentic coding)",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "author": {
     "name": "Fintan"
   },

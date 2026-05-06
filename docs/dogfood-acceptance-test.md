@@ -431,3 +431,39 @@ HTTP 400
 ### Verdict: PASS
 
 Spine search works end-to-end through the API and the new /search results page.
+
+---
+
+## Git sync run — Plan 10 verification — 2026-05-06
+
+Verified `kadai sync` end-to-end against an ephemeral git repo seeded with kadai items.
+
+- Made 3 commits — 2 referencing `STORY-001`, 1 with no refs.
+- `kadai sync` → "Scanned 4 commits — Appended 2 entries" with `STORY-001: 2` ✅
+- Inspected `.kadai/.../STORY-001/changelog.md` — both commit lines present, distinct from hook-written shape ✅
+- Re-ran `kadai sync` → "Appended 0 entries" (idempotent via SHA dedup) ✅
+- Made a 4th commit referencing STORY-001, ran `kadai sync --dry-run` → "Would append 1 entries" without modifying disk ✅
+- `bun test` → 252/0 pass ✅
+
+### Dogfood output (verbatim)
+
+```
+=== kadai sync ===
+✓ Scanned 4 commits — Appended 2 entries
+  STORY-001: 2
+
+=== changelog for STORY-001 ===
+- 2026-05-06T04:03:24-04:00 `commit` 9c5a5d1 test: add cases for STORY-001
+- 2026-05-06T04:03:24-04:00 `commit` 68a52f8 feat: add(a,b) impl STORY-001
+
+=== kadai sync (idempotency check — should be 0 appended) ===
+✓ Scanned 4 commits — Appended 0 entries
+
+=== kadai sync --dry-run after a new commit ===
+✓ Scanned 5 commits — Would append 1 entries
+  STORY-001: 1
+```
+
+### Verdict: PASS
+
+Git → changelog flow is end-to-end correct, idempotent, and dry-run safe.

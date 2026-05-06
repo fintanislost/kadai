@@ -82,6 +82,34 @@ For programmatic use, the MCP tool `mcp__kadai__set_status` does the same thing.
 
 Clear the picked-story flag. Does NOT change status.
 
+## `kadai sync [options]`
+
+Scan the git log for `EPIC-NNN` / `FEAT-NNN` / `STORY-NNN` / `TASK-NNN` references in commit messages and append each matching commit to the referenced item's `changelog.md`. Idempotent — re-running adds only commits not already present (dedup by short SHA).
+
+| Flag | Effect |
+|---|---|
+| `--since <ref>` | Only scan commits since this git ref (commit/tag/branch). Equivalent to `git log <ref>..HEAD`. |
+| `--branch <name>` | Scan a specific branch instead of HEAD. |
+| `--dry-run` | Show what would be appended without writing to disk. |
+
+Example:
+
+```bash
+kadai sync                              # full scan of HEAD
+kadai sync --since v0.5.0               # only commits since the v0.5.0 tag
+kadai sync --branch feature/auth        # scan a feature branch
+kadai sync --dry-run                    # preview only
+```
+
+The append format is:
+```
+- 2026-05-06T20:30:00Z `commit` 7d8cc19 feat: implement STORY-001 happy path
+```
+
+Distinct from the hook-written format (`` `Write` src/foo.md ``) so the two coexist in one changelog without conflict.
+
+When `auto_transitions.pr_merge_marks_story_done = true` (set via `kadai config auto_transitions.pr_merge_marks_story_done=true`), commits whose subject matches `^Merge pull request #N` AND reference a `STORY-NNN` will transition that story to `done` (only if the current status allows the transition).
+
 ## `kadai phases [list|add|remove|rename] ...`
 
 Manage the project's phase config.
