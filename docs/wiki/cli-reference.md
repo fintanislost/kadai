@@ -8,7 +8,7 @@ Bootstrap a kadai spine in the current directory.
 
 | Flag | Effect |
 |---|---|
-| `-y, --yes` | Skip prompts, use defaults, don't create a first epic |
+| `-y, --yes` | Skip prompts, use defaults; creates EPIC-001 titled "Project setup" so the spine is usable immediately |
 
 Touches:
 - `.kadai/{config.toml, README.md, .gitignore, epics/}`

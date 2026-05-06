@@ -112,14 +112,15 @@ function mergeKadaiHooksIntoSettingsJson(rootDir: string): void {
 
 export const initCommand = new Command('init')
   .description('Bootstrap a kadai spine in the current directory')
-  .option('-y, --yes', 'skip prompts; use defaults; no first epic')
+  .option('-y, --yes', 'skip prompts; use defaults; creates EPIC-001 titled "Project setup"')
   .action(async (opts: { yes?: boolean }) => {
     const rootDir = process.cwd();
+    const yes = !!opts.yes;
     let productDescription = 'Untitled product';
-    let createFirstEpic = false;
-    let firstEpicTitle = '';
+    let createFirstEpic = yes;                              // --yes → create with default
+    let firstEpicTitle = yes ? 'Project setup' : '';
 
-    if (!opts.yes) {
+    if (!yes) {
       const r1 = await prompts({
         type: 'text',
         name: 'productDescription',
@@ -160,7 +161,7 @@ export const initCommand = new Command('init')
         phase: DEFAULT_CONFIG.phases[0].slug,
       });
       console.log(pc.green(`✓ first epic created: ${epicId} — ${firstEpicTitle}`));
-      console.log('Next: ' + pc.cyan(`kadai add feature --parent ${epicId}`));
+      console.log('Next: ' + pc.cyan(`kadai add feature --epic ${epicId}`));
     } else {
       console.log('Next: ' + pc.cyan('kadai add epic'));
     }

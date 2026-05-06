@@ -115,3 +115,16 @@ test('init re-run does not duplicate kadai hook entries', () => {
   const kadaiPreCount = preCmds.filter((c: string) => c === 'kadai hook pre-tool-use').length;
   expect(kadaiPreCount).toBe(1);
 });
+
+test('runInit + runAdd produces a usable spine (the path -y will take after Task 2)', () => {
+  // This documents the new --yes behavior: the init wizard's epic-creation step
+  // is now also taken when --yes is passed (with default title "Project setup").
+  // The runInit function itself doesn't create the epic — that's done by the CLI
+  // action handler. So this test verifies the building block: runInit + runAdd
+  // produce a usable spine.
+  const { runAdd } = require('../../src/cli/add');
+  runInit({ rootDir: tmp, productDescription: 'Auto', skipFirstEpic: true });
+  // The CLI will then call runAdd('epic', ...) when --yes; verify that path works:
+  const epicId = runAdd({ rootDir: tmp, kind: 'epic', title: 'Project setup', phase: 'mvp' });
+  expect(epicId).toBe('EPIC-001');
+});
