@@ -12,17 +12,17 @@ If you're a fresh Claude session, read in this order:
 
 ## Active plan
 
-> ✅ **Plans 1-10 shipped.** kadai-plugin is at v0.6.0.
+> ✅ **Plans 1-11 shipped.** kadai-plugin is at v0.7.0.
 >
 > What's working today:
 > - `kadai init / add / list / get / status / pick / unpick / set-status / phases / config / sync` — full CLI
 > - `kadai mcp` — stdio MCP server with 18 typed tools
-> - `kadai hook pre-tool-use / post-tool-use` — Claude Code hooks (guardrail + changelog capture)
+> - `kadai hook pre-tool-use / post-tool-use / user-prompt-submit / stop` — full hook coverage (guardrail + changelog capture + active-story injection + status reminder)
 > - `kadai serve` — localhost web viewer with writable API, live updates via SSE, and spine-wide search
-> - `kadai sync` — scrapes git log for item ID refs (`STORY-NNN` etc.) and appends matching commits to `changelog.md`; idempotent; optional PR-merge auto-transition
+> - `kadai sync` — scrapes git log for item ID refs and appends to `changelog.md`; idempotent; optional PR-merge auto-transition
 > - `kadai-plugin/` — installable Claude Code plugin (skill + `/kadai-pick` + `/kadai-status` + `/kadai-add` + `/kadai-set-status` + `/kadai-unpick`)
 >
-> **Next plan:** Plan 11 — Hook polish (`UserPromptSubmit` injects active-story context; `Stop` reminds when a turn ends without a status update). See [`docs/wiki/post-mvp.md`](docs/wiki/post-mvp.md) for the full backlog.
+> **Next plan:** Plan 12 — Distribution polish (`bun build --compile`, asset embedding, brew/npm/curl install). See [`docs/wiki/post-mvp.md`](docs/wiki/post-mvp.md) for the full backlog.
 
 When a plan completes, update both this section *and* the plans index status column to point to the next plan.
 
