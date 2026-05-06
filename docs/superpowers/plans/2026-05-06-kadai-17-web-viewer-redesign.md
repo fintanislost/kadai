@@ -1961,7 +1961,7 @@ EOF
 
 **Goal:** Fix the Playwright tests broken by the Story-tabs removal, add 2 new E2E flows for the View toggle, update docs, bump plugin, dogfood.
 
-- [ ] **Step 1: Run Playwright to see what broke**
+- [x] **Step 1: Run Playwright to see what broke**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1974,7 +1974,7 @@ Capture the failures. Likely:
 - `text=No spec attached` — copy may have shifted
 - `text=Picked:` — topbar picked indicator changed format
 
-- [ ] **Step 2: Update broken Story tab selectors**
+- [x] **Step 2: Update broken Story tab selectors**
 
 Find tests in `tests/web/e2e.pw.ts` that assert on Story page tabs:
 - The "drilling into a story shows the tabs" test asserts `button { hasText: 'spec' }` etc. The tabs are gone — replace this test's assertions with what the new Story page shows: `text=Description`, `text=Documents`, `text=spec.md`.
@@ -1984,7 +1984,7 @@ Find tests in `tests/web/e2e.pw.ts` that assert on Story page tabs:
 
 The exact replacements depend on the actual failures. Patch each one minimally.
 
-- [ ] **Step 3: Add 2 new E2E for the View toggle**
+- [x] **Step 3: Add 2 new E2E for the View toggle**
 
 APPEND to `tests/web/e2e.pw.ts`:
 
@@ -2014,7 +2014,7 @@ test('Feature page View toggle: Kanban renders the kanban columns', async ({ pag
 });
 ```
 
-- [ ] **Step 4: Run Playwright to verify**
+- [x] **Step 4: Run Playwright to verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -2023,7 +2023,7 @@ bunx playwright test
 
 Expected: all tests pass (existing-fixed + 2 new). If anything still fails, patch its selector minimally.
 
-- [ ] **Step 5: Update web-viewer.md**
+- [x] **Step 5: Update web-viewer.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/web-viewer.md`, replace the "Layout" section's content with a brief description of the redesign:
 
@@ -2045,7 +2045,7 @@ See [api-reference.md](api-reference.md#subtree) for `GET /api/items/:id/subtree
 
 (Add a `## subtree` anchor in api-reference.md if you have time, but optional.)
 
-- [ ] **Step 6: Update post-mvp.md**
+- [x] **Step 6: Update post-mvp.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`, in "Recently shipped", insert ABOVE Plan 16:
 
@@ -2063,11 +2063,11 @@ In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`, in "Recently shipped", inse
 - Plugin version bumped to 1.3.0
 ```
 
-- [ ] **Step 7: Bump plugin version**
+- [x] **Step 7: Bump plugin version**
 
 In `/home/fintan/repos/kadai/kadai-plugin/.claude-plugin/plugin.json`, change `"version": "1.2.0"` to `"version": "1.3.0"`.
 
-- [ ] **Step 8: Dogfood smoke**
+- [x] **Step 8: Dogfood smoke**
 
 ```bash
 TMP=$(mktemp -d -t kadai-plan17-XXXXXX)
@@ -2105,7 +2105,7 @@ cd / && rm -rf "$TMP" /tmp/kadai-plan17.log
 
 CAPTURE the output.
 
-- [ ] **Step 9: Append a section to docs/dogfood-acceptance-test.md**
+- [x] **Step 9: Append a section to docs/dogfood-acceptance-test.md**
 
 APPEND:
 
@@ -2128,7 +2128,7 @@ Built the new SPA + ran kadai serve against a populated tmp project.
 Web viewer redesigned per the spec. Reads as designed product, not a scaffold.
 ```
 
-- [ ] **Step 10: Run the final checks**
+- [x] **Step 10: Run the final checks**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -2140,13 +2140,13 @@ bunx playwright test
 
 Expected: every step exits clean.
 
-- [ ] **Step 11: Tick the Task 9 checkboxes + Plan 17 self-review checklist**
+- [x] **Step 11: Tick the Task 9 checkboxes + Plan 17 self-review checklist**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-17-web-viewer-redesign.md`:
 - Tick all step checkboxes for Task 9
 - Tick all checkboxes in the Plan 17 self-review checklist
 
-- [ ] **Step 12: Commit**
+- [x] **Step 12: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -2170,17 +2170,17 @@ EOF
 
 ## Plan 17 self-review checklist
 
-- [ ] All 9 tasks completed; checkboxes ticked.
-- [ ] `bun test` passes.
-- [ ] `bun run typecheck` passes.
-- [ ] `bunx playwright test` passes (existing tests adapted + 2 new tree/kanban flows).
-- [ ] Story / Feature / Epic / Home pages render with the new Hero + body pattern.
-- [ ] View toggle is reachable on all 3 detail pages and `?view=tree` renders the TreeView.
-- [ ] Feature `?view=kanban` renders the kanban.
-- [ ] `GET /api/items/:id/subtree` returns the expected shape.
-- [ ] Brand accent (teal) appears in at most one place per visible page.
-- [ ] No element other than `StatusBadge` and kanban column borders uses status colors.
-- [ ] JetBrains Mono is the page font (verify in DevTools).
-- [ ] Plugin v1.3.0 in the manifest.
-- [ ] `docs/wiki/web-viewer.md` updated.
-- [ ] `docs/wiki/post-mvp.md`: Plan 17 in "Recently shipped".
+- [x] All 9 tasks completed; checkboxes ticked.
+- [x] `bun test` passes.
+- [x] `bun run typecheck` passes.
+- [x] `bunx playwright test` passes (existing tests adapted + 2 new tree/kanban flows).
+- [x] Story / Feature / Epic / Home pages render with the new Hero + body pattern.
+- [x] View toggle is reachable on all 3 detail pages and `?view=tree` renders the TreeView.
+- [x] Feature `?view=kanban` renders the kanban.
+- [x] `GET /api/items/:id/subtree` returns the expected shape.
+- [x] Brand accent (teal) appears in at most one place per visible page.
+- [x] No element other than `StatusBadge` and kanban column borders uses status colors.
+- [x] JetBrains Mono is the page font (verify in DevTools).
+- [x] Plugin v1.3.0 in the manifest.
+- [x] `docs/wiki/web-viewer.md` updated.
+- [x] `docs/wiki/post-mvp.md`: Plan 17 in "Recently shipped".

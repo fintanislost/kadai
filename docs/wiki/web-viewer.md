@@ -4,10 +4,17 @@ Run `kadai serve` (after `bun run build:web` in the kadai repo) to launch the lo
 
 ## Layout
 
-- `/` — roadmap home, grouped by phase, lists epics with their features/stories rolled up.
-- `/epics/:id` — epic detail with its features.
-- `/features/:id` — feature detail with a kanban board of its stories.
-- `/stories/:id` — story detail with tabs (story, spec, plan, changelog, tasks) and a status changer right rail.
+The viewer follows a consistent **hero + body** pattern across detail pages (Story, Feature, Epic):
+
+- **Topbar:** brand mark, project context (multi-mode), Activity / Compare nav, search, picked indicator
+- **Breadcrumb:** parent chain leading to the current item
+- **Hero block:** kind label + ID pill + title + status + phase + progress (`X of Y done`) + actions + view toggle
+- **Detail body:** 2-column grid — primary content (description, decomposition list) on the left; context (documents, attached content) on the right
+- **View toggle:** every detail page can switch into a **Tree** view of its subtree. The Feature page also has a third Kanban view for drag-drop status changes.
+
+The Home page replaces the per-item hero with a project-level hero (4-count summary + phase pills) and per-phase grids of epic cards.
+
+The `GET /api/items/:id/subtree` endpoint backs the Tree view (item + all descendants in one fetch).
 
 The header has a **search box** — type a query (min 2 chars), press Enter to land on `/search?q=...` with full-spine results. See [api-reference.md#search](api-reference.md#search) for the underlying endpoint.
 

@@ -726,3 +726,33 @@ Built the SPA + ran kadai serve against a populated tmp project. Visual changes 
 ### Verdict: PASS
 
 The viewer no longer reads as "early internet." Distinctive status colors, kind icons, and structured empty/loading states give it a proper-product feel.
+
+---
+
+## Web viewer redesign — Plan 17 verification — 2026-05-06
+
+Built the new SPA + ran kadai serve against a populated tmp project.
+
+- Server smoke: `/` returns SPA index; `/api/items/EPIC-001/subtree` returns flat list of epic + descendants ✅
+- `bun test` → unit tests pass (no behavior change in this redesign) ✅
+- `bun run build:web && bun run embed-assets` clean ✅
+- `bunx playwright test` → all flows pass after selector updates for removed Story tabs (6 selectors patched) + 2 new tree/kanban toggle flows ✅
+- Frontend tsc (`cd src/web/frontend && bunx tsc --noEmit -p tsconfig.json`) → 0 errors ✅
+- Visual check (manual): redesigned pages have the hero+body pattern; View toggle wires through `?view=tree` (and `?view=kanban` on Feature); calm surfaces; one teal CTA per page ✅
+
+### Dogfood output (verbatim)
+
+```
+=== / (SPA index) ===
+    <div id="root"></div>
+
+=== /api/items/EPIC-001/subtree ===
+[{"kind":"epic","path":"/tmp/kadai-plan17-4yxsYV/.kadai/epics/EPIC-001-project-setup/epic.md","data":{"id":"EPIC-001","title":"Project setup","status":"ready","created":"2026-05-06","updated":"2026-05...
+
+=== /api/items/STORY-001 ===
+{"kind":"story","path":"/tmp/kadai-plan17-4yxsYV/.kadai/epics/EPIC-001-project-setup/features/FEAT-0...
+```
+
+### Verdict: PASS
+
+Web viewer redesigned per the spec. Reads as designed product, not a scaffold. Plan 17 ships.

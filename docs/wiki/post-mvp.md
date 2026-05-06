@@ -39,6 +39,18 @@ See above sections — Plans 7-14 cover all of spec §13.
 
 ## Recently shipped (as items move out of this list)
 
+### Plan 17 — Web viewer redesign (shipped 2026-05-06)
+
+- Hero block + detail body pattern across Story / Feature / Epic / Home
+- TreeView component (Mode B) reachable via View toggle on each detail page
+- Story tabs replaced with cards (Description / Tasks / Documents / Attached content)
+- Feature page defaults to Stories list; kanban moves to `?view=kanban`
+- Refined design tokens: single brand accent (teal-300), desaturated status palette, calmer surfaces with shadow elevation
+- JetBrains Mono everywhere via @fontsource (single font, coherent dev-tool identity)
+- New backend endpoint: `GET /api/items/:id/subtree`
+- 7 new components (Hero, Card, ProgressBar, IdPill, Breadcrumb, DocumentRow, TreeView)
+- Plugin version bumped to 1.3.0
+
 ### Plan 16 — Visual polish (shipped 2026-05-06)
 
 - 7-status color palette (`status-backlog/ready/in_progress/blocked/review/done/cancelled`) as Tailwind tokens

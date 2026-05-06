@@ -102,32 +102,36 @@ test('drilling into an epic shows its features', async ({ page }) => {
   await expect(page.locator('text=Login')).toBeVisible();
 });
 
-test('drilling into a story shows the tabs', async ({ page }) => {
+test('drilling into a story shows the detail cards', async ({ page }) => {
   await page.goto(`${serverUrl}/stories/STORY-001`);
   await page.waitForLoadState('load');
   await expect(page.locator('text=Email login')).toBeVisible();
-  await expect(page.locator('button', { hasText: 'spec' })).toBeVisible();
-  await expect(page.locator('button', { hasText: 'plan' })).toBeVisible();
-  await expect(page.locator('button', { hasText: 'changelog' })).toBeVisible();
-  await expect(page.locator('button', { hasText: 'tasks' })).toBeVisible();
+  // New layout: cards instead of tabs
+  await expect(page.locator('text=Description').first()).toBeVisible();
+  await expect(page.locator('text=Tasks').first()).toBeVisible();
+  await expect(page.locator('text=Documents').first()).toBeVisible();
 });
 
 test('clicking a status button on the story page moves the story', async ({ page }) => {
   await page.goto(`${serverUrl}/stories/STORY-001`);
   await page.waitForLoadState('load');
 
-  await expect(page.locator('aside').locator('text=ready').first()).toBeVisible();
-  await page.locator('aside').locator('button', { hasText: 'in_progress' }).click();
+  // New layout: status buttons are in the Hero block (no aside), primary CTA is "Mark in progress"
+  // StatusBadge renders status as "ready" (no underscore in this case)
+  await expect(page.locator('text=ready').first()).toBeVisible();
+  await page.locator('button', { hasText: 'Mark in progress' }).click();
 
-  await expect(page.locator('aside').locator('text=in_progress').first()).toBeVisible({ timeout: 3000 });
+  // StatusBadge replaces underscores with spaces: in_progress → "in progress"
+  await expect(page.locator('text=in progress').first()).toBeVisible({ timeout: 3000 });
 
   await page.reload();
   await page.waitForLoadState('load');
-  await expect(page.locator('aside').locator('text=in_progress').first()).toBeVisible();
+  await expect(page.locator('text=in progress').first()).toBeVisible();
 });
 
 test('dragging a story card across columns updates its status', async ({ page }) => {
-  await page.goto(`${serverUrl}/features/FEAT-001`);
+  // New layout: kanban is behind ?view=kanban toggle
+  await page.goto(`${serverUrl}/features/FEAT-001?view=kanban`);
   await page.waitForLoadState('load');
 
   // STORY-002 starts in 'ready'; drag it to 'in_progress' (a legal transition from ready).
@@ -163,10 +167,11 @@ test('attaching a spec.md uploads and renders it', async ({ page }) => {
   await page.goto(`${serverUrl}/stories/STORY-003`);
   await page.waitForLoadState('load');
 
-  await page.locator('button', { hasText: 'spec' }).click();
+  // New layout: no spec tab — the "No spec attached" card is visible directly in the right column
   await expect(page.locator('text=No spec attached')).toBeVisible();
 
-  await page.locator('input[type="file"]').setInputFiles({
+  // Both spec and plan file inputs may be present; target the spec one by its id
+  await page.locator('#story-spec-input').setInputFiles({
     name: 'spec.md',
     mimeType: 'text/markdown',
     buffer: Buffer.from('# Uploaded spec\n\nHello kadai.\n'),
@@ -212,7 +217,8 @@ test('illegal status transition surfaces error from /api/items/:id/status', asyn
 
   await page.goto(`${serverUrl}/stories/STORY-001`);
   await page.waitForLoadState('load');
-  await expect(page.locator('aside').locator('text=in_progress').first()).toBeVisible({ timeout: 5000 });
+  // StatusBadge renders in_progress as "in progress" (underscores replaced with spaces)
+  await expect(page.locator('text=in progress').first()).toBeVisible({ timeout: 5000 });
 
   // Hit the API directly with an illegal target (in_progress → backlog is not legal).
   const result = await page.evaluate(async () => {
@@ -240,14 +246,15 @@ test('search results page links flow to detail pages', async ({ page }) => {
   await expect(page.locator('h1', { hasText: 'Authentication' })).toBeVisible();
 });
 
-test('attaching a plan via the plan tab uploads and renders', async ({ page }) => {
+test('attaching a plan uploads and renders', async ({ page }) => {
   await page.goto(`${serverUrl}/stories/STORY-002`);
   await page.waitForLoadState('load');
 
-  await page.locator('button', { hasText: 'plan' }).click();
+  // New layout: no plan tab — the "No plan attached" card is visible directly in the right column
   await expect(page.locator('text=No plan attached')).toBeVisible();
 
-  await page.locator('input[type="file"]').setInputFiles({
+  // Both spec and plan file inputs may be present; target the plan one by its id
+  await page.locator('#story-plan-input').setInputFiles({
     name: 'plan.md',
     mimeType: 'text/markdown',
     buffer: Buffer.from('# Plan\n\n1. Step one\n2. Step two\n'),
@@ -296,9 +303,9 @@ test('home page auto-refreshes when an epic is added via the API', async ({ page
     });
   });
 
-  // Navigate to the feature page to observe the column re-render. Wait for the
+  // Navigate to the feature page kanban view to observe the column re-render. Wait for the
   // card to appear in the in_progress column WITHOUT calling page.reload().
-  await page.goto(`${serverUrl}/features/FEAT-001`);
+  await page.goto(`${serverUrl}/features/FEAT-001?view=kanban`);
   await page.waitForLoadState('load');
   // Give the EventSource a moment to connect before the second mutation.
   await page.waitForTimeout(100);
@@ -430,4 +437,28 @@ test.describe('multi-project', () => {
     await page.waitForLoadState('load');
     await expect(page.locator('text=Billing')).toBeVisible();
   });
+});
+
+test('Story page View toggle: Tree shows the subtree of the parent feature', async ({ page }) => {
+  await page.goto(`${serverUrl}/stories/STORY-001`);
+  await page.waitForLoadState('load');
+
+  await page.locator('button', { hasText: 'Tree' }).first().click();
+  await page.waitForURL(/view=tree/);
+
+  // The tree should render the parent feature + this story (and any siblings)
+  await expect(page.locator('text=Subtree')).toBeVisible({ timeout: 5000 });
+  await expect(page.locator('text=← here').first()).toBeVisible();
+});
+
+test('Feature page View toggle: Kanban renders the kanban columns', async ({ page }) => {
+  await page.goto(`${serverUrl}/features/FEAT-001`);
+  await page.waitForLoadState('load');
+
+  await page.locator('button', { hasText: 'Kanban' }).click();
+  await page.waitForURL(/view=kanban/);
+
+  // The kanban columns from KanbanBoard should be visible by data-testid
+  await expect(page.locator('[data-testid="column-ready"]')).toBeVisible({ timeout: 5000 });
+  await expect(page.locator('[data-testid="column-in_progress"]')).toBeVisible();
 });
