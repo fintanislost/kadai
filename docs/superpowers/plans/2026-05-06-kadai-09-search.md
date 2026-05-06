@@ -598,7 +598,7 @@ EOF
 
 **Goal:** A small input in the header. Submitting (Enter or pressing the search icon) navigates to `/search?q=<value>`. The input is controlled; on the Search page (Task 5), the input pre-fills from the URL `q` param.
 
-- [ ] **Step 1: Create the SearchBox component**
+- [x] **Step 1: Create the SearchBox component**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/components/SearchBox.tsx`:
 
@@ -636,7 +636,7 @@ export function SearchBox({ initialQuery = '' }: Props) {
 }
 ```
 
-- [ ] **Step 2: Wire SearchBox into Layout**
+- [x] **Step 2: Wire SearchBox into Layout**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/components/Layout.tsx` to confirm shape. Add this import:
 
@@ -663,7 +663,7 @@ Inside the header (currently `<header className="bg-panel ...">`), insert the `<
 
 (The `ml-auto` on the picked indicator pushes it to the right; the SearchBox sits centered between phase pills and picked.)
 
-- [ ] **Step 3: Build the SPA**
+- [x] **Step 3: Build the SPA**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -672,7 +672,7 @@ bun run build:web
 
 Expected: clean build. (The build will likely emit a TanStack Router type warning about the missing `/search` route — that's resolved in Task 5. If the build fails on this, switch to `<a href="/search?q=...">` form action temporarily; you'll convert back to `useNavigate` after Task 5.)
 
-- [ ] **Step 4: Verify typecheck + tests**
+- [x] **Step 4: Verify typecheck + tests**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -688,11 +688,11 @@ navigate({ to: '/search' as string, search: { q: trimmed } });
 
 (You'll remove the `as string` after Task 5 declares the route.)
 
-- [ ] **Step 5: Tick the 5 checkboxes for Task 4 in the plan**
+- [x] **Step 5: Tick the 5 checkboxes for Task 4 in the plan**
 
 Tick all 5 step checkboxes for Task 4.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
