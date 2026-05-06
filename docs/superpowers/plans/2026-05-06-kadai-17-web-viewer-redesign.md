@@ -906,7 +906,7 @@ EOF
 
 **Goal:** Replace the current tab-based Story page with the hero + 2-column body pattern. View toggle = [Detail | Tree]. The 5 tabs (story / spec / plan / changelog / tasks) are gone — content moves into the body cards.
 
-- [ ] **Step 1: Add `?view=` to the story routes' validateSearch**
+- [x] **Step 1: Add `?view=` to the story routes' validateSearch**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/router.tsx`. Find the existing `storyRoute` and `projectStoryRoute` definitions. Add a `validateSearch` to each (or augment if one exists):
 
@@ -924,7 +924,7 @@ const storyRoute = createRoute({
 
 Same for `projectStoryRoute`. (Same pattern for `epicRoute` / `projectEpicRoute` / `featureRoute` / `projectFeatureRoute` in Tasks 5-6 — but for Feature add `'kanban'` as another allowed value.)
 
-- [ ] **Step 2: Replace Story.tsx**
+- [x] **Step 2: Replace Story.tsx**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/pages/Story.tsx` first to capture current data-fetching shape and AttachButton/StatusPanel wiring. Then replace the FILE contents with:
 
@@ -1172,7 +1172,7 @@ export function Story() {
 
 (Note: this drops the `tabs` mechanism entirely. The current `tab` state, `setTab`, and `<button onClick={() => setTab(t)}>` JSX from the existing file are not in the new file. Some Playwright tests asserting on tab buttons will fail — Task 9 fixes those.)
 
-- [ ] **Step 3: Build + smoke-test**
+- [x] **Step 3: Build + smoke-test**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1184,11 +1184,11 @@ bun test
 
 Expected: build clean, typecheck clean, unit tests pass. Skip Playwright for now — it'll fail on the removed tabs (handled in Task 9).
 
-- [ ] **Step 4: Tick the step checkboxes for Task 4 in the plan**
+- [x] **Step 4: Tick the step checkboxes for Task 4 in the plan**
 
 Tick all step checkboxes for Task 4.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

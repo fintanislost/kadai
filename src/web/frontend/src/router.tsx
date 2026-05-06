@@ -35,6 +35,9 @@ const storyRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/stories/$id',
   component: Story,
+  validateSearch: (s: Record<string, unknown>): { view?: 'tree' } => ({
+    view: s.view === 'tree' ? 'tree' : undefined,
+  }),
 });
 
 const searchRoute = createRoute({
@@ -91,6 +94,9 @@ const projectStoryRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/p/$slug/stories/$id',
   component: Story,
+  validateSearch: (s: Record<string, unknown>): { view?: 'tree' } => ({
+    view: s.view === 'tree' ? 'tree' : undefined,
+  }),
 });
 
 const projectSearchRoute = createRoute({
