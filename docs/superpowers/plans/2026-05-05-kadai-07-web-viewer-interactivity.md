@@ -76,7 +76,7 @@ kadai-plugin/.claude-plugin/plugin.json        # MODIFIED at end: 0.2.0 → 0.3.
 
 **Goal:** Add `POST /api/items/:id/status` and `GET /api/items/:id/transitions`. The POST validates body, calls `setStatus`, returns the updated item (200) or a 400/404 with an error message JSON. The GET returns the legal next states for the item, computed via `legalNextStates(kind, currentStatus)`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Append to `/home/fintan/repos/kadai/tests/web/api.test.ts` (after the existing `GET /api/picked` tests):
 
@@ -150,7 +150,7 @@ test('POST /api/items/:id/status returns 400 for missing body', async () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -159,7 +159,7 @@ bun test tests/web/api.test.ts
 
 Expected: the 6 new tests fail with 404 (route not registered yet).
 
-- [ ] **Step 3: Implement the endpoints**
+- [x] **Step 3: Implement the endpoints**
 
 Edit `/home/fintan/repos/kadai/src/web/api.ts`. Add these imports at the top (alongside existing imports):
 
@@ -220,7 +220,7 @@ to:
   if (itemMatch && req.method === 'GET') {
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -229,7 +229,7 @@ bun test tests/web/api.test.ts
 
 Expected: all original tests still pass + 6 new tests pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

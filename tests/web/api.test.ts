@@ -73,3 +73,70 @@ test('GET /api/picked returns the picked story', async () => {
   const json = await r.json();
   expect(json?.data?.id).toBe('STORY-001');
 });
+
+test('GET /api/items/EPIC-001/transitions returns legal next states', async () => {
+  const r = await fetch(`${base()}/api/items/EPIC-001/transitions`);
+  expect(r.status).toBe(200);
+  const json = await r.json();
+  expect(json.current).toBe('ready');
+  expect(json.allowed).toContain('in_progress');
+});
+
+test('GET /api/items/MISSING/transitions returns 404', async () => {
+  const r = await fetch(`${base()}/api/items/EPIC-999/transitions`);
+  expect(r.status).toBe(404);
+});
+
+test('POST /api/items/:id/status moves a legal transition', async () => {
+  const r = await fetch(`${base()}/api/items/STORY-001/status`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status: 'in_progress' }),
+  });
+  expect(r.status).toBe(200);
+  const json = await r.json();
+  expect(json.data.status).toBe('in_progress');
+
+  // Reset for downstream tests:
+  await fetch(`${base()}/api/items/STORY-001/status`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status: 'review' }),
+  });
+  await fetch(`${base()}/api/items/STORY-001/status`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status: 'in_progress' }),
+  });
+});
+
+test('POST /api/items/:id/status rejects an illegal transition with 400', async () => {
+  const r = await fetch(`${base()}/api/items/EPIC-001/status`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status: 'done' }),
+  });
+  expect(r.status).toBe(400);
+  const json = await r.json();
+  expect(json.error).toMatch(/illegal transition/i);
+});
+
+test('POST /api/items/:id/status returns 404 for unknown ID', async () => {
+  const r = await fetch(`${base()}/api/items/EPIC-999/status`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status: 'in_progress' }),
+  });
+  expect(r.status).toBe(404);
+});
+
+test('POST /api/items/:id/status returns 400 for missing body', async () => {
+  const r = await fetch(`${base()}/api/items/EPIC-001/status`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({}),
+  });
+  expect(r.status).toBe(400);
+  const json = await r.json();
+  expect(json.error).toMatch(/status/i);
+});

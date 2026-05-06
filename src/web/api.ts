@@ -3,6 +3,8 @@ import { existsSync, readFileSync } from 'node:fs';
 import { walkSpine, findById } from '../core/spine';
 import { loadConfig } from '../config/load';
 import { readPicked } from '../core/picked';
+import { setStatus } from '../core/operations';
+import { legalNextStates } from '../core/state-machine';
 import type { Item } from '../core/types';
 import type { ItemKind, Status } from '../core/state-machine';
 
@@ -79,8 +81,42 @@ export async function handleApi(req: Request, rootDir: string): Promise<Response
     return new Response(content, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   }
 
+  const transitionsMatch = path.match(/^\/api\/items\/([A-Z]+-\d+)\/transitions$/);
+  if (transitionsMatch && req.method === 'GET') {
+    const item = findById(rootDir, transitionsMatch[1]);
+    if (!item) return new Response('Not found', { status: 404 });
+    return Response.json({
+      current: item.data.status,
+      allowed: legalNextStates(item.kind, item.data.status),
+    });
+  }
+
+  const statusMatch = path.match(/^\/api\/items\/([A-Z]+-\d+)\/status$/);
+  if (statusMatch && req.method === 'POST') {
+    const id = statusMatch[1];
+    let body: { status?: string };
+    try {
+      body = await req.json() as { status?: string };
+    } catch {
+      return Response.json({ error: 'Invalid JSON body' }, { status: 400 });
+    }
+    if (!body.status || typeof body.status !== 'string') {
+      return Response.json({ error: 'Missing required field: status' }, { status: 400 });
+    }
+    const item = findById(rootDir, id);
+    if (!item) return Response.json({ error: `Item not found: ${id}` }, { status: 404 });
+    try {
+      setStatus(rootDir, id, body.status as Status);
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e);
+      return Response.json({ error: msg }, { status: 400 });
+    }
+    const updated = findById(rootDir, id);
+    return Response.json(updated);
+  }
+
   const itemMatch = path.match(/^\/api\/items\/(.+)$/);
-  if (itemMatch) {
+  if (itemMatch && req.method === 'GET') {
     const item = findById(rootDir, itemMatch[1]);
     if (!item) return new Response('Not found', { status: 404 });
     return Response.json(item);
