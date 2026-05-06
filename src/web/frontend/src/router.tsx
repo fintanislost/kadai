@@ -23,6 +23,9 @@ const epicRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/epics/$id',
   component: Epic,
+  validateSearch: (s: Record<string, unknown>): { view?: 'tree' } => ({
+    view: s.view === 'tree' ? 'tree' : undefined,
+  }),
 });
 
 const featureRoute = createRoute({
@@ -85,6 +88,9 @@ const projectEpicRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/p/$slug/epics/$id',
   component: Epic,
+  validateSearch: (s: Record<string, unknown>): { view?: 'tree' } => ({
+    view: s.view === 'tree' ? 'tree' : undefined,
+  }),
 });
 
 const projectFeatureRoute = createRoute({

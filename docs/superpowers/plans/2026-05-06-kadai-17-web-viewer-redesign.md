@@ -1502,11 +1502,11 @@ EOF
 
 **Goal:** Same pattern as Feature — Hero + Features list + Documents. View toggle = [Detail | Tree].
 
-- [ ] **Step 1: Extend the Epic route's validateSearch**
+- [x] **Step 1: Extend the Epic route's validateSearch**
 
 In `router.tsx`, update `epicRoute` and `projectEpicRoute` with the same `?view=tree` validateSearch as Story (Task 4 Step 1).
 
-- [ ] **Step 2: Refine EpicCard.tsx**
+- [x] **Step 2: Refine EpicCard.tsx**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/components/EpicCard.tsx`. Update className stack to use new tokens:
 
@@ -1549,7 +1549,7 @@ export function EpicCard({ epic }: Props) {
 
 (The slug-aware Link logic is omitted here for simplicity; the Home page caller handles project-scoped Links via its own EpicCard rendering. If you've structured EpicCard to take a slug prop, keep that.)
 
-- [ ] **Step 3: Rebuild Epic.tsx**
+- [x] **Step 3: Rebuild Epic.tsx**
 
 Replace `/home/fintan/repos/kadai/src/web/frontend/src/pages/Epic.tsx` with the same shape as Feature.tsx (Task 5 Step 3) but for Epic + Features:
 
@@ -1708,7 +1708,7 @@ export function Epic() {
 }
 ```
 
-- [ ] **Step 4: Build + verify**
+- [x] **Step 4: Build + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1720,11 +1720,11 @@ bun test
 
 Expected: clean.
 
-- [ ] **Step 5: Tick the step checkboxes for Task 6 in the plan**
+- [x] **Step 5: Tick the step checkboxes for Task 6 in the plan**
 
 Tick all step checkboxes for Task 6.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
