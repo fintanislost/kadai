@@ -88,7 +88,7 @@ kadai-plugin/.claude-plugin/plugin.json          # MODIFIED: 0.9.0 → 1.0.0
 
 **Goal:** New MCP tool that lets an agent append a manually-written annotation to the picked story's `changelog.md` — useful for capturing decisions, blockers, and design notes that don't naturally land via Edit/Write hook capture. Distinct shape from the hook-written entries (`` `Write` src/foo.md ``) and the sync-written entries (`` `commit` <sha> <subject> ``): annotations use `` `note` <message> ``.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `/home/fintan/repos/kadai/tests/mcp/handlers/record-change.test.ts`:
 
@@ -147,7 +147,7 @@ test('recordChange entries coexist with hook-written and sync-written entries', 
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -156,7 +156,7 @@ bun test tests/mcp/handlers/record-change.test.ts
 
 Expected: FAIL with "Cannot find module ../../../src/mcp/handlers/record-change".
 
-- [ ] **Step 3: Implement record-change.ts**
+- [x] **Step 3: Implement record-change.ts**
 
 Create `/home/fintan/repos/kadai/src/mcp/handlers/record-change.ts`:
 
@@ -195,7 +195,7 @@ export function registerRecordChangeTool(): void {
 }
 ```
 
-- [ ] **Step 4: Register in server.ts**
+- [x] **Step 4: Register in server.ts**
 
 Read `/home/fintan/repos/kadai/src/mcp/server.ts`. Find the existing `register*Tools()` calls (look for `registerSearchTools()`, `registerCreateTools()`, etc.). Add the import alongside the others:
 
@@ -209,7 +209,7 @@ And the call alongside the other registrations:
 registerRecordChangeTool();
 ```
 
-- [ ] **Step 5: Run tests to verify they pass**
+- [x] **Step 5: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -220,11 +220,11 @@ bun run typecheck
 
 Expected: 4 new tests pass + 298 total (294 + 4). Typecheck clean.
 
-- [ ] **Step 6: Tick the step checkboxes for Task 1 in the plan**
+- [x] **Step 6: Tick the step checkboxes for Task 1 in the plan**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-14-stretch-features.md`, find Task 1 and tick all step checkboxes.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

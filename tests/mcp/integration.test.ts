@@ -30,7 +30,7 @@ afterAll(async () => {
   rmSync(tmp, { recursive: true, force: true });
 });
 
-test('listTools returns all 18 expected MCP tools', async () => {
+test('listTools returns all 19 expected MCP tools', async () => {
   const { tools } = await client.listTools();
   const names = tools.map(t => t.name).sort();
   expect(names).toEqual([
@@ -38,7 +38,7 @@ test('listTools returns all 18 expected MCP tools', async () => {
     'create_epic', 'create_feature', 'create_story', 'create_task',
     'get', 'get_active_story',
     'list_epics', 'list_features', 'list_phases', 'list_stories', 'list_tasks',
-    'pick_story', 'search', 'set_phase', 'set_status', 'unpick',
+    'pick_story', 'record_change', 'search', 'set_phase', 'set_status', 'unpick',
   ]);
 });
 
