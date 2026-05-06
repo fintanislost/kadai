@@ -651,7 +651,7 @@ EOF
 
 Note: `EventSource` doesn't fire on `picked` or `config` events for now — those scopes are reserved for finer-grained invalidation later. Only `spine` events bump `liveKey`. (Pages don't currently render config or picked-aware UI in a way that benefits from refetch.)
 
-- [ ] **Step 1: Create live.tsx**
+- [x] **Step 1: Create live.tsx**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/live.tsx`:
 
@@ -703,7 +703,7 @@ export function useLiveKey(): number {
 }
 ```
 
-- [ ] **Step 2: Wrap Layout with the provider**
+- [x] **Step 2: Wrap Layout with the provider**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/components/Layout.tsx` to confirm shape. Then add this import alongside the existing imports:
 
@@ -743,7 +743,7 @@ return (
 
 (Wrap as high in the tree as practical so every page sees the same context.)
 
-- [ ] **Step 3: Build the SPA**
+- [x] **Step 3: Build the SPA**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -752,7 +752,7 @@ bun run build:web
 
 Expected: clean build.
 
-- [ ] **Step 4: Verify typecheck + tests**
+- [x] **Step 4: Verify typecheck + tests**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -762,7 +762,7 @@ bun test
 
 Expected: clean.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
