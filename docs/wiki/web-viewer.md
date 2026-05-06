@@ -13,6 +13,8 @@ Run `kadai serve` (after `bun run build:web` in the kadai repo) to launch the lo
 
 The viewer is no longer read-only. From the story page right rail you can move the story to any legal next status. From the feature page kanban you can drag a story card across columns to change its status. From the spec/plan tabs you can upload a markdown file via the **Attach** button — the file is moved into the item directory and the frontmatter is updated.
 
-Status changes are optimistic — the UI updates immediately and reverts if the server rejects (e.g., illegal transition). For real-time sync across multiple browser tabs, see Plan 8 (forthcoming).
+Status changes are optimistic — the UI updates immediately and reverts if the server rejects (e.g., illegal transition).
+
+The viewer also auto-refreshes on any change to `.kadai/` (CLI write, MCP tool, hook append, or another browser tab). It uses Server-Sent Events on `/api/events` — see [api-reference.md](api-reference.md#live-updates) for the protocol details.
 
 See [api-reference.md](api-reference.md) for the full endpoint surface backing the UI.

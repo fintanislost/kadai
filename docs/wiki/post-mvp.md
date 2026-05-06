@@ -12,17 +12,7 @@ For pure CLI/web/docs changes: `bun test` + `bun run typecheck` + targeted smoke
 
 The post-MVP work is organized as a series of focused plans, each ending in something visibly more useful. Order is by user-felt impact, not implementation complexity.
 
-### Plan 8 — Live updates (SSE) 🟢 **next**
-
-The web viewer auto-refreshes when the spine changes (CLI, MCP, or another browser tab).
-
-- Filesystem watcher on `.kadai/` (chokidar) → SSE event stream
-- React hooks subscribe and invalidate on relevant changes
-- Replaces manual page reloads
-
-Estimate: small-medium. Mostly server-side SSE infra + a React hook.
-
-### Plan 9 — Search
+### Plan 9 — Search 🟢 **next**
 
 Spine-wide full-text search.
 
@@ -116,6 +106,16 @@ See above sections — Plans 7-14 cover all of spec §13.
 ---
 
 ## Recently shipped (as items move out of this list)
+
+### Plan 8 — Live updates (SSE) (shipped 2026-05-06)
+
+- `GET /api/events` — text/event-stream powered by an in-process EventBus
+- `src/web/events.ts` — bus + scope inference + recursive fs.watch with per-scope debounce
+- `src/web/server.ts` — owns watcher lifecycle, injects bus into handleApi
+- `LiveUpdatesProvider` + `useLiveKey()` on the client; all 4 pages refetch on spine events
+- 1 new Playwright E2E (status mutation → kanban column update without page.reload)
+- All 7 E2E tests adapted from `networkidle` → `load` (SSE prevents networkidle from ever firing)
+- Plugin version bumped to 0.4.0
 
 ### Plan 7 — Web viewer interactivity (shipped 2026-05-05)
 

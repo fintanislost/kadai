@@ -372,3 +372,29 @@ Spot-checked the new write endpoints via curl after building the SPA + starting 
 ### Verdict: PASS
 
 Web viewer is now writable end-to-end.
+
+---
+
+## SSE live updates run — Plan 8 verification — 2026-05-06
+
+Verified the watcher → bus → stream pipeline end-to-end via `curl` against a real `kadai serve` process.
+
+- Connected `curl -sN --max-time 5 .../api/events` in a background subshell.
+- Triggered a CLI write: `kadai set-status STORY-001 in_progress`.
+- The SSE stream emitted `: open` then `data: {"scope":"spine"}` within ~50ms of the file write.
+- `kadai list story` confirmed the on-disk write happened (STORY-001 in_progress).
+- `bun test` → 215/0 pass ✅
+- `bunx playwright test` → 7/7 pass (3 Plan 4 + 3 Plan 7 + 1 Plan 8) ✅
+
+### SSE stream output (verbatim)
+
+```
+: open
+
+data: {"scope":"spine"}
+
+```
+
+### Verdict: PASS
+
+Web viewer auto-refreshes without manual reload.

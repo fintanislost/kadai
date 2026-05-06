@@ -15,6 +15,7 @@ The kadai web viewer (`kadai serve`) exposes a small HTTP API at `/api/*`. All p
 | `GET` | `/api/items/:id/transitions` | `{ current: Status, allowed: Status[] }` |
 | `GET` | `/api/picked` | `Item \| null` |
 | `GET` | `/api/files/:id/(spec.md\|plan.md\|changelog.md)` | `text/plain` of the file contents |
+| `GET` | `/api/events` | `text/event-stream` of `data: {"scope":"spine\|picked\|config"}` lines |
 
 ## Write endpoints
 
@@ -50,4 +51,13 @@ curl -X POST http://localhost:7777/api/items/STORY-001/attach \
 
 - All write endpoints validate via the same core logic as the CLI and MCP tools, so concurrent CLI/MCP/web edits stay schema-correct.
 - There is no auth — `kadai serve` listens on localhost only and assumes the operator is the user.
-- For real-time updates across browser tabs, see Plan 8 (SSE) once it ships.
+
+## Live updates
+
+`/api/events` is a Server-Sent Events stream. The server watches `.kadai/` for filesystem changes (recursive walk plus dynamic add-on-rename for new subdirs, with stat-poll for `.picked` since dotfiles are unreliable on Linux/Bun inotify); each change is debounced (50ms per scope) then pushed as one `data: {...}` line per event:
+
+- `{"scope":"spine"}` — any item file or `.counters.json` etc. changed
+- `{"scope":"picked"}` — `.kadai/.picked` changed
+- `{"scope":"config"}` — `.kadai/config.toml` changed
+
+A `:` comment heartbeat is sent every 15 seconds so proxies don't kill idle connections. Browsers consume this via `EventSource`; the kadai web viewer re-runs all `useEffect` data fetches on every `spine` event.

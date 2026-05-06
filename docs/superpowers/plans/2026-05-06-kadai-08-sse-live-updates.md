@@ -861,7 +861,7 @@ bun test
 
 Expected: clean.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1113,7 +1113,7 @@ EOF
 
 **Goal:** Document the new endpoint + behavior, mark Plan 8 shipped, bump plugin version, run a quick dogfood spot-check.
 
-- [ ] **Step 1: Update api-reference.md**
+- [x] **Step 1: Update api-reference.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/api-reference.md`, find the "Read endpoints" table. ADD this row at the bottom (after the `/api/files/...` row):
 
@@ -1135,7 +1135,7 @@ Then add a new section after the existing "Notes" section:
 A `:` comment heartbeat is sent every 15 seconds so proxies don't kill idle connections. Browsers consume this via `EventSource`; the kadai web viewer re-runs all `useEffect` data fetches on every `spine` event.
 ```
 
-- [ ] **Step 2: Update web-viewer.md**
+- [x] **Step 2: Update web-viewer.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/web-viewer.md`, find the line:
 
@@ -1151,7 +1151,7 @@ Status changes are optimistic — the UI updates immediately and reverts if the 
 The viewer also auto-refreshes on any change to `.kadai/` (CLI write, MCP tool, hook append, or another browser tab). It uses Server-Sent Events on `/api/events` — see [api-reference.md](api-reference.md#live-updates) for the protocol details.
 ```
 
-- [ ] **Step 3: Update post-mvp.md**
+- [x] **Step 3: Update post-mvp.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`:
 
@@ -1176,11 +1176,11 @@ In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`:
 - Plugin version bumped to 0.4.0
 ```
 
-- [ ] **Step 4: Bump plugin version**
+- [x] **Step 4: Bump plugin version**
 
 In `/home/fintan/repos/kadai/kadai-plugin/.claude-plugin/plugin.json`, change `"version": "0.3.0"` to `"version": "0.4.0"`.
 
-- [ ] **Step 5: Dogfood verification**
+- [x] **Step 5: Dogfood verification**
 
 Run a short Path A flow that demonstrates the SSE stream works end-to-end via curl:
 
@@ -1225,7 +1225,7 @@ Expected:
 - SSE stream excerpt contains `: open` and at least one `data: {"scope":"spine"}` line.
 - `kadai list story` shows STORY-001 in_progress.
 
-- [ ] **Step 6: Append a section to docs/dogfood-acceptance-test.md**
+- [x] **Step 6: Append a section to docs/dogfood-acceptance-test.md**
 
 Read `/home/fintan/repos/kadai/docs/dogfood-acceptance-test.md` to see prior format. APPEND:
 
@@ -1251,7 +1251,7 @@ Web viewer auto-refreshes without manual reload.
 
 (Use the actual numbers/output from your dogfood run if they differ — be accurate, not aspirational.)
 
-- [ ] **Step 7: Run all the final checks**
+- [x] **Step 7: Run all the final checks**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1263,13 +1263,13 @@ bunx playwright test
 
 Expected: every step exits clean. If anything fails, do NOT commit — report.
 
-- [ ] **Step 8: Tick the Task 8 checkboxes + the Plan 8 self-review checklist**
+- [x] **Step 8: Tick the Task 8 checkboxes + the Plan 8 self-review checklist**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-08-sse-live-updates.md`:
 - Tick all 8 step checkboxes for Task 8
 - Tick all checkboxes in the "Plan 8 self-review checklist" section near the bottom
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1292,16 +1292,16 @@ EOF
 
 ## Plan 8 self-review checklist
 
-- [ ] All 8 tasks above completed; checkboxes ticked.
-- [ ] `bun test` passes (~214 tests including 7 events + 5 watcher + 2 sse).
-- [ ] `bun run typecheck` passes.
-- [ ] `bunx playwright test` passes (7/7).
-- [ ] `GET /api/events` returns text/event-stream with heartbeat + scope events (verified in Task 8 dogfood).
-- [ ] Watcher fires on filesystem change (verified in Task 2 + Task 7 tests).
-- [ ] Browser refetches on spine event (verified in Task 6 E2E).
-- [ ] Plugin v0.4.0 in the manifest.
-- [ ] post-mvp.md updated: Plan 8 in "Recently shipped"; Plan 9 marked 🟢 **next**.
-- [ ] api-reference.md and web-viewer.md updated.
+- [x] All 8 tasks above completed; checkboxes ticked.
+- [x] `bun test` passes (~214 tests including 7 events + 5 watcher + 2 sse).
+- [x] `bun run typecheck` passes.
+- [x] `bunx playwright test` passes (7/7).
+- [x] `GET /api/events` returns text/event-stream with heartbeat + scope events (verified in Task 8 dogfood).
+- [x] Watcher fires on filesystem change (verified in Task 2 + Task 7 tests).
+- [x] Browser refetches on spine event (verified in Task 6 E2E).
+- [x] Plugin v0.4.0 in the manifest.
+- [x] post-mvp.md updated: Plan 8 in "Recently shipped"; Plan 9 marked 🟢 **next**.
+- [x] api-reference.md and web-viewer.md updated.
 
 ---
 
