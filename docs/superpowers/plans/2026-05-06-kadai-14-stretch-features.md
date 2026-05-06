@@ -253,7 +253,7 @@ EOF
 
 **Goal:** A new `--markdown-only` flag on `kadai init` that creates `.kadai/` + README only, skipping the integration touch-points (`.mcp.json`, `.claude/settings.json`, `CLAUDE.md`). For users who want kadai's file format + web viewer without the agent guardrails.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/cli/init-markdown-only.test.ts`:
 
@@ -296,7 +296,7 @@ test('runInit markdownOnly is idempotent — re-running does not create the inte
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -305,7 +305,7 @@ bun test tests/cli/init-markdown-only.test.ts
 
 Expected: FAIL — `markdownOnly` is not part of `InitOptions`.
 
-- [ ] **Step 3: Update init.ts**
+- [x] **Step 3: Update init.ts**
 
 Read `/home/fintan/repos/kadai/src/cli/init.ts`. Update the `InitOptions` interface to include the new flag:
 
@@ -346,7 +346,7 @@ In the action callback, pass `markdownOnly: !!opts.markdownOnly` into `runInit({
 
 If the success message currently says "Restart your Claude Code session ... to load the new MCP server", suppress that message when `markdownOnly` is set — there's no MCP server or hook to load.
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -358,11 +358,11 @@ kadai init --help
 
 Expected: 3 new tests pass + 301 total (298 + 3); typecheck clean; help output shows `--markdown-only`.
 
-- [ ] **Step 5: Tick the step checkboxes for Task 2 in the plan**
+- [x] **Step 5: Tick the step checkboxes for Task 2 in the plan**
 
 Tick all step checkboxes for Task 2.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

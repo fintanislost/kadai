@@ -12,6 +12,7 @@ export interface InitOptions {
   rootDir: string;
   productDescription: string;
   skipFirstEpic: boolean;
+  markdownOnly?: boolean;
 }
 
 const KADAI_GITIGNORE = `.picked
@@ -44,9 +45,11 @@ export function runInit(opts: InitOptions): void {
     writeFileAtomic(join(kadaiDir, '.gitignore'), KADAI_GITIGNORE);
   }
 
-  appendKadaiSectionToClaudeMd(opts.rootDir);
-  mergeKadaiIntoMcpJson(opts.rootDir);
-  mergeKadaiHooksIntoSettingsJson(opts.rootDir);
+  if (!opts.markdownOnly) {
+    appendKadaiSectionToClaudeMd(opts.rootDir);
+    mergeKadaiIntoMcpJson(opts.rootDir);
+    mergeKadaiHooksIntoSettingsJson(opts.rootDir);
+  }
 }
 
 function appendKadaiSectionToClaudeMd(rootDir: string): void {
@@ -135,7 +138,8 @@ function mergeKadaiHooksIntoSettingsJson(rootDir: string): void {
 export const initCommand = new Command('init')
   .description('Bootstrap a kadai spine in the current directory')
   .option('-y, --yes', 'skip prompts; use defaults; creates EPIC-001 titled "Project setup"')
-  .action(async (opts: { yes?: boolean }) => {
+  .option('--markdown-only', 'create .kadai/ + README only; skip MCP / hooks / CLAUDE.md (no agent integration)')
+  .action(async (opts: { yes?: boolean; markdownOnly?: boolean }) => {
     const rootDir = process.cwd();
     const yes = !!opts.yes;
     let productDescription = 'Untitled product';
@@ -170,7 +174,7 @@ export const initCommand = new Command('init')
       }
     }
 
-    runInit({ rootDir, productDescription, skipFirstEpic: !createFirstEpic });
+    runInit({ rootDir, productDescription, skipFirstEpic: !createFirstEpic, markdownOnly: !!opts.markdownOnly });
     console.log(pc.green('✓ kadai initialized in ' + rootDir));
 
     if (createFirstEpic && firstEpicTitle) {
@@ -186,6 +190,8 @@ export const initCommand = new Command('init')
       console.log('Next: ' + pc.cyan('kadai add epic'));
     }
     console.log('');
-    console.log(pc.yellow('⚠ Restart your Claude Code session in this directory'));
-    console.log(pc.yellow('  to load the new MCP server (.mcp.json) and hooks (.claude/settings.json).'));
+    if (!opts.markdownOnly) {
+      console.log(pc.yellow('⚠ Restart your Claude Code session in this directory'));
+      console.log(pc.yellow('  to load the new MCP server (.mcp.json) and hooks (.claude/settings.json).'));
+    }
   });
