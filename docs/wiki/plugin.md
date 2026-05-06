@@ -5,6 +5,7 @@ The kadai-plugin/ directory is an installable Claude Code plugin.
 ## What it provides
 
 - **`kadai` skill** — auto-triggers on planning/scoping language (*plan, implement, build, design, story, feature, epic, scope, MVP*). Teaches Claude the canonical kadai workflow: check active story → pick → plan → set status. Tells Claude to check the [`docs/wiki/`](.) for any user-facing change before marking a story done.
+- **`/kadai-add <kind> [title]`** — guided creation of any item kind, asking for parent and phase when needed.
 - **`/kadai-pick <story-id>`** — picks a story (via MCP `pick_story` + `set_status(in_progress)`, with CLI fallback).
 - **`/kadai-status`** — prints picked + in-progress + ready queue.
 

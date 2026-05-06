@@ -369,7 +369,7 @@ git commit -m "feat(cli): kadai init -y now creates a default first epic [Plan-6
 
 **Goal:** Slash command that creates a kadai item via the MCP `create_*` tools, prompting for missing fields. Mirrors the CLI `kadai add` UX.
 
-- [ ] **Step 1: Create the command**
+- [x] **Step 1: Create the command**
 
 Create `/home/fintan/repos/kadai/kadai-plugin/commands/kadai-add.md`:
 
@@ -418,7 +418,7 @@ kadai add $ARGUMENTS    # may need additional flags depending on kind
 The CLI prompts for missing fields too, so this still works — just less guided.
 ````
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -427,7 +427,7 @@ head -10 kadai-plugin/commands/kadai-add.md
 
 Expected: YAML frontmatter visible.
 
-- [ ] **Step 3: Update docs**
+- [x] **Step 3: Update docs**
 
 In `/home/fintan/repos/kadai/docs/wiki/plugin.md`, update the "What it provides" section to add `/kadai-add`:
 
@@ -437,7 +437,7 @@ Change the bullet list under "What it provides" to add (alongside the existing i
 - **`/kadai-add <kind> [title]`** — guided creation of any item kind, asking for parent and phase when needed.
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
