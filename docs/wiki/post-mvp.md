@@ -10,15 +10,7 @@ For pure CLI/web/docs changes: `bun test` + `bun run typecheck` + targeted smoke
 
 ## Shipping plan (proposed)
 
-The post-MVP work is organized as a series of focused plans, each ending in something visibly more useful. Order is by user-felt impact, not implementation complexity.
-
-### Plan 15 — Multi-project switcher 🟢 **next**
-
-Browse multiple kadai-managed projects from one web viewer instance. Discovery via `~/.kadai/known-projects.json` (or similar), a project picker route, root-relative URL changes throughout the SPA.
-
-- Originally bundled in Plan 14 but extracted because the multi-project surface is a substantially different concern.
-
-Estimate: medium-large.
+🎉 **All planned post-MVP work is shipped.** Only one-shot release-publishing user actions remain (publish GitHub Releases, submit Homebrew formula PR, npm publish).
 
 ---
 
@@ -46,6 +38,18 @@ See above sections — Plans 7-14 cover all of spec §13.
 ---
 
 ## Recently shipped (as items move out of this list)
+
+### Plan 15 — Multi-project switcher (shipped 2026-05-06)
+
+- `~/.kadai/known-projects.json` registry + `core/projects.ts` helpers
+- `kadai serve register [path] [--slug] [--name] / list / unregister <slug>` subcommands
+- Multi-project server mode: per-slug `EventBus` + `startWatcher` + path-prefixed routing
+- `GET /api/projects` + `/api/p/<slug>/<rest>` API surface
+- `/projects` picker page + `/p/$slug/...` SPA routes
+- Header shows active project name + "← Switch" link in multi-mode
+- Single-project mode unchanged (backward compat — no break)
+- 18 new unit tests + 4 new E2E flows (18 total)
+- Plugin version bumped to **1.1.0** — kadai post-MVP backlog **fully drained**
 
 ### Plan 14 — Stretch features (shipped 2026-05-06)
 

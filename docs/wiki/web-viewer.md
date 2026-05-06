@@ -22,3 +22,9 @@ Status changes are optimistic — the UI updates immediately and reverts if the 
 The viewer also auto-refreshes on any change to `.kadai/` (CLI write, MCP tool, hook append, or another browser tab). It uses Server-Sent Events on `/api/events` — see [api-reference.md](api-reference.md#live-updates) for the protocol details.
 
 See [api-reference.md](api-reference.md) for the full endpoint surface backing the UI.
+
+## Multi-project mode
+
+When you've registered ≥1 project via `kadai serve register`, the viewer auto-switches to multi-project mode. The picker at `/projects` shows all registered projects. Each project's pages live at `/p/<slug>/...` (e.g., `/p/alpha/epics/EPIC-001`). The header shows the active project name and a "← Switch" link back to the picker.
+
+In single-project mode (no projects registered) the viewer behaves as before — root `/` is the project's home, pages are at `/epics/...`, etc.

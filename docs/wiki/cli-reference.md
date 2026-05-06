@@ -165,8 +165,33 @@ Start the localhost web viewer.
 |---|---|
 | `-p, --port <n>` | Port (default: ephemeral) |
 | `--no-open` | Don't auto-open the browser |
+| `--single` | Force single-project mode (ignore the registry) |
+| `--project <slug>` | Open browser pre-selected to a registered project (multi-project mode) |
 
 Requires `bun run build:web` to have built `src/web/dist/` (one-time per source checkout).
+
+### `kadai serve register [path]`
+
+Add a project to `~/.kadai/known-projects.json`. Multi-project mode auto-activates when ≥1 project is registered.
+
+| Flag | Effect |
+|---|---|
+| `--slug <slug>` | URL slug (default: basename of path) |
+| `--name <name>` | Display name (default: slug) |
+
+```bash
+kadai serve register                       # registers cwd
+kadai serve register ~/projects/foo        # registers a specific path
+kadai serve register . --slug myproj --name "My Project"
+```
+
+### `kadai serve list`
+
+Print the registered projects.
+
+### `kadai serve unregister <slug>`
+
+Remove a project from the registry. Does NOT delete its `.kadai/`.
 
 ## `kadai uninstall [options]`
 

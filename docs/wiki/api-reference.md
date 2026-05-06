@@ -2,6 +2,24 @@
 
 The kadai web viewer (`kadai serve`) exposes a small HTTP API at `/api/*`. All paths are JSON unless noted.
 
+## Multi-project routing
+
+When `kadai serve` runs in multi-project mode (i.e., the registry at `~/.kadai/known-projects.json` has entries), all data routes documented below are prefixed with `/api/p/<slug>` instead of `/api`. The picker route `GET /api/projects` lists all registered projects.
+
+In single-project mode (no registry entries) the routes are at `/api/...` as before.
+
+| Multi-project URL | Single-project URL |
+|---|---|
+| `GET /api/projects` | (n/a) |
+| `GET /api/p/<slug>/events` | `GET /api/events` |
+| `GET /api/p/<slug>/items/<id>` | `GET /api/items/<id>` |
+| `POST /api/p/<slug>/items/<id>/status` | `POST /api/items/<id>/status` |
+| `GET /api/p/<slug>/search?q=` | `GET /api/search?q=` |
+| `GET /api/p/<slug>/activity` | `GET /api/activity` |
+| `GET /api/p/<slug>/compare?a=&b=` | `GET /api/compare?a=&b=` |
+
+(All other endpoints follow the same prefix rule.)
+
 ## Read endpoints
 
 | Method | Path | Returns |

@@ -638,3 +638,53 @@ CLAUDE.md present? no
 ### Verdict: PASS
 
 Plan 14 ships. Plugin bumped to **v1.0.0**. Post-MVP backlog drained except for the multi-project switcher (extracted to Plan 15) and the one-shot release-publishing user actions.
+
+---
+
+## Multi-project run — Plan 15 verification — 2026-05-06
+
+Verified the multi-project mode end-to-end:
+
+- `kadai serve register $PROJ_A --slug alpha` + `register $PROJ_B --slug beta` → both registered ✅
+- `kadai serve list` → printed both ✅
+- `GET /api/projects` → returned `[{"slug":"alpha","name":"Alpha","rootDir":"..."},{"slug":"beta","name":"Beta","rootDir":"..."}]` ✅
+- `GET /api/p/alpha/items/EPIC-001` → returned alpha's epic (path contains `kadai-plan15-a-...`) ✅
+- `GET /api/p/beta/items/EPIC-001` → returned beta's epic (path contains `kadai-plan15-b-...`, different content) ✅
+- Legacy `GET /api/items/EPIC-001` → HTTP 404 (multi-mode rejects un-prefixed) ✅
+- `bun test` → 332/0 pass ✅
+- `bun run build:web && bun run embed-assets` clean ✅
+- `bunx playwright test` → 18/18 pass (14 prior + 4 multi-project) ✅
+
+### Dogfood output (verbatim)
+
+```
+=== kadai serve register ===
+✓ registered project "alpha" → /tmp/kadai-plan15-a-Oay54r
+✓ registered project "beta" → /tmp/kadai-plan15-b-bVUUnb
+
+=== kadai serve list ===
+alpha                2026-05-06  Alpha  /tmp/kadai-plan15-a-Oay54r
+beta                 2026-05-06  Beta  /tmp/kadai-plan15-b-bVUUnb
+
+✓ kadai web viewer running at http://localhost:7915 (multi-project: 2 projects)
+
+=== /api/projects ===
+[{"slug":"alpha","name":"Alpha","rootDir":"/tmp/kadai-plan15-a-Oay54r"},{"slug":"beta","name":"Beta","rootDir":"/tmp/kadai-plan15-b-bVUUnb"}]
+
+=== /api/p/alpha/items/EPIC-001 ===
+{"kind":"epic","path":"/tmp/kadai-plan15-a-Oay54r/.kadai/epics/EPIC-001-project-setup/epic.md","data":{"id":"EPIC-001","title":"Project setup","status"...
+
+=== /api/p/beta/items/EPIC-001 ===
+{"kind":"epic","path":"/tmp/kadai-plan15-b-bVUUnb/.kadai/epics/EPIC-001-project-setup/epic.md","data":{"id":"EPIC-001","title":"Project setup","status"...
+
+=== legacy /api/items/EPIC-001 (should 404 in multi-mode) ===
+HTTP 404
+
+=== cleaning up registry ===
+✓ unregistered project "alpha"
+✓ unregistered project "beta"
+```
+
+### Verdict: PASS
+
+Plan 15 ships. Plugin bumped to **v1.1.0**. The post-MVP backlog is fully drained — only one-shot release-publishing user actions remain.

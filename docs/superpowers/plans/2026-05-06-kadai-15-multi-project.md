@@ -1303,7 +1303,7 @@ EOF
 - Append: `docs/dogfood-acceptance-test.md`
 - Modify: `docs/superpowers/plans/2026-05-06-kadai-15-multi-project.md`
 
-- [ ] **Step 1: Add 4 multi-project E2E flows**
+- [x] **Step 1: Add 4 multi-project E2E flows**
 
 The existing E2E setup uses single-project mode. Add a SECOND `describe.serial` (or top-level test group) that spawns a multi-project server. Modify the spawnServer helper to accept a list of project dirs.
 
@@ -1418,7 +1418,7 @@ bunx playwright test
 
 Expected: 18 pass (14 prior + 4 new). If any flake, bump timeouts and capture a more specific selector.
 
-- [ ] **Step 2: Update cli-reference.md**
+- [x] **Step 2: Update cli-reference.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/cli-reference.md`, expand the `kadai serve` section to cover the new flags + subcommands. Replace the existing flag table with:
 
@@ -1458,7 +1458,7 @@ Print the registered projects.
 Remove a project from the registry. Does NOT delete its `.kadai/`.
 ```
 
-- [ ] **Step 3: Update api-reference.md**
+- [x] **Step 3: Update api-reference.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/api-reference.md`, add a new section near the top explaining multi-project routing:
 
@@ -1482,7 +1482,7 @@ In single-project mode (no registry entries) the routes are at `/api/...` as bef
 (All other endpoints follow the same prefix rule.)
 ```
 
-- [ ] **Step 4: Update web-viewer.md**
+- [x] **Step 4: Update web-viewer.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/web-viewer.md`, add a section:
 
@@ -1494,7 +1494,7 @@ When you've registered ≥1 project via `kadai serve register`, the viewer auto-
 In single-project mode (no projects registered) the viewer behaves as before — root `/` is the project's home, pages are at `/epics/...`, etc.
 ```
 
-- [ ] **Step 5: Update concepts.md**
+- [x] **Step 5: Update concepts.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/concepts.md`, add a subsection near the bottom:
 
@@ -1509,7 +1509,7 @@ In `/home/fintan/repos/kadai/docs/wiki/concepts.md`, add a subsection near the b
 Switch modes by running `kadai serve register [path]` to enter multi-project mode, or `--single` flag to force single-project mode regardless of registry contents.
 ```
 
-- [ ] **Step 6: Update post-mvp.md**
+- [x] **Step 6: Update post-mvp.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`:
 
@@ -1539,11 +1539,11 @@ In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`:
 - Plugin version bumped to **1.1.0** — kadai post-MVP backlog **fully drained**
 ```
 
-- [ ] **Step 7: Bump plugin version**
+- [x] **Step 7: Bump plugin version**
 
 In `/home/fintan/repos/kadai/kadai-plugin/.claude-plugin/plugin.json`, change `"version": "1.0.0"` to `"version": "1.1.0"`.
 
-- [ ] **Step 8: Dogfood verification**
+- [x] **Step 8: Dogfood verification**
 
 ```bash
 PROJ_A=$(mktemp -d -t kadai-plan15-a-XXXXXX)
@@ -1597,7 +1597,7 @@ CAPTURE the output. Expected:
 - per-project queries return the right epic title (AlphaFeature vs BetaFeature parents)
 - legacy /api/items in multi-mode returns 404
 
-- [ ] **Step 9: Append a section to docs/dogfood-acceptance-test.md**
+- [x] **Step 9: Append a section to docs/dogfood-acceptance-test.md**
 
 APPEND:
 
@@ -1626,7 +1626,7 @@ Plan 15 ships. Plugin bumped to **v1.1.0**. The post-MVP backlog is fully draine
 
 (Adjust to match actual run output.)
 
-- [ ] **Step 10: Run all the final checks**
+- [x] **Step 10: Run all the final checks**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1638,13 +1638,13 @@ bunx playwright test
 
 Expected: every step exits clean.
 
-- [ ] **Step 11: Tick the Task 6 checkboxes + Plan 15 self-review checklist**
+- [x] **Step 11: Tick the Task 6 checkboxes + Plan 15 self-review checklist**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-15-multi-project.md`:
 - Tick all step checkboxes for Task 6
 - Tick all checkboxes in the "Plan 15 self-review checklist" section
 
-- [ ] **Step 12: Commit**
+- [x] **Step 12: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1674,18 +1674,18 @@ EOF
 
 ## Plan 15 self-review checklist
 
-- [ ] All 6 tasks completed; checkboxes ticked.
-- [ ] `bun test` passes (~332 tests).
-- [ ] `bun run typecheck` passes.
-- [ ] `bunx playwright test` passes (18/18).
-- [ ] `kadai serve register/list/unregister` work end-to-end (verified in Task 6 dogfood).
-- [ ] `/api/projects` returns the registered list.
-- [ ] `/api/p/<slug>/items/...` routes per-project.
-- [ ] `/projects` picker page renders + click-through works (verified in Task 6 E2E).
-- [ ] Single-project mode unchanged (verified in Task 5 Step 4 smoke).
-- [ ] Plugin v1.1.0 in the manifest.
-- [ ] post-mvp.md: Plan 15 in "Recently shipped"; "Shipping plan" section notes backlog is drained.
-- [ ] cli-reference.md, api-reference.md, web-viewer.md, concepts.md updated.
+- [x] All 6 tasks completed; checkboxes ticked.
+- [x] `bun test` passes (~332 tests).
+- [x] `bun run typecheck` passes.
+- [x] `bunx playwright test` passes (18/18).
+- [x] `kadai serve register/list/unregister` work end-to-end (verified in Task 6 dogfood).
+- [x] `/api/projects` returns the registered list.
+- [x] `/api/p/<slug>/items/...` routes per-project.
+- [x] `/projects` picker page renders + click-through works (verified in Task 6 E2E).
+- [x] Single-project mode unchanged (verified in Task 5 Step 4 smoke).
+- [x] Plugin v1.1.0 in the manifest.
+- [x] post-mvp.md: Plan 15 in "Recently shipped"; "Shipping plan" section notes backlog is drained.
+- [x] cli-reference.md, api-reference.md, web-viewer.md, concepts.md updated.
 
 ---
 

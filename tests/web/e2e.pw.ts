@@ -318,3 +318,116 @@ test('home page auto-refreshes when an epic is added via the API', async ({ page
   // And it should no longer be in in_progress.
   await expect(page.locator('[data-testid="column-in_progress"]').locator('[data-testid="card-STORY-001"]')).toHaveCount(0, { timeout: 5000 });
 });
+
+async function spawnMultiServer(projAroot: string, projBroot: string): Promise<{ url: string; child: ChildProcess }> {
+  const helperScript = join(projAroot, '_multi_helper.ts');
+  writeFileSync(helperScript, `
+import { runInit } from '${repoRoot}/src/cli/init';
+import { runAdd } from '${repoRoot}/src/cli/add';
+import { startServer } from '${repoRoot}/src/web/server';
+import { resolve } from 'node:path';
+
+const projA = ${JSON.stringify(projAroot)};
+const projB = ${JSON.stringify(projBroot)};
+const distDir = resolve(${JSON.stringify(repoRoot)}, 'src/web/dist');
+
+runInit({ rootDir: projA, productDescription: 'Alpha', skipFirstEpic: true });
+runAdd({ rootDir: projA, kind: 'epic', title: 'Auth', phase: 'mvp' });
+runInit({ rootDir: projB, productDescription: 'Beta', skipFirstEpic: true });
+runAdd({ rootDir: projB, kind: 'epic', title: 'Billing', phase: 'mvp' });
+
+const handle = await startServer({
+  rootDir: projA,
+  port: 0,
+  distDir,
+  projects: [
+    { slug: 'alpha', name: 'Alpha', rootDir: projA },
+    { slug: 'beta', name: 'Beta', rootDir: projB },
+  ],
+});
+process.stdout.write('READY:' + handle.port + '\\n');
+process.stdin.resume();
+process.stdin.on('close', async () => { await handle.stop(); process.exit(0); });
+`);
+
+  return new Promise((resolve, reject) => {
+    const child = spawn('/usr/bin/bun', ['run', helperScript], {
+      stdio: ['pipe', 'pipe', 'pipe'],
+    });
+    let output = '';
+    child.stdout!.on('data', (chunk: Buffer) => {
+      output += chunk.toString();
+      const match = output.match(/READY:(\d+)/);
+      if (match) {
+        resolve({ url: `http://localhost:${match[1]}`, child });
+      }
+    });
+    child.stderr!.on('data', (chunk: Buffer) => {
+      process.stderr.write(chunk);
+    });
+    child.on('error', reject);
+    child.on('exit', (code) => {
+      if (code !== 0 && code !== null) {
+        reject(new Error(`multi-server process exited with code ${code}`));
+      }
+    });
+    setTimeout(() => reject(new Error('Multi-server did not start within 15s')), 15_000);
+  });
+}
+
+test.describe('multi-project', () => {
+  let multiTmpA: string;
+  let multiTmpB: string;
+  let multiChild: ChildProcess;
+  let multiUrl: string;
+
+  test.beforeAll(async () => {
+    multiTmpA = mkdtempSync(join(tmpdir(), 'kadai-e2e-mp-a-'));
+    multiTmpB = mkdtempSync(join(tmpdir(), 'kadai-e2e-mp-b-'));
+    const result = await spawnMultiServer(multiTmpA, multiTmpB);
+    multiUrl = result.url;
+    multiChild = result.child;
+  });
+
+  test.afterAll(async () => {
+    if (multiChild) {
+      multiChild.stdin?.end();
+      await new Promise<void>(res => setTimeout(res, 500));
+      if (!multiChild.killed) multiChild.kill();
+    }
+    rmSync(multiTmpA, { recursive: true, force: true });
+    rmSync(multiTmpB, { recursive: true, force: true });
+  });
+
+  test('GET /projects renders the picker with both projects', async ({ page }) => {
+    await page.goto(`${multiUrl}/projects`);
+    await page.waitForLoadState('load');
+    await expect(page.locator('h1', { hasText: 'Projects' })).toBeVisible();
+    await expect(page.locator('text=Alpha').first()).toBeVisible();
+    await expect(page.locator('text=Beta').first()).toBeVisible();
+  });
+
+  test('clicking a project card lands on /p/<slug>/', async ({ page }) => {
+    await page.goto(`${multiUrl}/projects`);
+    await page.waitForLoadState('load');
+    await page.locator('a', { hasText: 'Alpha' }).first().click();
+    await page.waitForURL(/\/p\/alpha\//);
+  });
+
+  test('the project header shows the active project name + switcher link', async ({ page }) => {
+    await page.goto(`${multiUrl}/p/alpha/`);
+    await page.waitForLoadState('load');
+    await expect(page.locator('text=Project:').first()).toBeVisible();
+    await expect(page.locator('text=Alpha')).toBeVisible();
+    await expect(page.locator('a', { hasText: '← Switch' })).toBeVisible();
+  });
+
+  test('alpha and beta show different epics on their respective home pages', async ({ page }) => {
+    await page.goto(`${multiUrl}/p/alpha/`);
+    await page.waitForLoadState('load');
+    await expect(page.locator('text=Auth')).toBeVisible();
+    await page.goto(`${multiUrl}/p/beta/`);
+    await page.waitForLoadState('load');
+    await expect(page.locator('text=Billing')).toBeVisible();
+  });
+});

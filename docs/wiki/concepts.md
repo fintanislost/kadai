@@ -140,3 +140,12 @@ The MCP `record_change(message)` tool appends a `note`-shaped line to the picked
 - `` `note` <free text> `` — MCP `record_change`
 
 The Activity page (`/activity` in the web viewer) renders all three uniformly with kind badges.
+
+### Multi-project mode
+
+`kadai serve` operates in one of two modes, decided at startup based on the `~/.kadai/known-projects.json` registry:
+
+- **Single-project mode** (registry empty or missing): the server uses `process.cwd()` as the only project. URLs are `/epics/...`, `/api/...` — unchanged from earlier kadai versions.
+- **Multi-project mode** (registry has ≥1 entry): the server tracks each project independently — separate `EventBus`, separate filesystem watcher, independent SSE channel. URLs are `/p/<slug>/...`, `/api/p/<slug>/...`. The picker at `/projects` lists registered projects.
+
+Switch modes by running `kadai serve register [path]` to enter multi-project mode, or `--single` flag to force single-project mode regardless of registry contents.
