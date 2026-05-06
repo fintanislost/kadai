@@ -12,18 +12,19 @@ If you're a fresh Claude session, read in this order:
 
 ## Active plan
 
-> ✅ **Plans 1-12 shipped.** kadai-plugin is at v0.8.0.
+> ✅ **Plans 1-13 shipped.** kadai-plugin is at v0.9.0.
 >
 > What's working today:
-> - `kadai init / add / list / get / status / pick / unpick / set-status / phases / config / sync` — full CLI
+> - `kadai init / add / list / get / status / pick / unpick / set-status / phases / config / sync / uninstall` — full CLI
 > - `kadai mcp` — stdio MCP server with 18 typed tools
 > - `kadai hook pre-tool-use / post-tool-use / user-prompt-submit / stop` — full hook coverage
-> - `kadai serve` — localhost web viewer with writable API, live updates via SSE, and spine-wide search
-> - `kadai sync` — scrapes git log for item ID refs and appends to `changelog.md`; idempotent
-> - **Distribution**: `bun run build` produces a self-contained `dist/kadai` binary (~63MB) with the SPA embedded; `bun run build:all` cross-compiles for 5 targets (darwin/linux/windows × x64/arm64); install scripts + Homebrew formula templates ready
+> - `kadai serve` — localhost web viewer with writable API, live updates via SSE, spine-wide search, and prose-styled markdown
+> - `kadai sync` — scrapes git log for item ID refs and appends to `changelog.md`
+> - **Distribution**: `bun run build` produces a self-contained `dist/kadai` binary; `bun run build:all` cross-compiles for 5 targets; install scripts + Homebrew formula templates ready
+> - **Tech debt drained**: atomic counter writes, no `as any`/`@ts-ignore` in CLI, safe phase migration on rename/remove
 > - `kadai-plugin/` — installable Claude Code plugin (skill + `/kadai-pick` + `/kadai-status` + `/kadai-add` + `/kadai-set-status` + `/kadai-unpick`)
 >
-> **Next plan:** Plan 13 — Developer ergonomics (atomic ID counter writes, replace `as any` casts, `kadai uninstall`/`reindex`, sparse-ordering re-densification, etc.). See [`docs/wiki/post-mvp.md`](docs/wiki/post-mvp.md) for the full backlog.
+> **Next plan:** Plan 14 — Multi-project + stretch (multi-project switcher, activity feed, per-phase comparison view, markdown-only mode, comprehensive Playwright E2E). See [`docs/wiki/post-mvp.md`](docs/wiki/post-mvp.md) for the full backlog. After Plan 14, only one-shot release-publishing user actions remain.
 
 When a plan completes, update both this section *and* the plans index status column to point to the next plan.
 
