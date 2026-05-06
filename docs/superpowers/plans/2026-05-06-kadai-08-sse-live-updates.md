@@ -887,7 +887,7 @@ EOF
 
 **Goal:** Open the home page, write a new epic via the API in a separate request, expect the new title to appear in the DOM without a manual page reload.
 
-- [ ] **Step 1: Add the E2E test**
+- [x] **Step 1: Add the E2E test**
 
 APPEND to `/home/fintan/repos/kadai/tests/web/e2e.pw.ts`:
 
@@ -932,7 +932,7 @@ test('home page auto-refreshes when an epic is added via the API', async ({ page
 });
 ```
 
-- [ ] **Step 2: Build the SPA + run Playwright**
+- [x] **Step 2: Build the SPA + run Playwright**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -944,7 +944,7 @@ Expected: 7/7 tests pass (3 from Plan 4, 3 from Plan 7, 1 from Plan 8).
 
 If the live-update test fails on first run with a timeout, the most likely cause is the watcher not firing fast enough on the test's filesystem; bump the `toBeVisible` timeout to 8000 and re-run. If it still fails, suspect the EventSource connection isn't being established before the first mutation (race condition); add `await page.waitForTimeout(100)` after the first `goto` and re-run.
 
-- [ ] **Step 3: Verify the unit suite**
+- [x] **Step 3: Verify the unit suite**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -953,7 +953,7 @@ bun test
 
 Expected: 213/0.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

@@ -91,20 +91,20 @@ test.afterAll(async () => {
 
 test('roadmap home renders the seeded epic', async ({ page }) => {
   await page.goto(serverUrl);
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('load');
   await expect(page.locator('text=Authentication')).toBeVisible();
 });
 
 test('drilling into an epic shows its features', async ({ page }) => {
   await page.goto(serverUrl);
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('load');
   await page.locator('text=Authentication').click();
   await expect(page.locator('text=Login')).toBeVisible();
 });
 
 test('drilling into a story shows the tabs', async ({ page }) => {
   await page.goto(`${serverUrl}/stories/STORY-001`);
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('load');
   await expect(page.locator('text=Email login')).toBeVisible();
   await expect(page.locator('button', { hasText: 'spec' })).toBeVisible();
   await expect(page.locator('button', { hasText: 'plan' })).toBeVisible();
@@ -114,7 +114,7 @@ test('drilling into a story shows the tabs', async ({ page }) => {
 
 test('clicking a status button on the story page moves the story', async ({ page }) => {
   await page.goto(`${serverUrl}/stories/STORY-001`);
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('load');
 
   await expect(page.locator('aside').locator('text=ready').first()).toBeVisible();
   await page.locator('aside').locator('button', { hasText: 'in_progress' }).click();
@@ -122,13 +122,13 @@ test('clicking a status button on the story page moves the story', async ({ page
   await expect(page.locator('aside').locator('text=in_progress').first()).toBeVisible({ timeout: 3000 });
 
   await page.reload();
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('load');
   await expect(page.locator('aside').locator('text=in_progress').first()).toBeVisible();
 });
 
 test('dragging a story card across columns updates its status', async ({ page }) => {
   await page.goto(`${serverUrl}/features/FEAT-001`);
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('load');
 
   // STORY-002 starts in 'ready'; drag it to 'in_progress' (a legal transition from ready).
   const card = page.locator('[data-testid="card-STORY-002"]');
@@ -155,13 +155,13 @@ test('dragging a story card across columns updates its status', async ({ page })
   await expect(inProgress.locator('[data-testid="card-STORY-002"]')).toBeVisible({ timeout: 3000 });
 
   await page.reload();
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('load');
   await expect(page.locator('[data-testid="column-in_progress"]').locator('[data-testid="card-STORY-002"]')).toBeVisible();
 });
 
 test('attaching a spec.md uploads and renders it', async ({ page }) => {
   await page.goto(`${serverUrl}/stories/STORY-003`);
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('load');
 
   await page.locator('button', { hasText: 'spec' }).click();
   await expect(page.locator('text=No spec attached')).toBeVisible();
@@ -173,4 +173,45 @@ test('attaching a spec.md uploads and renders it', async ({ page }) => {
   });
 
   await expect(page.locator('text=Uploaded spec')).toBeVisible({ timeout: 5000 });
+});
+
+test('home page auto-refreshes when an epic is added via the API', async ({ page }) => {
+  await page.goto(serverUrl);
+  await page.waitForLoadState('load');
+
+  // Sanity: the seeded epic title is visible.
+  await expect(page.locator('text=Authentication')).toBeVisible();
+
+  // The seed has already added a feature + 3 stories; trigger an additional change
+  // by POSTing a status update via the existing API (Plan 7) — this writes to disk,
+  // which the watcher should observe and stream to the browser.
+  await page.evaluate(async () => {
+    await fetch('/api/items/STORY-001/status', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'in_progress' }),
+    });
+  });
+
+  // Navigate to the feature page to observe the column re-render. Wait for the
+  // card to appear in the in_progress column WITHOUT calling page.reload().
+  await page.goto(`${serverUrl}/features/FEAT-001`);
+  await page.waitForLoadState('load');
+  // Give the EventSource a moment to connect before the second mutation.
+  await page.waitForTimeout(100);
+  await expect(page.locator('[data-testid="column-in_progress"]').locator('[data-testid="card-STORY-001"]')).toBeVisible({ timeout: 5000 });
+
+  // Now mutate again from outside the tab (via fetch) and watch the column update live.
+  await page.evaluate(async () => {
+    await fetch('/api/items/STORY-001/status', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'review' }),
+    });
+  });
+
+  // No reload — wait for STORY-001 to appear in the review column.
+  await expect(page.locator('[data-testid="column-review"]').locator('[data-testid="card-STORY-001"]')).toBeVisible({ timeout: 5000 });
+  // And it should no longer be in in_progress.
+  await expect(page.locator('[data-testid="column-in_progress"]').locator('[data-testid="card-STORY-001"]')).toHaveCount(0, { timeout: 5000 });
 });
