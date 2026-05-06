@@ -15,9 +15,9 @@ The fix is to invert the relationship: have a **kadai-aware planning flow** that
 ## Goals
 
 - A user prompt that triggers brainstorming + writing-plans in a `.kadai/`-bearing repo runs through **kadai-aware** versions of those flows by default.
-- The brainstorming flow ends by creating a **feature** in the spine and attaching the spec as `feature.spec`, not by leaving a free-floating `docs/superpowers/specs/*.md`.
+- The brainstorming flow ends by creating an **epic + feature** in the spine and attaching the spec as `feature.spec`, not by leaving a free-floating `docs/superpowers/specs/*.md`.
 - The writing-plans flow decomposes the work into **kadai stories** and emits **one `plan.md` per story** directly into the story's directory, with each plan's `### Task N` blocks corresponding 1:1 to real `kadai add task` calls.
-- Stories are picked automatically as the agent moves into implementation.
+- A new `kadai run` command auto-executes the planned work story-by-story, pausing for confirmation at story boundaries and pausing-with-escalation when the implementer hits a blocker that requires a fast-follow-up feature to unblock.
 - A new `kadai plan compose <epic-id>` (or `<feature-id>`) command renders all descendant per-story plans as one composite document for human review, so the "read the whole thing top-to-bottom" use case stays intact.
 - Hooks stay in place as a safety net — if an agent skips the wrapper for whatever reason, the PreToolUse gate still bites on the first off-spine `Edit`/`Write`.
 
@@ -143,16 +143,94 @@ This ships when:
 
 ## Suggested implementation tasks (for the planning phase)
 
-1. **`kadai-brainstorming` SKILL.md** — write the wrapper, including the `.kadai/` detect + the pre-spec-write spine plumbing prompts. Test by running it manually in a fresh repo.
-2. **`kadai-writing-plans` SKILL.md** — same shape; the per-story decomposition is the meaningful new logic. Test by running brainstorm-then-plan end-to-end and verifying the spine state.
+1. **`kadai-brainstorming` SKILL.md** — wrapper with `.kadai/` detect + the pre-spec-write spine plumbing prompts (auto-create epic, attach spec, rework-by-replace).
+2. **`kadai-writing-plans` SKILL.md** — wrapper with per-story plan slicing + auto `kadai add task` for each `### Task N` + auto-pick first story.
 3. **`kadai plan compose <id>` CLI** — small subcommand: read spine, walk descendants, concatenate `plan.md` content. ~80 lines + tests.
-4. **Plugin commands/`kadai-plan-compose.md`** — slash-command wrapper.
-5. **`kadai-plugin/.claude-plugin/plugin.json`** — register the two new skills + the new slash command. Bump version to 1.4.0.
-6. **Documentation:**
-   - `docs/wiki/plugin.md` — describe the wrapper skills.
-   - `docs/wiki/troubleshooting.md` — entry for "wrapper didn't fire."
-   - `docs/wiki/cli-reference.md` — `kadai plan compose`.
-7. **Dogfood test** — fresh `kadai init` repo, run a brainstorm + plan end-to-end via the wrappers, verify acceptance criteria 1-6 pass.
+4. **`kadai run` CLI** — the runner engine. `.kadai/runner.json` state, per-story dispatch loop, blocker detection, resume semantics. The biggest single chunk; probably 2-3 sub-tasks (state model + loop + blocker handling).
+5. **`kadai-runner` skill + `/kadai-run` slash command** — the Claude Code surface for the runner, including the fast-follow-up pause UX (the "plan the unblocker now?" prompt that invokes `kadai-brainstorming --scope=fast-followup`).
+6. **Plugin manifest** — `kadai-plugin/.claude-plugin/plugin.json` register the three new skills + two new slash commands (`/kadai-plan-compose`, `/kadai-run`). Bump to 1.4.0.
+7. **Plugin commands** — `commands/kadai-plan-compose.md`, `commands/kadai-run.md`.
+8. **Documentation:**
+   - `docs/wiki/plugin.md` — describe the wrapper skills + runner.
+   - `docs/wiki/troubleshooting.md` — entries for "wrapper didn't fire", "runner stuck in paused-needs-feature", "runner state corrupt".
+   - `docs/wiki/cli-reference.md` — `kadai plan compose`, `kadai run`.
+   - `docs/wiki/concepts.md` — section on the runner state model + the fast-follow-up dependency edge.
+9. **Dogfood test (`claude -p`-based)** — fresh `mktemp -d` repo, run `claude -p "let's plan a small CLI for X"`, then `kadai run`, with a planted scenario that triggers a `paused-needs-feature` to verify the unblock flow works end-to-end. Assert on spine state at each pause point. This subsumes the file-shape test from the original plan.
+
+## Resolved questions (from spec review)
+
+- **`kadai-brainstorming` auto-creates the epic** if no existing epic matches. The brainstorming flow already proposes a project-shaped name; we use that as the epic title and default phase to `mvp`. The user can override during the standard "does this look right?" gate. Keeps the wrapper from front-loading kadai-specific friction onto a flow that's already 5+ questions deep.
+- **Re-running brainstorming on an existing feature is reworking it.** Treat the new spec as the canonical replacement: `kadai attach_spec --replace <feature-id>`. Old spec content is preserved in the feature's directory as `spec.<timestamp>.md.bak` for audit. Stories under that feature stay; the user can rerun `kadai-writing-plans` to regenerate plans if the rework is large.
+- **Dogfood test invokes the actual flow via `claude -p`** rather than asserting on file structure. Plan 17's CSS bug taught us that build-time green ≠ runtime correct — a test that builds the wrappers but doesn't actually run a brainstorm + plan + first-task end-to-end against a temp project will miss exactly the kind of skill-loading + spine-write integration this spec is trying to fix. The dogfood test is therefore a `claude -p "let's plan a small CLI for X"` invocation in a `mktemp -d` repo, with assertions on the resulting spine state (epic exists, feature exists, spec attached, N stories with N plans, first story picked).
+
+## Auto-running the planned work — the kadai runner
+
+Late-binding requirement. Once brainstorming + writing-plans have populated the spine, the user shouldn't have to manually pick STORY-001 and dispatch implementer subagents one at a time. A **runner** picks up where writing-plans leaves off and works through the planned stories autonomously, with controlled pause points when the work hits a blocker that can't be resolved within the current story's scope.
+
+### Concept
+
+Two surfaces:
+
+1. **`kadai run` CLI command** — the headless engine. Reads the spine, picks the next ready or in-progress story, dispatches an implementer (subagent or local), tracks per-task progress, and persists state across invocations.
+2. **`/kadai-run` slash command + `kadai-runner` skill** — the Claude Code surface. Wraps the CLI + handles the conversational pause/resume UX (the "do you want to plan the unblocker now?" prompt).
+
+Both share the same state model so a session can switch between them.
+
+### State model
+
+A runner is in one of these states, persisted at `.kadai/runner.json`:
+
+- **idle** — nothing in flight. Default.
+- **running** — actively executing a story. Records: which story, which task, dispatched subagent ID (if subagent-driven).
+- **paused-blocked** — the implementer reported it can't complete the current task without external input (a missing capability, an architectural decision, etc.). Surface the blocker, wait for user.
+- **paused-needs-feature** — the implementer discovered the current story depends on a feature that doesn't exist in the spine yet. Surface the unblocker proposal, wait for user.
+- **paused-review** — story finished. Awaiting user confirmation to advance to next story.
+- **error** — last invocation crashed in an unrecoverable way (usually a kadai/MCP/CLI bug). State preserved for debugging.
+
+State transitions are explicit; the runner never silently advances past `paused-*`.
+
+### The fast-follow-up unblocking flow
+
+When the implementer subagent reports `BLOCKED` with a structured reason `"needs-feature: <description>"` (or the runner infers it from a free-form blocker):
+
+1. **Pause:** runner enters `paused-needs-feature`. Persists what was being worked on.
+2. **Surface:** "STORY-007 hit a blocker — agent thinks we need a new feature: 'X'. Plan it now and resume? [Y/n/skip]."
+3. **Plan the unblocker (if Y):** invoke `kadai-brainstorming` in a constrained mode (`--scope=fast-followup`) — same flow but defaults to "small feature, mvp phase, brief design, propose 1-3 stories." Output: a new feature with attached spec, plan'd stories, all in the spine.
+4. **Re-order:** the new feature becomes the runner's next target. Original story stays paused with a note in its changelog: `paused 2026-05-06T... awaiting FEAT-009 unblocker`. Add a `dependency:` field on STORY-007's frontmatter referencing the new feature for spine-level traceability.
+5. **Resume:** runner enters `running` on the unblocker's first story. Iterates the unblocker to completion, then unpauses STORY-007 and resumes from the task it was on.
+6. **Skip / no:** the original story's status is set to `blocked`, the runner enters `idle`, and the user is told what manual action to take (typically: do the unblock manually + `kadai run --resume`).
+
+The dependency edge is recorded in the spine, not just runner state — so even if the runner crashes mid-flight, the next `kadai status` shows STORY-007 blocked-by FEAT-009 and a human can pick up the thread.
+
+### Per-story execution
+
+Inside `running`, for each task in the story's plan.md:
+
+1. Mark the kadai task `in_progress`.
+2. Dispatch implementer subagent with the task's full text (per subagent-driven-development pattern).
+3. Wait for status: `DONE` / `DONE_WITH_CONCERNS` / `BLOCKED` / `NEEDS_CONTEXT`.
+4. On DONE: review (spec + quality reviewers, per the existing pattern), then mark task `done`, advance.
+5. On BLOCKED: parse blocker. If `needs-feature` → fast-follow-up flow above. If anything else → `paused-blocked`.
+6. On NEEDS_CONTEXT: provide context if the runner has it (the spine, the story, the plan); otherwise pause.
+7. After all tasks: set story `review` (or `done` per the project's auto-transition config), persist the changelog, present summary, await confirmation to advance to the next story.
+
+### Resume semantics
+
+`kadai run --resume` (or simply re-running `kadai run` while state is `paused-*`) consults `.kadai/runner.json`, picks up where it left off, and continues. The agent is given the same context the prior step had (story + plan + last task + reason for pause). Idempotent: a second `--resume` while still paused is a no-op + reminder.
+
+### Out-of-scope for the runner v1
+
+- **Parallel story execution.** Run sequential only. Parallelism opens too many merge / dependency cans of worms for v1.
+- **Cross-session locking.** If two `kadai run` processes run concurrently, behavior is undefined. v1 assumes one runner at a time. (Easy follow-up: pid file under `.kadai/`.)
+- **Auto-merging the dependency edge into the original plan.** When STORY-007 resumes after the unblocker, its plan.md isn't rewritten to reflect the now-available capability. The runner just resumes the existing tasks; if they're now wrong, the implementer will report it and we'll re-pause-needs-feature or escalate to the user.
+- **Recovering from a half-failed implementer subagent.** If a subagent crashes mid-task with the file system in a partial state, the runner pauses and the user resolves manually. Cleaner partial-state rollback is a v2 concern.
+
+### Acceptance criteria additions
+
+7. `kadai run` from a fresh post-plan state picks the first story, executes its tasks via subagents, and stops at `paused-review` after the last story or `paused-needs-feature` if any story declares one.
+8. The fast-follow-up flow creates a new feature with stories + plans in the spine, sets a dependency edge on the originally-blocked story, and resumes after the unblocker completes.
+9. `kadai run --resume` can pick up from `paused-*` states and finish the work.
+10. Crash recovery: if the kadai CLI process dies mid-run, `.kadai/runner.json` reflects the last good state, and `kadai run --resume` continues without re-doing completed tasks.
 
 ## Why a feature branch
 
@@ -172,9 +250,4 @@ If after dogfooding we find the wrappers misfire more than they help, we revert 
 
 ---
 
-**Status:** Draft. Needs review before promoting to a writing-plans pass. Questions worth resolving before implementation:
-
-- Should `kadai-brainstorming` also create the **epic** automatically, or always require an existing one? (Current draft: create if missing — but maybe asking once is friction worth keeping.)
-- Should each story's plan get its own self-review checklist, or is one feature-level checklist enough?
-- What happens when an existing feature has a `spec.md` and the user re-runs brainstorming for it? Overwrite, version, or refuse?
-- Plan 17's experience suggests build-time verification (rendering pages, not just tests) catches what unit tests miss. Should the dogfood test include actually invoking the wrappers via `claude -p` rather than asserting on file structure?
+**Status:** Open questions resolved — see "Resolved questions" below. Ready to add the runner section, then promote to writing-plans for the implementation plan.
