@@ -69,7 +69,7 @@ kadai-plugin/.claude-plugin/plugin.json          # MODIFIED: 0.5.0 → 0.6.0
 
 **Goal:** Pure function that runs `git log` once and returns parsed `Commit[]`. Uses `\x00` (NUL) as field/record separators so subjects/bodies with newlines and special chars round-trip cleanly. Handles missing `.git/`, empty repos, and `--since` filters.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/core/git.test.ts`:
 
@@ -157,7 +157,7 @@ test('listCommits handles a subject containing the field-separator-like sequence
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -166,7 +166,7 @@ bun test tests/core/git.test.ts
 
 Expected: FAIL with "Cannot find module ../../src/core/git".
 
-- [ ] **Step 3: Implement core/git.ts**
+- [x] **Step 3: Implement core/git.ts**
 
 Create `/home/fintan/repos/kadai/src/core/git.ts`:
 
@@ -235,7 +235,7 @@ export function parseGitLogOutput(raw: string): Commit[] {
 }
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -244,7 +244,7 @@ bun test tests/core/git.test.ts
 
 Expected: 7 tests pass.
 
-- [ ] **Step 5: Run the full suite + typecheck**
+- [x] **Step 5: Run the full suite + typecheck**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -254,7 +254,7 @@ bun run typecheck
 
 Expected: 237 tests pass (230 prior + 7 new). Typecheck clean.
 
-- [ ] **Step 6: Tick the 5 checkboxes for Task 1 in the plan**
+- [x] **Step 6: Tick the 5 checkboxes for Task 1 in the plan**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-10-git-integration.md`, find Task 1 and tick all 5 step checkboxes.
 
