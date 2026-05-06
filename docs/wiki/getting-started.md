@@ -1,5 +1,7 @@
 # Getting started
 
+> First time? See [installation.md](installation.md) for download options. Already installed? Continue below.
+
 Three setup steps (one-time per machine), then `kadai init` once per project, then you're using it.
 
 ## 1. Install kadai globally

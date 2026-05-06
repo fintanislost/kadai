@@ -12,17 +12,7 @@ For pure CLI/web/docs changes: `bun test` + `bun run typecheck` + targeted smoke
 
 The post-MVP work is organized as a series of focused plans, each ending in something visibly more useful. Order is by user-felt impact, not implementation complexity.
 
-### Plan 12 — Distribution polish 🟢 **next**
-
-- `bun build --compile` actually exercised — single-binary distribution tested
-- Asset embedding into the binary (currently `kadai serve` reads `src/web/dist/` at runtime; would let the binary ship standalone)
-- Curl install script (`curl … | sh`)
-- Brew formula
-- npm package publish
-
-Estimate: medium. Build pipeline + distribution channels.
-
-### Plan 13 — Developer ergonomics
+### Plan 13 — Developer ergonomics 🟢 **next**
 
 The "minor but real" gaps surfaced during MVP build.
 
@@ -76,6 +66,19 @@ See above sections — Plans 7-14 cover all of spec §13.
 ---
 
 ## Recently shipped (as items move out of this list)
+
+### Plan 12 — Distribution polish (shipped 2026-05-06)
+
+- Asset-embedding generator (`scripts/embed-assets.ts`) — SPA shipped inside the binary
+- `bun run build` chains build:web → embed → compile → produces a self-contained `dist/kadai` (~63MB)
+- `scripts/build-all.sh` cross-compiles for darwin/linux/windows × x64/arm64 — all 5 targets working (60-112MB each)
+- `scripts/install.sh` — curl install with OS/arch detection (template; configurable `INSTALL_URL`)
+- `scripts/Formula/kadai.rb` — Homebrew formula template
+- `package.json` — `files`, `engines.bun`, `keywords`, `pack:check` (81 files in tarball, no node_modules/tests)
+- `scripts/smoke-binary.sh` — verifies the binary actually runs end-to-end (init/add/list/pick/serve + embedded SPA)
+- `docs/wiki/installation.md` covers all 4 install paths
+- 7 new tests (4 server-embedded + 3 install-script logic)
+- Plugin version bumped to 0.8.0
 
 ### Plan 11 — Hook polish (shipped 2026-05-06)
 

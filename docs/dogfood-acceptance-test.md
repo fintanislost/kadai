@@ -525,3 +525,41 @@ phase=mvp status=in_progress parent=FEAT-001
 ### Verdict: PASS
 
 All four hook touchpoints are now wired. Real Claude Code session would inject context on each prompt and remind on stop.
+
+---
+
+## Distribution run — Plan 12 verification — 2026-05-06
+
+Built the kadai binary end-to-end and verified it works against a temp project.
+
+- `bun run build` chained build:web → embed-assets → bun build --compile → produced dist/kadai (63MB)
+- `bun run smoke:binary` ran the binary against a tmp project:
+  - `kadai init -y` created EPIC-001 ✅
+  - `kadai add feature` + `kadai add story` ✅
+  - `kadai list story` listed STORY-001 ✅
+  - `kadai pick STORY-001` + `kadai status` confirmed pick ✅
+  - `kadai serve --no-open --port 7912` started, served SPA at /, served bundled JS at /assets/index.js (embedded — not from disk) ✅
+- `bun run build:all` produced 5 cross-target binaries in dist/ (darwin-{x64,arm64} 60-65MB; linux-{x64,arm64} 63-96MB; windows-x64 112MB) ✅
+- `bun run pack:check` produced a clean tarball (81 files, no node_modules, no tests/) ✅
+- `bun test` → 275/0 pass ✅
+
+### Smoke test output (verbatim)
+
+```
+==> bun run build
+    binary at /home/fintan/repos/kadai/dist/kadai
+==> kadai init -y
+==> kadai add feature
+==> kadai add story
+==> kadai list story
+==> kadai pick STORY-001
+==> kadai status
+==> kadai serve --no-open --port 7912
+
+✅ Binary smoke test PASSED
+    init, add, list, pick, status, serve, embedded SPA all working
+```
+
+### Verdict: PASS
+
+The binary is shippable. Real GitHub Releases + brew formula publish are one-shot user actions.

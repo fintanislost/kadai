@@ -997,7 +997,7 @@ EOF
 - Append: `docs/dogfood-acceptance-test.md`
 - Modify: `docs/superpowers/plans/2026-05-06-kadai-12-distribution-polish.md`
 
-- [ ] **Step 1: Create installation.md**
+- [x] **Step 1: Create installation.md**
 
 Create `/home/fintan/repos/kadai/docs/wiki/installation.md`:
 
@@ -1063,7 +1063,7 @@ kadai --help
 Then bootstrap a project: see [getting-started.md](getting-started.md).
 ````
 
-- [ ] **Step 2: Update getting-started.md to link to installation.md**
+- [x] **Step 2: Update getting-started.md to link to installation.md**
 
 Read `/home/fintan/repos/kadai/docs/wiki/getting-started.md`. Add this near the very top (right after the page title):
 
@@ -1071,7 +1071,7 @@ Read `/home/fintan/repos/kadai/docs/wiki/getting-started.md`. Add this near the 
 > First time? See [installation.md](installation.md) for download options. Already installed? Continue below.
 ```
 
-- [ ] **Step 3: Update post-mvp.md**
+- [x] **Step 3: Update post-mvp.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`:
 
@@ -1100,11 +1100,11 @@ In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`:
 - Plugin version bumped to 0.8.0
 ```
 
-- [ ] **Step 4: Bump plugin version**
+- [x] **Step 4: Bump plugin version**
 
 In `/home/fintan/repos/kadai/kadai-plugin/.claude-plugin/plugin.json`, change `"version": "0.7.0"` to `"version": "0.8.0"`.
 
-- [ ] **Step 5: Dogfood — run the binary smoke test + capture output**
+- [x] **Step 5: Dogfood — run the binary smoke test + capture output**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1113,7 +1113,7 @@ bun run smoke:binary
 
 Expected: ends with "✅ Binary smoke test PASSED". CAPTURE the full output for the dogfood log entry.
 
-- [ ] **Step 6: Append a section to docs/dogfood-acceptance-test.md**
+- [x] **Step 6: Append a section to docs/dogfood-acceptance-test.md**
 
 APPEND:
 
@@ -1143,7 +1143,7 @@ The binary is shippable. Real GitHub Releases + brew formula publish are one-sho
 
 (Adjust to match your actual run.)
 
-- [ ] **Step 7: Run the full final checks**
+- [x] **Step 7: Run the full final checks**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1155,13 +1155,13 @@ bunx playwright test
 
 Expected: 275 unit / typecheck clean / build:web clean / 8/8 Playwright. (Build:all and smoke:binary don't need to re-run here — they were verified in Step 5.)
 
-- [ ] **Step 8: Tick the Task 5 checkboxes + Plan 12 self-review checklist**
+- [x] **Step 8: Tick the Task 5 checkboxes + Plan 12 self-review checklist**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-12-distribution-polish.md`:
 - Tick all step checkboxes for Task 5
 - Tick all checkboxes in the "Plan 12 self-review checklist" section near the bottom
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1184,17 +1184,17 @@ EOF
 
 ## Plan 12 self-review checklist
 
-- [ ] All 5 tasks completed; checkboxes ticked.
-- [ ] `bun test` passes (~275 tests).
-- [ ] `bun run typecheck` passes.
-- [ ] `bunx playwright test` passes (8/8 — no change).
-- [ ] `bun run build` produces a self-contained `dist/kadai` binary.
-- [ ] `bun run smoke:binary` ends with "✅ Binary smoke test PASSED".
-- [ ] `bun run build:all` produces 5 binaries (or documents which targets failed and why).
-- [ ] `bun run pack:check` confirms the npm tarball is clean.
-- [ ] Plugin v0.8.0 in the manifest.
-- [ ] post-mvp.md: Plan 12 in "Recently shipped"; Plan 13 marked 🟢 **next**.
-- [ ] `docs/wiki/installation.md` covers all 4 install paths.
+- [x] All 5 tasks completed; checkboxes ticked.
+- [x] `bun test` passes (~275 tests).
+- [x] `bun run typecheck` passes.
+- [x] `bunx playwright test` passes (8/8 — no change).
+- [x] `bun run build` produces a self-contained `dist/kadai` binary.
+- [x] `bun run smoke:binary` ends with "✅ Binary smoke test PASSED".
+- [x] `bun run build:all` produces 5 binaries (or documents which targets failed and why).
+- [x] `bun run pack:check` confirms the npm tarball is clean.
+- [x] Plugin v0.8.0 in the manifest.
+- [x] post-mvp.md: Plan 12 in "Recently shipped"; Plan 13 marked 🟢 **next**.
+- [x] `docs/wiki/installation.md` covers all 4 install paths.
 
 ---
 
