@@ -81,7 +81,7 @@ acceptance criteria:
 
 Lines for `spec` / `plan` only appear if attached. The `acceptance criteria:` section only appears if present. If story has no spec, plan, or AC, the block is just header + 2 lines.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/cli/hook-user-prompt-submit.test.ts`:
 
@@ -189,7 +189,7 @@ test('kadai hook user-prompt-submit reads stdin, prints context, exits 0', () =>
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -198,7 +198,7 @@ bun test tests/cli/hook-user-prompt-submit.test.ts
 
 Expected: FAIL — `buildActiveStoryContext` not exported, the CLI subcommand doesn't exist yet.
 
-- [ ] **Step 3: Add `buildActiveStoryContext` + the subcommand to hook.ts**
+- [x] **Step 3: Add `buildActiveStoryContext` + the subcommand to hook.ts**
 
 Edit `/home/fintan/repos/kadai/src/cli/hook.ts`. Add this export anywhere logical (after `recordPostToolUse` is fine):
 
@@ -258,7 +258,7 @@ hookCommand
   });
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -267,7 +267,7 @@ bun test tests/cli/hook-user-prompt-submit.test.ts
 
 Expected: 7 tests pass.
 
-- [ ] **Step 5: Run the full suite + typecheck**
+- [x] **Step 5: Run the full suite + typecheck**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -277,11 +277,11 @@ bun run typecheck
 
 Expected: 259 pass (252 + 7 new). Typecheck clean.
 
-- [ ] **Step 6: Tick the 5 checkboxes for Task 1 in the plan**
+- [x] **Step 6: Tick the 5 checkboxes for Task 1 in the plan**
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-11-hook-polish.md`, find Task 1 and tick all 5 step checkboxes.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

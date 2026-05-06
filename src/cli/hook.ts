@@ -94,6 +94,42 @@ export function recordPostToolUse(input: PostToolUseInput, rootDir: string): voi
   appendFileSync(changelogPath, `- ${ts} \`${input.tool_name}\` ${rel}\n`, 'utf8');
 }
 
+export function buildActiveStoryContext(rootDir: string): string | null {
+  const pickedId = readPicked(rootDir);
+  if (!pickedId) return null;
+  const story = findById(rootDir, pickedId);
+  if (!story) return null;
+
+  const data = story.data as {
+    id: string;
+    title: string;
+    phase?: string;
+    status: string;
+    parent?: string;
+    spec?: string;
+    plan?: string;
+    acceptance_criteria?: string[];
+  };
+
+  const lines: string[] = ['[kadai-active-story]'];
+  lines.push(`${data.id} — ${data.title}`);
+  const meta: string[] = [];
+  if (data.phase) meta.push(`phase=${data.phase}`);
+  meta.push(`status=${data.status}`);
+  if (data.parent) meta.push(`parent=${data.parent}`);
+  lines.push(meta.join(' '));
+  if (data.spec) lines.push(`spec: ${data.spec} (attached)`);
+  if (data.plan) lines.push(`plan: ${data.plan} (attached)`);
+  if (data.acceptance_criteria && data.acceptance_criteria.length > 0) {
+    lines.push('acceptance criteria:');
+    for (const c of data.acceptance_criteria) {
+      lines.push(`  - ${c}`);
+    }
+  }
+  lines.push('[/kadai-active-story]');
+  return lines.join('\n');
+}
+
 async function readStdinJson<T>(): Promise<T> {
   return new Promise((resolve, reject) => {
     let data = '';
@@ -133,5 +169,19 @@ hookCommand
     if (!root) process.exit(0);
     const input = await readStdinJson<PostToolUseInput>();
     recordPostToolUse(input, root);
+    process.exit(0);
+  });
+
+hookCommand
+  .command('user-prompt-submit')
+  .description('UserPromptSubmit hook: injects active-story context into the prompt when a story is picked')
+  .action(async () => {
+    const root = findKadaiRoot(process.cwd());
+    if (!root) process.exit(0);
+    // Drain stdin (Claude Code sends JSON we don't need to inspect — the picked
+    // file is the source of truth, not the prompt content).
+    try { await readStdinJson<unknown>(); } catch { /* empty stdin OK */ }
+    const context = buildActiveStoryContext(root);
+    if (context) process.stdout.write(context + '\n');
     process.exit(0);
   });
