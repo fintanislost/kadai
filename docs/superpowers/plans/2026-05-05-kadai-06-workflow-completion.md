@@ -457,7 +457,7 @@ git commit -m "feat(plugin): add /kadai-add slash command [Plan-6 Task-3]"
 
 **Goal:** Slash companion to `kadai set-status` — wraps `mcp__kadai__set_status` with CLI fallback.
 
-- [ ] **Step 1: Create the command**
+- [x] **Step 1: Create the command**
 
 Create `/home/fintan/repos/kadai/kadai-plugin/commands/kadai-set-status.md`:
 
@@ -499,7 +499,7 @@ This does the same thing.
 - `STORY-001 cancelled` — explicitly killed
 ````
 
-- [ ] **Step 2: Update docs**
+- [x] **Step 2: Update docs**
 
 In `/home/fintan/repos/kadai/docs/wiki/plugin.md`, add to the "What it provides" list:
 
@@ -507,7 +507,7 @@ In `/home/fintan/repos/kadai/docs/wiki/plugin.md`, add to the "What it provides"
 - **`/kadai-set-status <id> <status>`** — set status to any state machine value (e.g., `STORY-001 review`).
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

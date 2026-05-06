@@ -8,6 +8,7 @@ The kadai-plugin/ directory is an installable Claude Code plugin.
 - **`/kadai-add <kind> [title]`** — guided creation of any item kind, asking for parent and phase when needed.
 - **`/kadai-pick <story-id>`** — picks a story (via MCP `pick_story` + `set_status(in_progress)`, with CLI fallback).
 - **`/kadai-status`** — prints picked + in-progress + ready queue.
+- **`/kadai-set-status <id> <status>`** — set status to any state machine value (e.g., `STORY-001 review`).
 
 ## Install
 
