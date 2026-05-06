@@ -393,7 +393,7 @@ EOF
 
 **Goal:** `bun run build` produces a working binary at `dist/kadai`. The binary embeds the SPA assets so it can run `kadai serve` against any project. A smoke test script proves it works end-to-end.
 
-- [ ] **Step 1: Update package.json scripts**
+- [x] **Step 1: Update package.json scripts**
 
 Read `/home/fintan/repos/kadai/package.json`. Update the `scripts` block. Currently:
 
@@ -426,7 +426,7 @@ Replace the `build` script and add `embed-assets` + `smoke:binary`:
   },
 ```
 
-- [ ] **Step 2: Create the smoke-binary script**
+- [x] **Step 2: Create the smoke-binary script**
 
 Create `/home/fintan/repos/kadai/scripts/smoke-binary.sh`:
 
@@ -517,7 +517,7 @@ Make it executable:
 chmod +x /home/fintan/repos/kadai/scripts/smoke-binary.sh
 ```
 
-- [ ] **Step 3: Run the smoke test**
+- [x] **Step 3: Run the smoke test**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -530,7 +530,7 @@ Expected: ends with "✅ Binary smoke test PASSED". If it fails:
 
 If you make the side-effect import addition, document it clearly in your report and update Task 1 Step 6 to mention it as required.
 
-- [ ] **Step 4: Run the full suite + typecheck (sanity)**
+- [x] **Step 4: Run the full suite + typecheck (sanity)**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -540,11 +540,11 @@ bun run typecheck
 
 Expected: 272 pass, typecheck clean.
 
-- [ ] **Step 5: Tick the step checkboxes for Task 2 in the plan**
+- [x] **Step 5: Tick the step checkboxes for Task 2 in the plan**
 
 Tick all step checkboxes for Task 2.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

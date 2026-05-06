@@ -11,9 +11,12 @@
     "test": "bun test",
     "test:e2e": "bunx playwright test",
     "typecheck": "tsc --noEmit",
-    "build": "bun build --compile --target=bun src/cli/index.ts --outfile dist/kadai",
     "build:web": "vite build --config src/web/frontend/vite.config.ts",
-    "dev:web": "vite --config src/web/frontend/vite.config.ts"
+    "embed-assets": "bun run scripts/embed-assets.ts",
+    "build": "bun run build:web && bun run embed-assets && bun build --compile --target=bun src/cli/index.ts --outfile dist/kadai",
+    "build:all": "bash scripts/build-all.sh",
+    "dev:web": "vite --config src/web/frontend/vite.config.ts",
+    "smoke:binary": "bash scripts/smoke-binary.sh"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
