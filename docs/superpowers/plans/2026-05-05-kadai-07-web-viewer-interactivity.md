@@ -1153,7 +1153,7 @@ EOF
 
 **Goal:** When the spec or plan tab is empty, show an "Attach a spec.md" / "Attach a plan.md" button. Clicking it opens a hidden file picker; the selected file uploads via `attachFile`; on success, the tab content refreshes to show the new markdown.
 
-- [ ] **Step 1: Create the AttachButton component**
+- [x] **Step 1: Create the AttachButton component**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/components/AttachButton.tsx`:
 
@@ -1211,7 +1211,7 @@ export function AttachButton({ itemId, kind, onAttached }: Props) {
 }
 ```
 
-- [ ] **Step 2: Wire AttachButton into Story.tsx**
+- [x] **Step 2: Wire AttachButton into Story.tsx**
 
 Edit `/home/fintan/repos/kadai/src/web/frontend/src/pages/Story.tsx`. Add the import alongside the others:
 
@@ -1258,7 +1258,7 @@ Change to:
 ))}
 ```
 
-- [ ] **Step 3: Build + smoke test**
+- [x] **Step 3: Build + smoke test**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1267,7 +1267,7 @@ bun run build:web
 
 Manual test: start `kadai serve` against a temp project, navigate to a story, switch to the "spec" tab, click "Attach a spec.md", pick any small `.md` file from disk, confirm the markdown renders after upload, refresh the page, confirm it persists.
 
-- [ ] **Step 4: Verify typecheck + tests**
+- [x] **Step 4: Verify typecheck + tests**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1277,7 +1277,7 @@ bun test
 
 Expected: clean exit on both.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

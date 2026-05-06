@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from '@tanstack/react-router';
 import { getItem, getFile, listTasks } from '../api';
+import { AttachButton } from '../components/AttachButton';
 import { Markdown } from '../components/Markdown';
 import { StatusPanel } from '../components/StatusPanel';
 import type { Item } from '../types';
@@ -41,6 +42,13 @@ export function Story() {
     setStory(prev => prev ? { ...prev, data: { ...prev.data, status: next } } : prev);
   }
 
+  function reloadAttached(filename: 'spec.md' | 'plan.md') {
+    getFile(d.id, filename).then(content => {
+      if (filename === 'spec.md') setSpec(content);
+      else setPlan(content);
+    });
+  }
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_220px] gap-6">
       <div className="space-y-6">
@@ -76,8 +84,22 @@ export function Story() {
               <Markdown>{story.body}</Markdown>
             </div>
           )}
-          {tab === 'spec' && (spec ? <Markdown>{spec}</Markdown> : <div className="text-muted italic">No spec attached.</div>)}
-          {tab === 'plan' && (plan ? <Markdown>{plan}</Markdown> : <div className="text-muted italic">No plan attached.</div>)}
+          {tab === 'spec' && (spec ? (
+            <Markdown>{spec}</Markdown>
+          ) : (
+            <div className="space-y-3">
+              <div className="text-muted italic">No spec attached.</div>
+              <AttachButton itemId={d.id} kind="spec" onAttached={() => reloadAttached('spec.md')} />
+            </div>
+          ))}
+          {tab === 'plan' && (plan ? (
+            <Markdown>{plan}</Markdown>
+          ) : (
+            <div className="space-y-3">
+              <div className="text-muted italic">No plan attached.</div>
+              <AttachButton itemId={d.id} kind="plan" onAttached={() => reloadAttached('plan.md')} />
+            </div>
+          ))}
           {tab === 'changelog' && (changelog ? <Markdown>{changelog}</Markdown> : <div className="text-muted italic">No changelog yet.</div>)}
           {tab === 'tasks' && (
             <div className="space-y-2">
