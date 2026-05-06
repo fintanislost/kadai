@@ -201,6 +201,83 @@ test('searching from the top bar lists matches and links to detail pages', async
   await expect(page.locator('h1', { hasText: 'Authentication' })).toBeVisible();
 });
 
+test('illegal status transition surfaces error from /api/items/:id/status', async ({ page }) => {
+  // Move STORY-001 to in_progress via API (it may already be there from a prior test).
+  await page.evaluate(async () => {
+    await fetch('/api/items/STORY-001/status', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'in_progress' }),
+    }).catch(() => {/* ignore if already in_progress */});
+  });
+
+  await page.goto(`${serverUrl}/stories/STORY-001`);
+  await page.waitForLoadState('load');
+  await expect(page.locator('aside').locator('text=in_progress').first()).toBeVisible({ timeout: 5000 });
+
+  // Hit the API directly with an illegal target (in_progress → backlog is not legal).
+  const result = await page.evaluate(async () => {
+    const r = await fetch('/api/items/STORY-001/status', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'backlog' }),
+    });
+    return { status: r.status, body: await r.json() };
+  });
+  expect(result.status).toBe(400);
+  expect(result.body.error).toMatch(/illegal/i);
+});
+
+test('search results page links flow to detail pages', async ({ page }) => {
+  await page.goto(serverUrl);
+  await page.waitForLoadState('load');
+
+  await page.locator('input[type="search"]').fill('Authentication');
+  await page.locator('input[type="search"]').press('Enter');
+  await page.waitForURL(/\/search\?q=Authentication/);
+  await page.waitForLoadState('load');
+
+  await page.locator('a', { hasText: 'Authentication' }).first().click();
+  await page.waitForURL(/\/epics\/EPIC-001/);
+  await expect(page.locator('h1', { hasText: 'Authentication' })).toBeVisible();
+});
+
+test('attaching a plan via the plan tab uploads and renders', async ({ page }) => {
+  await page.goto(`${serverUrl}/stories/STORY-002`);
+  await page.waitForLoadState('load');
+
+  await page.locator('button', { hasText: 'plan' }).click();
+  await expect(page.locator('text=No plan attached')).toBeVisible();
+
+  await page.locator('input[type="file"]').setInputFiles({
+    name: 'plan.md',
+    mimeType: 'text/markdown',
+    buffer: Buffer.from('# Plan\n\n1. Step one\n2. Step two\n'),
+  });
+  await expect(page.locator('text=Step one')).toBeVisible({ timeout: 5000 });
+});
+
+test('Activity page renders the header', async ({ page }) => {
+  await page.goto(`${serverUrl}/activity`);
+  await page.waitForLoadState('load');
+  await expect(page.locator('h1', { hasText: 'Recent changes' })).toBeVisible({ timeout: 8000 });
+});
+
+test('Compare page with valid phases renders two columns', async ({ page }) => {
+  // Use mvp vs mvp — every seeded item is in mvp, so both columns render the same items
+  // and every title is "common" (amber-highlighted). The point here is that the page
+  // mounts and the API call succeeds.
+  await page.goto(`${serverUrl}/compare?a=mvp&b=mvp`);
+  await page.waitForLoadState('load');
+  await expect(page.locator('h1', { hasText: 'mvp vs mvp' })).toBeVisible();
+  // The seeded epic "Authentication" should appear in the columns.
+  await expect(page.locator('text=Authentication').first()).toBeVisible({ timeout: 5000 });
+});
+
+test('Compare page without query params shows the picker hint', async ({ page }) => {
+  await page.goto(`${serverUrl}/compare`);
+  await page.waitForLoadState('load');
+  await expect(page.locator('h1', { hasText: 'Pick two phases' })).toBeVisible();
+});
+
 test('home page auto-refreshes when an epic is added via the API', async ({ page }) => {
   await page.goto(serverUrl);
   await page.waitForLoadState('load');

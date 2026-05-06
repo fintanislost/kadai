@@ -1136,7 +1136,7 @@ EOF
 
 **Goal:** Add 6 new flows that catch realistic regression scenarios. Today's 8 cover the happy paths; this expands to also cover error paths (illegal status transition surfaces error in UI), cross-feature flows (search → click result → use status panel), and the new pages from Tasks 3-4.
 
-- [ ] **Step 1: Add the new E2E tests**
+- [x] **Step 1: Add the new E2E tests**
 
 APPEND to `/home/fintan/repos/kadai/tests/web/e2e.pw.ts`:
 
@@ -1222,7 +1222,7 @@ test('Compare page without query params shows the picker hint', async ({ page })
 });
 ```
 
-- [ ] **Step 2: Build SPA + run Playwright**
+- [x] **Step 2: Build SPA + run Playwright**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1232,7 +1232,7 @@ bunx playwright test
 
 Expected: 14/14 pass (8 prior + 6 new). If any new test flakes, the most likely cause is timing — bump `toBeVisible` timeouts, OR scope a more specific selector.
 
-- [ ] **Step 3: Verify the unit suite**
+- [x] **Step 3: Verify the unit suite**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1241,11 +1241,11 @@ bun test
 
 Expected: 312 pass (no change — bun test doesn't pick up `.pw.ts`).
 
-- [ ] **Step 4: Tick the step checkboxes for Task 5 in the plan**
+- [x] **Step 4: Tick the step checkboxes for Task 5 in the plan**
 
 Tick all step checkboxes for Task 5.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
