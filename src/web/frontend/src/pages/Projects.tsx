@@ -1,16 +1,17 @@
+import { EmptyState } from '../components/EmptyState';
 import { useProjectMode } from '../project';
+import { FolderTree } from 'lucide-react';
 
 export function Projects() {
   const { projects } = useProjectMode();
 
   if (projects.length === 0) {
     return (
-      <div className="space-y-4">
-        <h1 className="text-2xl font-bold">No projects registered</h1>
-        <div className="text-muted text-sm">
-          Run <code className="bg-zinc-800 px-1.5 py-0.5 rounded">kadai serve register [path]</code> to add a project.
-        </div>
-      </div>
+      <EmptyState
+        icon={FolderTree}
+        title="No projects registered"
+        hint="Run `kadai serve register [path]` to add a project."
+      />
     );
   }
 

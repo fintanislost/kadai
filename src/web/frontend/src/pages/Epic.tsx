@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams } from '@tanstack/react-router';
 import { getItem, listFeatures } from '../api';
+import { EmptyState } from '../components/EmptyState';
+import { SkeletonStack } from '../components/Skeleton';
 import { useLiveKey } from '../live';
 import { useProjectMode, ProjectScopedLink } from '../project';
 import type { Item } from '../types';
+import { Box, FileQuestion } from 'lucide-react';
 
 export function Epic() {
   // useParams without `from` to support both /epics/$id and /p/$slug/epics/$id
@@ -11,16 +14,20 @@ export function Epic() {
   const id = params.id ?? '';
   const [epic, setEpic] = useState<Item | null>(null);
   const [features, setFeatures] = useState<Item[]>([]);
+  const [loading, setLoading] = useState(true);
   const liveKey = useLiveKey();
   const { activeSlug } = useProjectMode();
 
   useEffect(() => {
     if (!id) return;
-    getItem(id, activeSlug).then(setEpic);
-    listFeatures({ epic_id: id }, activeSlug).then(setFeatures);
+    setLoading(true);
+    Promise.all([getItem(id, activeSlug), listFeatures({ epic_id: id }, activeSlug)])
+      .then(([e, f]) => { setEpic(e); setFeatures(f); })
+      .finally(() => setLoading(false));
   }, [id, liveKey, activeSlug]);
 
-  if (!epic) return <div className="text-muted">Loading or not found…</div>;
+  if (loading && !epic) return <SkeletonStack rows={4} />;
+  if (!epic) return <EmptyState icon={FileQuestion} title="Epic not found" hint={`No epic with ID ${id} exists.`} />;
   const d = epic.data as { id: string; title: string; phase: string; status: string };
 
   return (
@@ -34,7 +41,7 @@ export function Epic() {
       <div>
         <h2 className="text-sm font-bold uppercase tracking-wider text-muted mb-3">Features</h2>
         {features.length === 0 ? (
-          <div className="text-muted text-sm italic">(no features yet)</div>
+          <EmptyState icon={Box} title="No features yet" hint={`Add one with \`kadai add feature --epic ${id}\``} />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {features.sort((a, b) => ((a.data as any).order ?? 0) - ((b.data as any).order ?? 0)).map(f => {

@@ -419,7 +419,7 @@ For empty states: each page needs its own copy. Examples:
 | Compare | unknown phase | icon=Columns, title="Phase not found", hint="Pick from the available phases listed in the URL hint." |
 | Projects | empty registry | already structured — keep existing copy |
 
-- [ ] **Step 1: Update Home.tsx**
+- [x] **Step 1: Update Home.tsx**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/pages/Home.tsx`. Add imports:
 
@@ -448,7 +448,7 @@ if (loading && phases.length === 0) {
 }
 ```
 
-- [ ] **Step 2: Update Epic.tsx**
+- [x] **Step 2: Update Epic.tsx**
 
 Read the file. Add imports:
 
@@ -480,7 +480,7 @@ Replace `<div className="text-muted text-sm italic">(no features yet)</div>` wit
 <EmptyState icon={Box} title="No features yet" hint={`Add one with \`kadai add feature --epic ${id}\``} />
 ```
 
-- [ ] **Step 3: Update Feature.tsx**
+- [x] **Step 3: Update Feature.tsx**
 
 Same pattern. Add imports for `SkeletonStack`, `EmptyState`, `BookOpen`, `FileQuestion` from `lucide-react`.
 
@@ -488,7 +488,7 @@ Replace the `Loading or not found…` line with split logic + skeleton + EmptySt
 
 If the page renders an empty kanban (no stories yet), wrap it: when stories.length === 0 add `<EmptyState icon={BookOpen} title="No stories yet" hint={...} />` instead of an empty kanban. (Don't remove the kanban; render either it OR the empty state.)
 
-- [ ] **Step 4: Update Story.tsx**
+- [x] **Step 4: Update Story.tsx**
 
 Same pattern. Add imports for `SkeletonStack`, `EmptyState`, `CheckSquare`, `Clock`, `FileQuestion`, `FileText` from `lucide-react`.
 
@@ -498,7 +498,7 @@ Same pattern. Add imports for `SkeletonStack`, `EmptyState`, `CheckSquare`, `Clo
 - Plan tab no-attach: similar (icon=FileText, title="No plan attached", hint="Upload a plan.md with implementation steps.").
 - Changelog tab empty: EmptyState (icon=Clock, title="Changelog is empty", hint="Edits to this story while picked, plus matching commits, appear here.").
 
-- [ ] **Step 5: Update Search.tsx**
+- [x] **Step 5: Update Search.tsx**
 
 Add imports for `EmptyState`, `SearchX` from `lucide-react`.
 
@@ -510,7 +510,7 @@ Replace the existing "No results." text with:
 
 Loading state stays as-is (skeleton overkill for inline search).
 
-- [ ] **Step 6: Update Activity.tsx**
+- [x] **Step 6: Update Activity.tsx**
 
 Add imports for `EmptyState`, `SkeletonStack`, `Clock` from `lucide-react`.
 
@@ -528,7 +528,7 @@ Replace the empty case:
 )}
 ```
 
-- [ ] **Step 7: Update Compare.tsx**
+- [x] **Step 7: Update Compare.tsx**
 
 Add imports for `EmptyState`, `SkeletonStack`, `Columns2`, `FileQuestion` from `lucide-react`.
 
@@ -536,7 +536,7 @@ For the no-params hint at the top of Compare.tsx, leave as-is (it's already a st
 
 For each side that has `items.length === 0`, render an inline EmptyState within the card body instead of a blank list.
 
-- [ ] **Step 8: Update Projects.tsx**
+- [x] **Step 8: Update Projects.tsx**
 
 Add an icon to the existing "No projects registered" branch:
 
@@ -557,7 +557,7 @@ if (projects.length === 0) {
 
 (Keep the existing "Projects (N)" header for the populated case unchanged.)
 
-- [ ] **Step 9: Build + verify**
+- [x] **Step 9: Build + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -572,11 +572,11 @@ Expected: build clean, typecheck clean, 332 unit tests pass, 18 Playwright pass.
 
 If a Playwright test fails because the empty-state copy changed (e.g., test asserts `text=No spec attached` but the EmptyState now renders `No spec attached` inside an `<EmptyState>` wrapper), update the selector to match new shape OR rely on the test still finding the literal text since EmptyState renders it as visible text.
 
-- [ ] **Step 10: Tick the step checkboxes for Task 3 in the plan**
+- [x] **Step 10: Tick the step checkboxes for Task 3 in the plan**
 
 Tick all step checkboxes for Task 3.
 
-- [ ] **Step 11: Commit**
+- [x] **Step 11: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

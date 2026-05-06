@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useSearch } from '@tanstack/react-router';
 import { listPhases, comparePhasesApi, type CompareResult } from '../api';
+import { EmptyState } from '../components/EmptyState';
 import { useProjectMode, ProjectScopedLink } from '../project';
 import type { PhaseConfig } from '../types';
+import { Columns2 } from 'lucide-react';
 
 const ROUTE_BY_KIND: Record<string, string> = {
   epic: '/epics/$id',
@@ -51,26 +53,30 @@ export function Compare() {
           {[result.a, result.b].map((side, idx) => (
             <div key={idx} className="bg-panel rounded p-3 space-y-2">
               <div className="text-sm font-bold">{side.phase} <span className="text-xs text-muted">({side.items.length})</span></div>
-              <ul className="space-y-1">
-                {side.items.map(item => {
-                  const inCommon = result.common.titles.includes(item.title);
-                  return (
-                    <li key={item.id}>
-                      <ProjectScopedLink
-                        activeSlug={activeSlug}
-                        to={ROUTE_BY_KIND[item.kind] ?? '/'}
-                        params={{ id: item.id }}
-                        className={`block text-xs p-1.5 rounded ${inCommon ? 'bg-amber-900/30 hover:bg-amber-900/50' : 'bg-zinc-800 hover:bg-zinc-700'}`}
-                      >
-                        <span className="text-muted text-[10px] uppercase mr-2">{item.kind}</span>
-                        <span className="text-muted text-[10px] mr-2">{item.id}</span>
-                        <span>{item.title}</span>
-                        <span className="ml-2 text-[10px] text-muted">[{item.status}]</span>
-                      </ProjectScopedLink>
-                    </li>
-                  );
-                })}
-              </ul>
+              {side.items.length === 0 ? (
+                <EmptyState icon={Columns2} title="No items in this phase" className="py-6" />
+              ) : (
+                <ul className="space-y-1">
+                  {side.items.map(item => {
+                    const inCommon = result.common.titles.includes(item.title);
+                    return (
+                      <li key={item.id}>
+                        <ProjectScopedLink
+                          activeSlug={activeSlug}
+                          to={ROUTE_BY_KIND[item.kind] ?? '/'}
+                          params={{ id: item.id }}
+                          className={`block text-xs p-1.5 rounded ${inCommon ? 'bg-amber-900/30 hover:bg-amber-900/50' : 'bg-zinc-800 hover:bg-zinc-700'}`}
+                        >
+                          <span className="text-muted text-[10px] uppercase mr-2">{item.kind}</span>
+                          <span className="text-muted text-[10px] mr-2">{item.id}</span>
+                          <span>{item.title}</span>
+                          <span className="ml-2 text-[10px] text-muted">[{item.status}]</span>
+                        </ProjectScopedLink>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
             </div>
           ))}
         </div>

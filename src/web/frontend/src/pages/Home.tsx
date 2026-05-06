@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { listEpics, listPhases } from '../api';
 import { EpicCard } from '../components/EpicCard';
+import { SkeletonStack } from '../components/Skeleton';
 import { useLiveKey } from '../live';
 import { useProjectMode, ProjectScopedLink } from '../project';
 import type { Item, PhaseConfig } from '../types';
@@ -8,13 +9,20 @@ import type { Item, PhaseConfig } from '../types';
 export function Home() {
   const [phases, setPhases] = useState<PhaseConfig[]>([]);
   const [epics, setEpics] = useState<Item[]>([]);
+  const [loading, setLoading] = useState(true);
   const liveKey = useLiveKey();
   const { activeSlug } = useProjectMode();
 
   useEffect(() => {
-    listPhases(activeSlug).then(setPhases);
-    listEpics({}, activeSlug).then(setEpics);
+    setLoading(true);
+    Promise.all([listPhases(activeSlug), listEpics({}, activeSlug)])
+      .then(([p, e]) => { setPhases(p); setEpics(e); })
+      .finally(() => setLoading(false));
   }, [liveKey, activeSlug]);
+
+  if (loading && phases.length === 0) {
+    return <SkeletonStack rows={5} />;
+  }
 
   return (
     <div className="space-y-8">

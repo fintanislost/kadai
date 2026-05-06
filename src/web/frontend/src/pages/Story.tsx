@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react';
 import { useParams } from '@tanstack/react-router';
 import { getItem, getFile, listTasks } from '../api';
 import { AttachButton } from '../components/AttachButton';
+import { EmptyState } from '../components/EmptyState';
 import { Markdown } from '../components/Markdown';
+import { SkeletonStack } from '../components/Skeleton';
 import { StatusPanel } from '../components/StatusPanel';
 import { useLiveKey } from '../live';
 import { useProjectMode, ProjectScopedLink } from '../project';
 import type { Item } from '../types';
 import type { Status } from '../types';
+import { CheckSquare, Clock, FileQuestion, FileText } from 'lucide-react';
 
 type TabName = 'story' | 'spec' | 'plan' | 'changelog' | 'tasks';
 
@@ -21,19 +24,30 @@ export function Story() {
   const [plan, setPlan] = useState<string | null>(null);
   const [changelog, setChangelog] = useState<string | null>(null);
   const [tab, setTab] = useState<TabName>('story');
+  const [loading, setLoading] = useState(true);
   const liveKey = useLiveKey();
   const { activeSlug } = useProjectMode();
 
   useEffect(() => {
     if (!id) return;
-    getItem(id, activeSlug).then(setStory);
-    listTasks({ story_id: id }, activeSlug).then(setTasks);
-    getFile(id, 'spec.md', activeSlug).then(setSpec);
-    getFile(id, 'plan.md', activeSlug).then(setPlan);
-    getFile(id, 'changelog.md', activeSlug).then(setChangelog);
+    setLoading(true);
+    Promise.all([
+      getItem(id, activeSlug),
+      listTasks({ story_id: id }, activeSlug),
+      getFile(id, 'spec.md', activeSlug),
+      getFile(id, 'plan.md', activeSlug),
+      getFile(id, 'changelog.md', activeSlug),
+    ]).then(([s, t, sp, pl, ch]) => {
+      setStory(s);
+      setTasks(t);
+      setSpec(sp);
+      setPlan(pl);
+      setChangelog(ch);
+    }).finally(() => setLoading(false));
   }, [id, liveKey, activeSlug]);
 
-  if (!story) return <div className="text-muted">Loading or not found…</div>;
+  if (loading && !story) return <SkeletonStack rows={5} />;
+  if (!story) return <EmptyState icon={FileQuestion} title="Story not found" hint={`No story with ID ${id} exists.`} />;
   const d = story.data as {
     id: string;
     title: string;
@@ -94,24 +108,32 @@ export function Story() {
           {tab === 'spec' && (spec ? (
             <Markdown>{spec}</Markdown>
           ) : (
-            <div className="space-y-3">
-              <div className="text-muted italic">No spec attached.</div>
-              <AttachButton itemId={d.id} kind="spec" slug={activeSlug} onAttached={() => reloadAttached('spec.md')} />
-            </div>
+            <EmptyState
+              icon={FileText}
+              title="No spec attached"
+              hint="Upload a spec.md to define what this story should do."
+              action={<AttachButton itemId={d.id} kind="spec" onAttached={() => reloadAttached('spec.md')} slug={activeSlug} />}
+            />
           ))}
           {tab === 'plan' && (plan ? (
             <Markdown>{plan}</Markdown>
           ) : (
-            <div className="space-y-3">
-              <div className="text-muted italic">No plan attached.</div>
-              <AttachButton itemId={d.id} kind="plan" slug={activeSlug} onAttached={() => reloadAttached('plan.md')} />
-            </div>
+            <EmptyState
+              icon={FileText}
+              title="No plan attached"
+              hint="Upload a plan.md with implementation steps."
+              action={<AttachButton itemId={d.id} kind="plan" onAttached={() => reloadAttached('plan.md')} slug={activeSlug} />}
+            />
           ))}
-          {tab === 'changelog' && (changelog ? <Markdown>{changelog}</Markdown> : <div className="text-muted italic">No changelog yet.</div>)}
+          {tab === 'changelog' && (changelog ? (
+            <Markdown>{changelog}</Markdown>
+          ) : (
+            <EmptyState icon={Clock} title="Changelog is empty" hint="Edits to this story while picked, plus matching commits, appear here." />
+          ))}
           {tab === 'tasks' && (
             <div className="space-y-2">
               {tasks.length === 0 ? (
-                <div className="text-muted italic">No tasks yet.</div>
+                <EmptyState icon={CheckSquare} title="No tasks yet" hint={`Add one with \`kadai add task --story ${id}\``} />
               ) : tasks.map(t => {
                 const td = t.data as { id: string; title: string; status: string };
                 return (

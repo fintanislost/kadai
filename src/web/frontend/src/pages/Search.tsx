@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useSearch } from '@tanstack/react-router';
 import { searchSpine, type SearchResult } from '../api';
+import { EmptyState } from '../components/EmptyState';
 import { useProjectMode, ProjectScopedLink } from '../project';
+import { SearchX } from 'lucide-react';
 
 const ROUTE_BY_KIND: Record<string, string> = {
   epic: '/epics/$id',
@@ -60,7 +62,7 @@ export function Search() {
       {error && <div className="text-red-400 text-sm">{error}</div>}
 
       {!loading && !error && q.length >= 2 && results.length === 0 && (
-        <div className="text-muted italic">No results.</div>
+        <EmptyState icon={SearchX} title="No results" hint="Try a different query — we search title, body, and acceptance criteria." />
       )}
 
       <div className="space-y-2">

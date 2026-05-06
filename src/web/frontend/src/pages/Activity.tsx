@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { getActivity, type ActivityEntry } from '../api';
+import { EmptyState } from '../components/EmptyState';
+import { SkeletonStack } from '../components/Skeleton';
 import { useLiveKey } from '../live';
 import { useProjectMode, ProjectScopedLink } from '../project';
+import { Clock } from 'lucide-react';
 
 const ROUTE_BY_KIND: Record<string, string> = {
   epic: '/epics/$id',
@@ -35,8 +38,10 @@ export function Activity() {
         <div className="text-xs text-muted">Activity</div>
         <h1 className="text-2xl font-bold">Recent changes</h1>
       </div>
-      {loading && <div className="text-muted italic">Loading…</div>}
-      {!loading && entries.length === 0 && <div className="text-muted italic">No activity yet.</div>}
+      {loading && entries.length === 0 && <SkeletonStack rows={6} />}
+      {!loading && entries.length === 0 && (
+        <EmptyState icon={Clock} title="No activity yet" hint="Edits, commits, and notes will appear here as work progresses." />
+      )}
       <ul className="space-y-1.5">
         {entries.map((e, i) => (
           <li key={i} className="flex items-baseline gap-3 text-sm">
