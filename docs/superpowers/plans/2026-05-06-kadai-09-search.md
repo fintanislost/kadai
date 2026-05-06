@@ -528,7 +528,7 @@ EOF
 
 **Goal:** Add a typed client wrapper plus the `SearchResult` type so React components can call the new endpoint.
 
-- [ ] **Step 1: Add the new function and type**
+- [x] **Step 1: Add the new function and type**
 
 APPEND to `/home/fintan/repos/kadai/src/web/frontend/src/api.ts`:
 
@@ -559,7 +559,7 @@ export async function searchSpine(query: string): Promise<SearchResult[]> {
 
 (Note: `Status` is already imported from `./types` after Plan 7 Task 4. Add the new `ItemKind` import alongside it. If TypeScript prefers, merge `Status` and `ItemKind` into the existing types import line.)
 
-- [ ] **Step 2: Verify typecheck passes**
+- [x] **Step 2: Verify typecheck passes**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -568,7 +568,7 @@ bun run typecheck
 
 Expected: clean (no TS errors).
 
-- [ ] **Step 3: Tick the 3 checkboxes for Task 3 in the plan**
+- [x] **Step 3: Tick the 3 checkboxes for Task 3 in the plan**
 
 Tick all 3 step checkboxes in Task 3.
 

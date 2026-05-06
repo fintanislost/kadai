@@ -1,4 +1,4 @@
-import type { Item, PhaseConfig, Status } from './types';
+import type { Item, PhaseConfig, Status, ItemKind } from './types';
 
 async function get<T>(path: string): Promise<T> {
   const r = await fetch(path);
@@ -83,4 +83,25 @@ export async function attachFile(id: string, kind: 'spec' | 'plan', file: File):
     throw new Error(json.error ?? `HTTP ${r.status}`);
   }
   return r.json() as Promise<Item>;
+}
+
+export interface SearchResult {
+  id: string;
+  kind: ItemKind;
+  title: string;
+  phase?: string;
+  status: Status;
+  matchType: 'title' | 'body' | 'acceptance';
+  snippet: string;
+  matchStart: number;
+  matchEnd: number;
+}
+
+export async function searchSpine(query: string): Promise<SearchResult[]> {
+  const r = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+  if (!r.ok) {
+    const json = await r.json().catch(() => ({ error: `HTTP ${r.status}` }));
+    throw new Error(json.error ?? `HTTP ${r.status}`);
+  }
+  return r.json() as Promise<SearchResult[]>;
 }
