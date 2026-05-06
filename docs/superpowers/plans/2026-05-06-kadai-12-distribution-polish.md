@@ -573,7 +573,7 @@ EOF
 
 **Goal:** Cross-compile binaries for all 5 supported targets via Bun's `--target=bun-{platform}-{arch}` flag, output to `dist/kadai-{platform}-{arch}{.exe?}`.
 
-- [ ] **Step 1: Write the cross-build script**
+- [x] **Step 1: Write the cross-build script**
 
 Create `/home/fintan/repos/kadai/scripts/build-all.sh`:
 
@@ -619,7 +619,7 @@ Make it executable:
 chmod +x /home/fintan/repos/kadai/scripts/build-all.sh
 ```
 
-- [ ] **Step 2: Run the cross-build**
+- [x] **Step 2: Run the cross-build**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -628,7 +628,7 @@ bun run build:all
 
 Expected: 5 binaries land in `dist/`. If any target fails (e.g., Bun complains about cross-arch native deps), document the failure in your report and skip that target — it's a real Bun limitation, not a code defect. Acceptable to ship Plan 12 with 3-4 working targets; document the gap.
 
-- [ ] **Step 3: Verify each binary at least starts (smoke check)**
+- [x] **Step 3: Verify each binary at least starts (smoke check)**
 
 For binaries that match the host platform, run them directly:
 
@@ -651,11 +651,11 @@ for b in dist/kadai-*; do
 done
 ```
 
-- [ ] **Step 4: Tick the step checkboxes for Task 3 in the plan**
+- [x] **Step 4: Tick the step checkboxes for Task 3 in the plan**
 
 Tick all step checkboxes for Task 3.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
