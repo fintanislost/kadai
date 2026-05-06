@@ -356,3 +356,19 @@ TMP=$(mktemp -d) && cd "$TMP" && \
   find "$TMP/.kadai" -name "changelog.md" -exec cat {} \; && \
   echo "--- final status ---" && kadai status
 ```
+
+---
+
+## Web API run — Plan 7 verification — 2026-05-05
+
+Spot-checked the new write endpoints via curl after building the SPA + starting `kadai serve` against a temp project.
+
+- `GET /api/items/STORY-001/transitions` → `{"current":"ready","allowed":["in_progress","cancelled"]}` ✅
+- `POST /api/items/STORY-001/status {"status":"in_progress"}` → 200 with updated item ✅
+- `kadai status` confirmed the file write persisted ✅
+- `bun test` → 200/0 pass ✅
+- `bunx playwright test` → 6/6 pass (3 existing + 3 Plan 7 flows) ✅
+
+### Verdict: PASS
+
+Web viewer is now writable end-to-end.

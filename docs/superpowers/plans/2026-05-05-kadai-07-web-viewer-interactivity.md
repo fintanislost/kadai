@@ -1452,7 +1452,7 @@ EOF
 
 **Goal:** Capture the new endpoints in a fresh `api-reference.md`, note the new interactivity in `web-viewer.md`, mark Plan 7 shipped in `post-mvp.md`, bump the plugin patch version (no plugin changes but version sync makes "what's the current build" easy to answer), and run a brief dogfood verification.
 
-- [ ] **Step 1: Create the API reference doc**
+- [x] **Step 1: Create the API reference doc**
 
 Create `/home/fintan/repos/kadai/docs/wiki/api-reference.md`:
 
@@ -1512,7 +1512,7 @@ curl -X POST http://localhost:7777/api/items/STORY-001/attach \
 - For real-time updates across browser tabs, see Plan 8 (SSE) once it ships.
 ````
 
-- [ ] **Step 2: Update web-viewer.md**
+- [x] **Step 2: Update web-viewer.md**
 
 Read `/home/fintan/repos/kadai/docs/wiki/web-viewer.md` first to see what's there. Find the section that describes the story detail / feature detail behavior. Add a paragraph that says:
 
@@ -1526,7 +1526,7 @@ Status changes are optimistic — the UI updates immediately and reverts if the 
 
 (If `web-viewer.md` doesn't exist, create it with the section above as the body and a `# Web viewer` heading at the top.)
 
-- [ ] **Step 3: Update post-mvp.md**
+- [x] **Step 3: Update post-mvp.md**
 
 In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`:
 
@@ -1554,7 +1554,7 @@ In `/home/fintan/repos/kadai/docs/wiki/post-mvp.md`:
 - Plugin version bumped to 0.3.0
 ```
 
-- [ ] **Step 4: Bump plugin version**
+- [x] **Step 4: Bump plugin version**
 
 In `/home/fintan/repos/kadai/kadai-plugin/.claude-plugin/plugin.json`, change:
 
@@ -1568,7 +1568,7 @@ to:
   "version": "0.3.0",
 ```
 
-- [ ] **Step 5: Dogfood verification (shell test)**
+- [x] **Step 5: Dogfood verification (shell test)**
 
 Run a short Path A flow in a temp dir to verify the web viewer is reachable and the new endpoints respond. (The skill `kadai-dogfood-test` covers MCP/hooks; for Plan 7 we add a small web-API spot check.)
 
@@ -1604,7 +1604,7 @@ cd / && rm -rf "$TMP" /tmp/kadai-plan7-serve.log
 
 Expected: transitions endpoint returns JSON with `allowed` array; status POST returns the updated item with `status: "in_progress"`; `kadai status` confirms STORY-001 is `in_progress`.
 
-- [ ] **Step 6: Append the run to the dogfood acceptance log**
+- [x] **Step 6: Append the run to the dogfood acceptance log**
 
 Append a section to `/home/fintan/repos/kadai/docs/dogfood-acceptance-test.md`:
 
@@ -1624,7 +1624,7 @@ Spot-checked the new write endpoints via curl after building the SPA + starting 
 Web viewer is now writable end-to-end.
 ```
 
-- [ ] **Step 7: Run all checks one last time**
+- [x] **Step 7: Run all checks one last time**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1636,7 +1636,7 @@ bunx playwright test
 
 Expected: every step exits clean.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1657,17 +1657,17 @@ EOF
 
 ## Plan 7 self-review checklist
 
-- [ ] All 9 tasks above completed; checkboxes ticked.
-- [ ] `bun test` passes (~189+ tests including the new attach + status + transitions tests).
-- [ ] `bun run typecheck` passes.
-- [ ] `bunx playwright test` passes (6/6).
-- [ ] `POST /api/items/:id/status` works end-to-end (verified in Task 9 dogfood).
-- [ ] `POST /api/items/:id/attach` works end-to-end (verified in Task 8 E2E).
-- [ ] Drag-drop kanban changes status persistently (verified in Task 8 E2E).
-- [ ] StatusPanel reverts on illegal transition (visual smoke check in Task 5 step 3).
-- [ ] Plugin v0.3.0 in the manifest.
-- [ ] post-mvp.md updated: Plan 7 in "Recently shipped"; Plan 8 marked 🟢 **next**.
-- [ ] api-reference.md and web-viewer.md committed.
+- [x] All 9 tasks above completed; checkboxes ticked.
+- [x] `bun test` passes (~189+ tests including the new attach + status + transitions tests).
+- [x] `bun run typecheck` passes.
+- [x] `bunx playwright test` passes (6/6).
+- [x] `POST /api/items/:id/status` works end-to-end (verified in Task 9 dogfood).
+- [x] `POST /api/items/:id/attach` works end-to-end (verified in Task 8 E2E).
+- [x] Drag-drop kanban changes status persistently (verified in Task 8 E2E).
+- [x] StatusPanel reverts on illegal transition (visual smoke check in Task 5 step 3).
+- [x] Plugin v0.3.0 in the manifest.
+- [x] post-mvp.md updated: Plan 7 in "Recently shipped"; Plan 8 marked 🟢 **next**.
+- [x] api-reference.md and web-viewer.md committed.
 
 ---
 

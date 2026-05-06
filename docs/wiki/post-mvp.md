@@ -12,17 +12,7 @@ For pure CLI/web/docs changes: `bun test` + `bun run typecheck` + targeted smoke
 
 The post-MVP work is organized as a series of focused plans, each ending in something visibly more useful. Order is by user-felt impact, not implementation complexity.
 
-### Plan 7 — Web viewer interactivity 🟢 **next**
-
-Makes the web viewer not just a read-only roadmap. Status changes from the UI become possible.
-
-- **Status changers in story detail right rail** — buttons to move state (calls the new `/api/items/:id/status` endpoint, which calls `set_status`).
-- **Drag-drop kanban** in feature detail — drop a story card on a different column → status change.
-- **Attach UI** — upload spec.md / plan.md from the story detail (calls `/api/items/:id/attach-spec`).
-
-Estimate: medium. New API endpoints + frontend interactivity. Requires writable API endpoints (currently all `/api/*` is read-only).
-
-### Plan 8 — Live updates (SSE)
+### Plan 8 — Live updates (SSE) 🟢 **next**
 
 The web viewer auto-refreshes when the spine changes (CLI, MCP, or another browser tab).
 
@@ -126,6 +116,18 @@ See above sections — Plans 7-14 cover all of spec §13.
 ---
 
 ## Recently shipped (as items move out of this list)
+
+### Plan 7 — Web viewer interactivity (shipped 2026-05-05)
+
+- `POST /api/items/:id/status` — status mutations from the web
+- `GET /api/items/:id/transitions` — exposes legal next states
+- `POST /api/items/:id/attach` — multipart upload for spec.md / plan.md
+- `core/attach.ts` — extracted from MCP handlers; shared by web + MCP
+- StatusPanel right rail on the story page (optimistic UI)
+- Drag-drop kanban via @dnd-kit on the feature page
+- AttachButton on empty spec/plan tabs
+- 3 new Playwright E2E flows
+- Plugin version bumped to 0.3.0
 
 ### Plan 6 — Workflow completion (shipped 2026-05-05)
 
