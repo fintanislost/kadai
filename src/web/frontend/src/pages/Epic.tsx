@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from '@tanstack/react-router';
 import { getItem, listFeatures } from '../api';
+import { useLiveKey } from '../live';
 import type { Item } from '../types';
 
 export function Epic() {
   const { id } = useParams({ from: '/epics/$id' });
   const [epic, setEpic] = useState<Item | null>(null);
   const [features, setFeatures] = useState<Item[]>([]);
+  const liveKey = useLiveKey();
 
   useEffect(() => {
     getItem(id).then(setEpic);
     listFeatures({ epic_id: id }).then(setFeatures);
-  }, [id]);
+  }, [id, liveKey]);
 
   if (!epic) return <div className="text-muted">Loading or not found…</div>;
   const d = epic.data as { id: string; title: string; phase: string; status: string };

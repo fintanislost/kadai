@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react';
 import { listEpics, listPhases } from '../api';
 import { EpicCard } from '../components/EpicCard';
+import { useLiveKey } from '../live';
 import type { Item, PhaseConfig } from '../types';
 
 export function Home() {
   const [phases, setPhases] = useState<PhaseConfig[]>([]);
   const [epics, setEpics] = useState<Item[]>([]);
+  const liveKey = useLiveKey();
 
   useEffect(() => {
     listPhases().then(setPhases);
     listEpics().then(setEpics);
-  }, []);
+  }, [liveKey]);
 
   return (
     <div className="space-y-8">

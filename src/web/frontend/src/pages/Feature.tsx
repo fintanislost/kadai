@@ -3,17 +3,19 @@ import { Link, useParams } from '@tanstack/react-router';
 import { getItem, listStories } from '../api';
 import { KanbanBoard } from '../components/KanbanBoard';
 import { Markdown } from '../components/Markdown';
+import { useLiveKey } from '../live';
 import type { Item, Status } from '../types';
 
 export function Feature() {
   const { id } = useParams({ from: '/features/$id' });
   const [feature, setFeature] = useState<Item | null>(null);
   const [stories, setStories] = useState<Item[]>([]);
+  const liveKey = useLiveKey();
 
   useEffect(() => {
     getItem(id).then(setFeature);
     listStories({ feature_id: id }).then(setStories);
-  }, [id]);
+  }, [id, liveKey]);
 
   if (!feature) return <div className="text-muted">Loading or not found…</div>;
   const d = feature.data as { id: string; title: string; phase: string; status: string; parent: string };

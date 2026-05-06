@@ -4,6 +4,7 @@ import { getItem, getFile, listTasks } from '../api';
 import { AttachButton } from '../components/AttachButton';
 import { Markdown } from '../components/Markdown';
 import { StatusPanel } from '../components/StatusPanel';
+import { useLiveKey } from '../live';
 import type { Item } from '../types';
 import type { Status } from '../types';
 
@@ -17,6 +18,7 @@ export function Story() {
   const [plan, setPlan] = useState<string | null>(null);
   const [changelog, setChangelog] = useState<string | null>(null);
   const [tab, setTab] = useState<TabName>('story');
+  const liveKey = useLiveKey();
 
   useEffect(() => {
     getItem(id).then(setStory);
@@ -24,7 +26,7 @@ export function Story() {
     getFile(id, 'spec.md').then(setSpec);
     getFile(id, 'plan.md').then(setPlan);
     getFile(id, 'changelog.md').then(setChangelog);
-  }, [id]);
+  }, [id, liveKey]);
 
   if (!story) return <div className="text-muted">Loading or not found…</div>;
   const d = story.data as {

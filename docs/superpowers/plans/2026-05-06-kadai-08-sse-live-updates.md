@@ -791,7 +791,7 @@ EOF
 
 **Goal:** Each page calls `useLiveKey()` and includes the key in its `useEffect` dependency array — so when the server pushes a spine change, React re-runs the effect and refetches.
 
-- [ ] **Step 1: Update Home.tsx**
+- [x] **Step 1: Update Home.tsx**
 
 Edit `/home/fintan/repos/kadai/src/web/frontend/src/pages/Home.tsx`. Add this import:
 
@@ -814,7 +814,7 @@ useEffect(() => {
 }, [liveKey]);
 ```
 
-- [ ] **Step 2: Update Epic.tsx**
+- [x] **Step 2: Update Epic.tsx**
 
 Same pattern. Add the import. Add `const liveKey = useLiveKey();` after the existing `useState`s. Change the `useEffect` deps from `[id]` to `[id, liveKey]`:
 
@@ -825,7 +825,7 @@ useEffect(() => {
 }, [id, liveKey]);
 ```
 
-- [ ] **Step 3: Update Feature.tsx**
+- [x] **Step 3: Update Feature.tsx**
 
 Same pattern. Add the import. Add `const liveKey = useLiveKey();` after the existing `useState`s. Change deps from `[id]` to `[id, liveKey]`:
 
@@ -836,7 +836,7 @@ useEffect(() => {
 }, [id, liveKey]);
 ```
 
-- [ ] **Step 4: Update Story.tsx**
+- [x] **Step 4: Update Story.tsx**
 
 Same pattern. Add the import. Add `const liveKey = useLiveKey();` after the existing `useState`s. Change deps from `[id]` to `[id, liveKey]`:
 
@@ -850,7 +850,7 @@ useEffect(() => {
 }, [id, liveKey]);
 ```
 
-- [ ] **Step 5: Build + verify**
+- [x] **Step 5: Build + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
