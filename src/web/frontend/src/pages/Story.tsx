@@ -8,7 +8,6 @@ import { Card } from '../components/Card';
 import { Breadcrumb, type Crumb } from '../components/Breadcrumb';
 import { TreeView } from '../components/TreeView';
 import { StatusBadge } from '../components/StatusBadge';
-import { KindIcon } from '../components/KindIcon';
 import { IdPill } from '../components/IdPill';
 import { DocumentRow } from '../components/DocumentRow';
 import { EmptyState } from '../components/EmptyState';
@@ -128,7 +127,7 @@ export function Story() {
             )}
             {secondaryActions.length > 0 && (
               <div className="flex gap-1.5">
-                {secondaryActions.slice(0, 2).map(s => (
+                {secondaryActions.slice(0, 3).map(s => (
                   <button
                     key={s}
                     onClick={() => move(s)}

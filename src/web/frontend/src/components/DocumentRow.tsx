@@ -28,7 +28,7 @@ export function DocumentRow({ kind, attached, meta, onClick }: Props) {
           <div className="text-[11.5px] text-text-tertiary mt-0.5">{attached ? meta ?? 'attached' : 'not attached'}</div>
         </div>
       </div>
-      {attached && <span className="text-xs text-text-secondary group-hover:text-text-primary">Open ›</span>}
+      {attached && onClick && <span className="text-xs text-text-secondary group-hover:text-text-primary">Open ›</span>}
     </div>
   );
 }

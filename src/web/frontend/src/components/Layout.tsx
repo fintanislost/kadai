@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, Outlet } from '@tanstack/react-router';
-import { getPicked, listPhases } from '../api';
-import type { Item, PhaseConfig } from '../types';
+import { getPicked } from '../api';
+import type { Item } from '../types';
 import { LiveUpdatesProvider } from '../live';
 import { SearchBox } from './SearchBox';
 import { ProjectModeProvider, useProjectMode } from '../project';
@@ -24,11 +24,9 @@ function ProjectIndicator() {
 
 export function Layout() {
   const [picked, setPicked] = useState<Item | null>(null);
-  const [phases, setPhases] = useState<PhaseConfig[]>([]);
 
   useEffect(() => {
     getPicked().then(setPicked).catch(() => setPicked(null));
-    listPhases().then(setPhases).catch(() => setPhases([]));
   }, []);
 
   return (
