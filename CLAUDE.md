@@ -12,17 +12,18 @@ If you're a fresh Claude session, read in this order:
 
 ## Active plan
 
-> ✅ **Plans 1-11 shipped.** kadai-plugin is at v0.7.0.
+> ✅ **Plans 1-12 shipped.** kadai-plugin is at v0.8.0.
 >
 > What's working today:
 > - `kadai init / add / list / get / status / pick / unpick / set-status / phases / config / sync` — full CLI
 > - `kadai mcp` — stdio MCP server with 18 typed tools
-> - `kadai hook pre-tool-use / post-tool-use / user-prompt-submit / stop` — full hook coverage (guardrail + changelog capture + active-story injection + status reminder)
+> - `kadai hook pre-tool-use / post-tool-use / user-prompt-submit / stop` — full hook coverage
 > - `kadai serve` — localhost web viewer with writable API, live updates via SSE, and spine-wide search
-> - `kadai sync` — scrapes git log for item ID refs and appends to `changelog.md`; idempotent; optional PR-merge auto-transition
+> - `kadai sync` — scrapes git log for item ID refs and appends to `changelog.md`; idempotent
+> - **Distribution**: `bun run build` produces a self-contained `dist/kadai` binary (~63MB) with the SPA embedded; `bun run build:all` cross-compiles for 5 targets (darwin/linux/windows × x64/arm64); install scripts + Homebrew formula templates ready
 > - `kadai-plugin/` — installable Claude Code plugin (skill + `/kadai-pick` + `/kadai-status` + `/kadai-add` + `/kadai-set-status` + `/kadai-unpick`)
 >
-> **Next plan:** Plan 12 — Distribution polish (`bun build --compile`, asset embedding, brew/npm/curl install). See [`docs/wiki/post-mvp.md`](docs/wiki/post-mvp.md) for the full backlog.
+> **Next plan:** Plan 13 — Developer ergonomics (atomic ID counter writes, replace `as any` casts, `kadai uninstall`/`reindex`, sparse-ordering re-densification, etc.). See [`docs/wiki/post-mvp.md`](docs/wiki/post-mvp.md) for the full backlog.
 
 When a plan completes, update both this section *and* the plans index status column to point to the next plan.
 
