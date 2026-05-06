@@ -3,7 +3,7 @@ import { Link, useParams } from '@tanstack/react-router';
 import { getItem, listStories } from '../api';
 import { KanbanBoard } from '../components/KanbanBoard';
 import { Markdown } from '../components/Markdown';
-import type { Item } from '../types';
+import type { Item, Status } from '../types';
 
 export function Feature() {
   const { id } = useParams({ from: '/features/$id' });
@@ -35,7 +35,16 @@ export function Feature() {
 
       <div>
         <h2 className="text-sm font-bold uppercase tracking-wider text-muted mb-3">Stories</h2>
-        <KanbanBoard stories={stories} />
+        <KanbanBoard
+          stories={stories}
+          onLocalStatusChange={(storyId: string, newStatus: Status) =>
+            setStories(prev => prev.map(s =>
+              (s.data as any).id === storyId
+                ? { ...s, data: { ...s.data, status: newStatus } }
+                : s
+            ))
+          }
+        />
       </div>
     </div>
   );

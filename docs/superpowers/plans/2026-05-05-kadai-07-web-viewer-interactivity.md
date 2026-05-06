@@ -963,7 +963,7 @@ EOF
 
 **Goal:** Make the kanban columns drop targets. Dragging a story card to a new column triggers `setItemStatus`. If the transition is illegal, the card snaps back and an error toast appears at the top of the board for 4 seconds. Cards remain clickable as `<Link>` for navigation (DnD only fires on a real drag, not a click).
 
-- [ ] **Step 1: Install dependencies**
+- [x] **Step 1: Install dependencies**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -980,7 +980,7 @@ grep "@dnd-kit/core" package.json
 
 Expected: `"@dnd-kit/core": "^6.3.1"`.
 
-- [ ] **Step 2: Rewrite KanbanBoard.tsx**
+- [x] **Step 2: Rewrite KanbanBoard.tsx**
 
 Replace `/home/fintan/repos/kadai/src/web/frontend/src/components/KanbanBoard.tsx` entirely with:
 
@@ -1084,7 +1084,7 @@ function Card({ story }: { story: Item }) {
 }
 ```
 
-- [ ] **Step 3: Update Feature.tsx to pass onLocalStatusChange**
+- [x] **Step 3: Update Feature.tsx to pass onLocalStatusChange**
 
 Edit `/home/fintan/repos/kadai/src/web/frontend/src/pages/Feature.tsx`. Replace the existing `<KanbanBoard stories={stories} />` line with:
 
@@ -1109,7 +1109,7 @@ import type { Status } from '../types';
 
 (Used implicitly via the callback signature; if TS doesn't complain, you can omit it.)
 
-- [ ] **Step 4: Build + smoke test**
+- [x] **Step 4: Build + smoke test**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1118,7 +1118,7 @@ bun run build:web
 
 Manual test (similar to Task 5 Step 3): start `kadai serve` against a temp project that has at least 2 stories in different columns; in the browser, drag a card from one column to another and confirm the column count updates + the change persists across refresh.
 
-- [ ] **Step 5: Verify typecheck + tests still pass**
+- [x] **Step 5: Verify typecheck + tests still pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1128,7 +1128,7 @@ bun test
 
 Expected: clean exit on both.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
