@@ -224,7 +224,7 @@ EOF
 
 **Goal:** Watch `.kadai/` recursively. On a change, debounce briefly (avoid storms from `writeFileAtomic`'s rename), infer scope from the changed path, call `bus.notify(scope)`. Returns a stop function.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `/home/fintan/repos/kadai/tests/web/watcher.test.ts`:
 
@@ -318,7 +318,7 @@ test('startWatcher stop() prevents subsequent events', async () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -327,7 +327,7 @@ bun test tests/web/watcher.test.ts
 
 Expected: FAIL with "Cannot find startWatcher" (export missing).
 
-- [ ] **Step 3: Add startWatcher to events.ts**
+- [x] **Step 3: Add startWatcher to events.ts**
 
 Edit `/home/fintan/repos/kadai/src/web/events.ts`. Add these imports at the top:
 
@@ -377,7 +377,7 @@ export function startWatcher(rootDir: string, bus: EventBus, opts: WatcherOption
 }
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -386,7 +386,7 @@ bun test tests/web/watcher.test.ts
 
 Expected: 4 tests pass. (If a test is flaky on the first run, do NOT add retries — investigate. The debounce test in particular depends on inotify timing; bumping `debounceMs` higher in the test setup is acceptable if needed.)
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
