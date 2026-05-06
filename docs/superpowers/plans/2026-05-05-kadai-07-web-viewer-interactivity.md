@@ -485,7 +485,7 @@ EOF
 
 **Goal:** Add `POST /api/items/:id/attach` accepting multipart `file=<binary>` + `kind=spec|plan`. Stores the upload to a tmp file, then calls `attachFile`. Returns 200 with the updated item or 4xx with `{error}`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Append to `/home/fintan/repos/kadai/tests/web/api.test.ts`:
 
@@ -562,7 +562,7 @@ test('POST /api/items/:id/attach with bad kind returns 400', async () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -571,7 +571,7 @@ bun test tests/web/api.test.ts
 
 Expected: 5 new tests fail (route not registered).
 
-- [ ] **Step 3: Implement the endpoint**
+- [x] **Step 3: Implement the endpoint**
 
 Edit `/home/fintan/repos/kadai/src/web/api.ts`. Add this import alongside the existing ones:
 
@@ -621,7 +621,7 @@ Inside `handleApi`, **after** the new status route from Task 1 and **before** th
   }
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -630,7 +630,7 @@ bun test tests/web/api.test.ts
 
 Expected: all tests pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

@@ -140,3 +140,73 @@ test('POST /api/items/:id/status returns 400 for missing body', async () => {
   const json = await r.json();
   expect(json.error).toMatch(/status/i);
 });
+
+test('POST /api/items/FEAT-001/attach uploads a spec.md', async () => {
+  const form = new FormData();
+  form.append('kind', 'spec');
+  form.append('file', new Blob(['# Spec content\n'], { type: 'text/markdown' }), 'spec.md');
+
+  const r = await fetch(`${base()}/api/items/FEAT-001/attach`, {
+    method: 'POST',
+    body: form,
+  });
+  expect(r.status).toBe(200);
+  const json = await r.json();
+  expect((json.data as any).spec).toBe('spec.md');
+
+  const fr = await fetch(`${base()}/api/files/FEAT-001/spec.md`);
+  expect(fr.status).toBe(200);
+  expect(await fr.text()).toBe('# Spec content\n');
+});
+
+test('POST /api/items/STORY-001/attach uploads a plan.md', async () => {
+  const form = new FormData();
+  form.append('kind', 'plan');
+  form.append('file', new Blob(['# Plan\n- step 1\n'], { type: 'text/markdown' }), 'plan.md');
+
+  const r = await fetch(`${base()}/api/items/STORY-001/attach`, {
+    method: 'POST',
+    body: form,
+  });
+  expect(r.status).toBe(200);
+  expect((((await r.json()) as any).data as any).plan).toBe('plan.md');
+});
+
+test('POST /api/items/EPIC-001/attach with kind=plan returns 400', async () => {
+  const form = new FormData();
+  form.append('kind', 'plan');
+  form.append('file', new Blob(['x'], { type: 'text/markdown' }), 'plan.md');
+
+  const r = await fetch(`${base()}/api/items/EPIC-001/attach`, {
+    method: 'POST',
+    body: form,
+  });
+  expect(r.status).toBe(400);
+  const json = await r.json();
+  expect(json.error).toMatch(/cannot attach/i);
+});
+
+test('POST /api/items/:id/attach with no file returns 400', async () => {
+  const form = new FormData();
+  form.append('kind', 'spec');
+
+  const r = await fetch(`${base()}/api/items/FEAT-001/attach`, {
+    method: 'POST',
+    body: form,
+  });
+  expect(r.status).toBe(400);
+  const json = await r.json();
+  expect(json.error).toMatch(/file/i);
+});
+
+test('POST /api/items/:id/attach with bad kind returns 400', async () => {
+  const form = new FormData();
+  form.append('kind', 'changelog');
+  form.append('file', new Blob(['x']), 'spec.md');
+
+  const r = await fetch(`${base()}/api/items/FEAT-001/attach`, {
+    method: 'POST',
+    body: form,
+  });
+  expect(r.status).toBe(400);
+});

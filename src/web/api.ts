@@ -1,5 +1,7 @@
 import { dirname, join } from 'node:path';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { attachFile } from '../core/attach';
 import { walkSpine, findById } from '../core/spine';
 import { loadConfig } from '../config/load';
 import { readPicked } from '../core/picked';
@@ -110,6 +112,39 @@ export async function handleApi(req: Request, rootDir: string): Promise<Response
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : String(e);
       return Response.json({ error: msg }, { status: 400 });
+    }
+    const updated = findById(rootDir, id);
+    return Response.json(updated);
+  }
+
+  const attachMatch = path.match(/^\/api\/items\/([A-Z]+-\d+)\/attach$/);
+  if (attachMatch && req.method === 'POST') {
+    const id = attachMatch[1];
+    let form: FormData;
+    try {
+      form = await req.formData();
+    } catch {
+      return Response.json({ error: 'Invalid multipart body' }, { status: 400 });
+    }
+    const kind = form.get('kind');
+    const file = form.get('file');
+    if (kind !== 'spec' && kind !== 'plan') {
+      return Response.json({ error: 'Field "kind" must be "spec" or "plan"' }, { status: 400 });
+    }
+    if (!(file instanceof Blob)) {
+      return Response.json({ error: 'Missing required field: file' }, { status: 400 });
+    }
+
+    const stageDir = mkdtempSync(join(tmpdir(), 'kadai-attach-'));
+    const stagePath = join(stageDir, kind === 'spec' ? 'spec.md' : 'plan.md');
+    writeFileSync(stagePath, new Uint8Array(await file.arrayBuffer()));
+
+    try {
+      attachFile(rootDir, id, kind, stagePath);
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e);
+      const code = msg.includes('not found') && msg.includes(id) ? 404 : 400;
+      return Response.json({ error: msg }, { status: code });
     }
     const updated = findById(rootDir, id);
     return Response.json(updated);
