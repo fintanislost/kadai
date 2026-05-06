@@ -28,6 +28,8 @@ runInit({ rootDir: tmp, productDescription: 'X', skipFirstEpic: true });
 runAdd({ rootDir: tmp, kind: 'epic', title: 'Authentication', phase: 'mvp' });
 runAdd({ rootDir: tmp, kind: 'feature', title: 'Login', phase: 'mvp', parent: 'EPIC-001' });
 runAdd({ rootDir: tmp, kind: 'story', title: 'Email login', phase: 'mvp', parent: 'FEAT-001' });
+runAdd({ rootDir: tmp, kind: 'story', title: 'OAuth login', phase: 'mvp', parent: 'FEAT-001' });
+runAdd({ rootDir: tmp, kind: 'story', title: 'Magic link', phase: 'mvp', parent: 'FEAT-001' });
 
 const handle = await startServer({ rootDir: tmp, port: 0, distDir });
 process.stdout.write('READY:' + handle.port + '\\n');
@@ -108,4 +110,67 @@ test('drilling into a story shows the tabs', async ({ page }) => {
   await expect(page.locator('button', { hasText: 'plan' })).toBeVisible();
   await expect(page.locator('button', { hasText: 'changelog' })).toBeVisible();
   await expect(page.locator('button', { hasText: 'tasks' })).toBeVisible();
+});
+
+test('clicking a status button on the story page moves the story', async ({ page }) => {
+  await page.goto(`${serverUrl}/stories/STORY-001`);
+  await page.waitForLoadState('networkidle');
+
+  await expect(page.locator('aside').locator('text=ready').first()).toBeVisible();
+  await page.locator('aside').locator('button', { hasText: 'in_progress' }).click();
+
+  await expect(page.locator('aside').locator('text=in_progress').first()).toBeVisible({ timeout: 3000 });
+
+  await page.reload();
+  await page.waitForLoadState('networkidle');
+  await expect(page.locator('aside').locator('text=in_progress').first()).toBeVisible();
+});
+
+test('dragging a story card across columns updates its status', async ({ page }) => {
+  await page.goto(`${serverUrl}/features/FEAT-001`);
+  await page.waitForLoadState('networkidle');
+
+  // STORY-002 starts in 'ready'; drag it to 'in_progress' (a legal transition from ready).
+  const card = page.locator('[data-testid="card-STORY-002"]');
+  const inProgress = page.locator('[data-testid="column-in_progress"]');
+
+  // PointerSensor in KanbanBoard requires distance:6 movement before drag activates,
+  // so we have to move the mouse explicitly (not just hover + down + hover + up).
+  const cardBox = await card.boundingBox();
+  const targetBox = await inProgress.boundingBox();
+  if (!cardBox || !targetBox) throw new Error('Bounding boxes unavailable');
+  const startX = cardBox.x + cardBox.width / 2;
+  const startY = cardBox.y + cardBox.height / 2;
+  const endX = targetBox.x + targetBox.width / 2;
+  const endY = targetBox.y + targetBox.height / 2;
+
+  await page.mouse.move(startX, startY);
+  await page.mouse.down();
+  // Move in small increments to exceed the distance:6 activation threshold.
+  for (let i = 1; i <= 20; i++) {
+    await page.mouse.move(startX + (endX - startX) * (i / 20), startY + (endY - startY) * (i / 20));
+  }
+  await page.mouse.up();
+
+  await expect(inProgress.locator('[data-testid="card-STORY-002"]')).toBeVisible({ timeout: 3000 });
+
+  await page.reload();
+  await page.waitForLoadState('networkidle');
+  await expect(page.locator('[data-testid="column-in_progress"]').locator('[data-testid="card-STORY-002"]')).toBeVisible();
+});
+
+test('attaching a spec.md uploads and renders it', async ({ page }) => {
+  await page.goto(`${serverUrl}/stories/STORY-003`);
+  await page.waitForLoadState('networkidle');
+
+  await page.locator('button', { hasText: 'spec' }).click();
+  await expect(page.locator('text=No spec attached')).toBeVisible();
+
+  await page.locator('input[type="file"]').setInputFiles({
+    name: 'spec.md',
+    mimeType: 'text/markdown',
+    buffer: Buffer.from('# Uploaded spec\n\nHello kadai.\n'),
+  });
+
+  await expect(page.locator('text=Uploaded spec')).toBeVisible({ timeout: 5000 });
 });

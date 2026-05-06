@@ -1300,7 +1300,7 @@ EOF
 
 **Goal:** Add 3 E2E flows: (a) click a status button in the story rail; (b) drag a card across columns; (c) attach a spec via the file input.
 
-- [ ] **Step 1: Extend the seed**
+- [x] **Step 1: Extend the seed**
 
 Edit `/home/fintan/repos/kadai/tests/web/e2e.pw.ts`. Inside the `helperScript` template literal in `spawnServer`, expand the `runAdd` calls so the seed has 3 stories (so DnD has somewhere to drag from/to):
 
@@ -1322,7 +1322,7 @@ runAdd({ rootDir: tmp, kind: 'story', title: 'OAuth login', phase: 'mvp', parent
 runAdd({ rootDir: tmp, kind: 'story', title: 'Magic link', phase: 'mvp', parent: 'FEAT-001' });
 ```
 
-- [ ] **Step 2: Add a status-button test**
+- [x] **Step 2: Add a status-button test**
 
 Append to `/home/fintan/repos/kadai/tests/web/e2e.pw.ts`:
 
@@ -1345,7 +1345,7 @@ test('clicking a status button on the story page moves the story', async ({ page
 });
 ```
 
-- [ ] **Step 3: Add a drag-drop kanban test**
+- [x] **Step 3: Add a drag-drop kanban test**
 
 Append:
 
@@ -1380,7 +1380,7 @@ test('dragging a story card across columns updates its status', async ({ page })
 });
 ```
 
-- [ ] **Step 4: Add an attach-upload test**
+- [x] **Step 4: Add an attach-upload test**
 
 Append:
 
@@ -1405,7 +1405,7 @@ test('attaching a spec.md uploads and renders it', async ({ page }) => {
 });
 ```
 
-- [ ] **Step 5: Build the SPA + run Playwright**
+- [x] **Step 5: Build the SPA + run Playwright**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1416,7 +1416,7 @@ bunx playwright test
 
 Expected: all E2E tests pass (3 existing + 3 new = 6).
 
-- [ ] **Step 6: Verify the unit suite still passes**
+- [x] **Step 6: Verify the unit suite still passes**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1425,7 +1425,7 @@ bun test
 
 Expected: clean (~189+ tests pass; new attach/api ones included).
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
