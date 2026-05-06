@@ -503,7 +503,7 @@ Expected: 230 pass (226 + 4 new). Typecheck clean.
 
 In `/home/fintan/repos/kadai/docs/superpowers/plans/2026-05-06-kadai-09-search.md`, find Task 2 and tick all 5 step checkboxes.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -572,7 +572,7 @@ Expected: clean (no TS errors).
 
 Tick all 3 step checkboxes in Task 3.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -718,7 +718,7 @@ EOF
 
 **Goal:** A new `/search` route that reads `q` from the URL search params and renders results. Each result is a clickable card showing kind / id / title / phase / status, plus the snippet with the matched substring wrapped in `<mark>` for highlighting.
 
-- [ ] **Step 1: Create the Search page**
+- [x] **Step 1: Create the Search page**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/pages/Search.tsx`:
 
@@ -817,7 +817,7 @@ export function Search() {
 }
 ```
 
-- [ ] **Step 2: Register the route**
+- [x] **Step 2: Register the route**
 
 Edit `/home/fintan/repos/kadai/src/web/frontend/src/router.tsx`. Add the import alongside existing page imports:
 
@@ -844,11 +844,11 @@ Add `searchRoute` to the route tree:
 const routeTree = rootRoute.addChildren([homeRoute, epicRoute, featureRoute, storyRoute, searchRoute]);
 ```
 
-- [ ] **Step 3: Remove any temporary type assertions from Task 4**
+- [x] **Step 3: Remove any temporary type assertions from Task 4**
 
 If you added `as string` in Task 4 Step 4, remove it now — the route is registered, so `to: '/search'` should be valid.
 
-- [ ] **Step 4: Build the SPA**
+- [x] **Step 4: Build the SPA**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -857,7 +857,7 @@ bun run build:web
 
 Expected: clean build, no TanStack Router type warnings about `/search`.
 
-- [ ] **Step 5: Smoke test**
+- [x] **Step 5: Smoke test**
 
 ```bash
 TMP=$(mktemp -d) && cd "$TMP" && \
@@ -876,7 +876,7 @@ cd / && rm -rf "$TMP"
 
 Expected: JSON list with FEAT-001 result.
 
-- [ ] **Step 6: Verify typecheck + tests**
+- [x] **Step 6: Verify typecheck + tests**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -886,11 +886,11 @@ bun test
 
 Expected: clean.
 
-- [ ] **Step 7: Tick the 7 checkboxes for Task 5 in the plan**
+- [x] **Step 7: Tick the 7 checkboxes for Task 5 in the plan**
 
 Tick all 7 step checkboxes for Task 5.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

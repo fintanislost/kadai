@@ -4,6 +4,7 @@ import { Home } from './pages/Home';
 import { Epic } from './pages/Epic';
 import { Feature } from './pages/Feature';
 import { Story } from './pages/Story';
+import { Search } from './pages/Search';
 
 const rootRoute = createRootRoute({
   component: Layout,
@@ -33,7 +34,16 @@ const storyRoute = createRoute({
   component: Story,
 });
 
-const routeTree = rootRoute.addChildren([homeRoute, epicRoute, featureRoute, storyRoute]);
+const searchRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/search',
+  component: Search,
+  validateSearch: (s: Record<string, unknown>): { q?: string } => {
+    return { q: typeof s.q === 'string' ? s.q : undefined };
+  },
+});
+
+const routeTree = rootRoute.addChildren([homeRoute, epicRoute, featureRoute, storyRoute, searchRoute]);
 
 export const router = createRouter({ routeTree });
 
