@@ -527,7 +527,7 @@ git commit -m "feat(plugin): add /kadai-set-status slash command [Plan-6 Task-4]
 
 **Goal:** Slash companion to `kadai unpick` — wraps `mcp__kadai__unpick`. Tiny.
 
-- [ ] **Step 1: Create the command**
+- [x] **Step 1: Create the command**
 
 Create `/home/fintan/repos/kadai/kadai-plugin/commands/kadai-unpick.md`:
 
@@ -555,7 +555,7 @@ kadai unpick
 ```
 ````
 
-- [ ] **Step 2: Update docs**
+- [x] **Step 2: Update docs**
 
 In `/home/fintan/repos/kadai/docs/wiki/plugin.md`, add to the "What it provides" list:
 
@@ -563,7 +563,7 @@ In `/home/fintan/repos/kadai/docs/wiki/plugin.md`, add to the "What it provides"
 - **`/kadai-unpick`** — clear the picked-story flag (does not change status).
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

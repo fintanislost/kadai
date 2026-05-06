@@ -9,6 +9,7 @@ The kadai-plugin/ directory is an installable Claude Code plugin.
 - **`/kadai-pick <story-id>`** — picks a story (via MCP `pick_story` + `set_status(in_progress)`, with CLI fallback).
 - **`/kadai-status`** — prints picked + in-progress + ready queue.
 - **`/kadai-set-status <id> <status>`** — set status to any state machine value (e.g., `STORY-001 review`).
+- **`/kadai-unpick`** — clear the picked-story flag (does not change status).
 
 ## Install
 
@@ -56,7 +57,7 @@ The slash commands loaded:
 
 - It doesn't install kadai's CLI — that's a separate `bun link` step ([getting started](getting-started.md)).
 - It doesn't install hooks or MCP server — those are per-project, configured by `kadai init`.
-- It doesn't provide `/kadai-add`, `/kadai-sync`, or `/kadai-unpick` — those are post-MVP.
+- It doesn't provide `/kadai-sync` — that is post-MVP.
 
 ## Why is the plugin separate from `kadai init`?
 
