@@ -1750,7 +1750,7 @@ EOF
 
 **Goal:** Home gets a proper hero block (project name + summary counts + phase pills) and per-phase grids of EpicCards. The phase pills move here from the topbar.
 
-- [ ] **Step 1: Replace Home.tsx**
+- [x] **Step 1: Replace Home.tsx**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/pages/Home.tsx`. Replace the file with:
 
@@ -1850,7 +1850,7 @@ export function Home() {
 }
 ```
 
-- [ ] **Step 2: Build + verify**
+- [x] **Step 2: Build + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1862,11 +1862,11 @@ bun test
 
 Expected: clean.
 
-- [ ] **Step 3: Tick the step checkboxes for Task 7 in the plan**
+- [x] **Step 3: Tick the step checkboxes for Task 7 in the plan**
 
 Tick all step checkboxes for Task 7.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
