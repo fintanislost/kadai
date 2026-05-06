@@ -57,6 +57,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
+    "@tailwindcss/typography": "^0.5.19",
     "@types/bun": "latest",
     "@types/prompts": "^2.4.9",
     "@types/proper-lockfile": "^4.1.4",

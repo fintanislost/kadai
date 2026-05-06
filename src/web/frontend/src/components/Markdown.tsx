@@ -3,7 +3,7 @@ import remarkGfm from 'remark-gfm';
 
 export function Markdown({ children }: { children: string }) {
   return (
-    <div className="prose prose-invert max-w-none prose-sm">
+    <div className="prose prose-invert prose-sm max-w-none">
       <ReactMarkdown remarkPlugins={[remarkGfm]}>{children}</ReactMarkdown>
     </div>
   );

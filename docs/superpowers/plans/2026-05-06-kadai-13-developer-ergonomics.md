@@ -972,7 +972,7 @@ EOF
 
 **Goal:** Markdown content (story body, attached spec/plan, changelog) currently renders with no styling for headings, lists, tables, code, etc. — `react-markdown` produces bare HTML against the Tailwind reset. Adding `@tailwindcss/typography` gives us a `prose` utility class that styles the rendered markdown sensibly. Pair with `prose-invert` for the dark theme.
 
-- [ ] **Step 1: Install the dep**
+- [x] **Step 1: Install the dep**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -987,7 +987,7 @@ grep '@tailwindcss/typography' package.json
 
 Expected: `"@tailwindcss/typography": "^0.5.x"` (or whatever resolved).
 
-- [ ] **Step 2: Register the plugin in tailwind.config.js**
+- [x] **Step 2: Register the plugin in tailwind.config.js**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/tailwind.config.js`. Replace `plugins: []` with:
 
@@ -1005,7 +1005,7 @@ plugins: [typography],
 
 (Verify by running `bun run build:web` after — if it errors on the plugin require, switch to the import syntax.)
 
-- [ ] **Step 3: Wrap the Markdown component output**
+- [x] **Step 3: Wrap the Markdown component output**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/components/Markdown.tsx`. Find the top-level rendered element (likely `<ReactMarkdown ...>`) and wrap it in a `<div>` with the prose classes:
 
@@ -1019,7 +1019,7 @@ Read `/home/fintan/repos/kadai/src/web/frontend/src/components/Markdown.tsx`. Fi
 
 If the Markdown component already has wrapping markup, add the className to the outermost wrapper rather than nesting another div.
 
-- [ ] **Step 4: Build the SPA and verify nothing broke**
+- [x] **Step 4: Build the SPA and verify nothing broke**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1030,7 +1030,7 @@ bun test
 
 Expected: build clean, typecheck clean, 293 tests pass.
 
-- [ ] **Step 5: Smoke-test in the browser**
+- [x] **Step 5: Smoke-test in the browser**
 
 ```bash
 TMP=$(mktemp -d) && cd "$TMP" && \
@@ -1068,11 +1068,11 @@ cd / && rm -rf "$TMP"
 
 (This is a manual visual check — the tests don't catch styling. If you can't open a browser, skip the visual check and note "verified via source-only inspection of Markdown.tsx").
 
-- [ ] **Step 6: Tick the step checkboxes for Task 5 in the plan**
+- [x] **Step 6: Tick the step checkboxes for Task 5 in the plan**
 
 Tick all step checkboxes for Task 5.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
