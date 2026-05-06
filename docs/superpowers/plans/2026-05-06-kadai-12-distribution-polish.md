@@ -689,7 +689,7 @@ EOF
 
 The install script logic is unit-tested by pointing it at a `file://` mock release URL.
 
-- [ ] **Step 1: Write the install script**
+- [x] **Step 1: Write the install script**
 
 Create `/home/fintan/repos/kadai/scripts/install.sh`:
 
@@ -773,7 +773,7 @@ Make it executable:
 chmod +x /home/fintan/repos/kadai/scripts/install.sh
 ```
 
-- [ ] **Step 2: Write the install-script tests**
+- [x] **Step 2: Write the install-script tests**
 
 Create `/home/fintan/repos/kadai/tests/scripts/install.test.ts`:
 
@@ -852,7 +852,7 @@ test('install.sh prints PATH warning when BIN_DIR is not on $PATH', () => {
 });
 ```
 
-- [ ] **Step 3: Run install-script tests**
+- [x] **Step 3: Run install-script tests**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -861,7 +861,7 @@ bun test tests/scripts/install.test.ts
 
 Expected: 3 tests pass.
 
-- [ ] **Step 4: Write the Homebrew formula template**
+- [x] **Step 4: Write the Homebrew formula template**
 
 Create `/home/fintan/repos/kadai/scripts/Formula/kadai.rb`:
 
@@ -906,7 +906,7 @@ class Kadai < Formula
 end
 ```
 
-- [ ] **Step 5: Update package.json for npm packaging**
+- [x] **Step 5: Update package.json for npm packaging**
 
 Read `/home/fintan/repos/kadai/package.json`. Add these top-level fields (keeping existing ones):
 
@@ -940,7 +940,7 @@ Add a `pack:check` script under `scripts`:
     "pack:check": "npm pack --dry-run --json | bun -e 'const j=JSON.parse(await new Response(process.stdin).text()); const f=j[0].files.map(x=>x.path); console.log(f.length+\" files in tarball\"); if(f.some(p=>p.startsWith(\"node_modules\"))){console.error(\"FAIL: node_modules in tarball\");process.exit(1)} if(f.some(p=>p.startsWith(\"tests/\"))){console.error(\"FAIL: tests/ in tarball\");process.exit(1)} console.log(\"OK\");'"
 ```
 
-- [ ] **Step 6: Verify `npm pack` produces a clean tarball**
+- [x] **Step 6: Verify `npm pack` produces a clean tarball**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -949,7 +949,7 @@ bun run pack:check
 
 Expected: prints "N files in tarball" + "OK" (no node_modules, no tests/).
 
-- [ ] **Step 7: Run the full suite + typecheck**
+- [x] **Step 7: Run the full suite + typecheck**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -959,11 +959,11 @@ bun run typecheck
 
 Expected: 275 pass (272 + 3 new install-script tests). Typecheck clean.
 
-- [ ] **Step 8: Tick the step checkboxes for Task 4 in the plan**
+- [x] **Step 8: Tick the step checkboxes for Task 4 in the plan**
 
 Tick all step checkboxes for Task 4.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

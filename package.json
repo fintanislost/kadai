@@ -6,6 +6,25 @@
   "bin": {
     "kadai": "./src/cli/index.ts"
   },
+  "engines": {
+    "bun": ">=1.1.0"
+  },
+  "files": [
+    "src",
+    "scripts/install.sh",
+    "scripts/embed-assets.ts",
+    "README.md",
+    "CLAUDE.md"
+  ],
+  "keywords": [
+    "kadai",
+    "product-management",
+    "agentic-coding",
+    "spine",
+    "epics",
+    "stories",
+    "claude-code"
+  ],
   "scripts": {
     "kadai": "bun run src/cli/index.ts",
     "test": "bun test",
@@ -16,7 +35,8 @@
     "build": "bun run build:web && bun run embed-assets && bun build --compile --target=bun src/cli/index.ts --outfile dist/kadai",
     "build:all": "bash scripts/build-all.sh",
     "dev:web": "vite --config src/web/frontend/vite.config.ts",
-    "smoke:binary": "bash scripts/smoke-binary.sh"
+    "smoke:binary": "bash scripts/smoke-binary.sh",
+    "pack:check": "npm pack --dry-run --json | bun -e 'const j=JSON.parse(await new Response(process.stdin).text()); const f=j[0].files.map(x=>x.path); console.log(f.length+\" files in tarball\"); if(f.some(p=>p.startsWith(\"node_modules\"))){console.error(\"FAIL: node_modules in tarball\");process.exit(1)} if(f.some(p=>p.startsWith(\"tests/\"))){console.error(\"FAIL: tests/ in tarball\");process.exit(1)} console.log(\"OK\");'"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
