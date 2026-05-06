@@ -92,9 +92,11 @@ Slightly desaturated from Plan 16 — calmer, less neon. Used ONLY by `StatusBad
 | Small / metadata | 12.5px | Crumbs, timestamps |
 | Mono (IDs, SHAs, paths) | JetBrains Mono / `font-variant-numeric: tabular-nums` | New — IDs and dates need tabular figures so they align |
 
-Font stack: `'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif`. Inter is loaded by adding `@fontsource/inter` (variable weights) as a runtime dep and importing the relevant weights in `src/web/frontend/src/main.tsx`. If the import fails or the user blocks fonts, the system stack falls back to native sans-serif.
+Font stack: **JetBrains Mono for everything.** Single font, one runtime dep (`@fontsource/jetbrains-mono`), variable weights imported in `src/web/frontend/src/main.tsx`. Body text uses regular weight; headings use medium/bold. The mono throughout gives the viewer a coherent "developer tool" identity — appropriate for a project-spine tool used by both agents and humans, and avoids the body/mono mismatch that's common in dev tools.
 
-Mono font: `'JetBrains Mono', ui-monospace, SFMono-Regular, monospace`, loaded via `@fontsource/jetbrains-mono` the same way. Used for IDs, SHAs, file paths, and timestamps.
+CSS stack: `'JetBrains Mono', ui-monospace, SFMono-Regular, 'Cascadia Code', Menlo, monospace`. If the load fails, the system mono stack carries through.
+
+Tabular figures (`font-variant-numeric: tabular-nums`) are on globally so IDs, dates, and counts align in lists.
 
 ### Spacing
 
