@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router';
 import { StatusBadge } from './StatusBadge';
 import { KindIcon } from './KindIcon';
 import { IdPill } from './IdPill';
-import type { Item } from '../types';
+import type { Item, Status } from '../types';
 
 interface Props {
   epic: Item;
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export function EpicCard({ epic, activeSlug }: Props) {
-  const d = epic.data as { id: string; title: string; status: 'backlog' | 'ready' | 'in_progress' | 'blocked' | 'review' | 'done' | 'cancelled'; phase: string };
+  const d = epic.data as { id: string; title: string; status: Status; phase: string };
   const card = (
     <div className="bg-surface-1 border border-white/[0.06] hover:border-white/[0.16] rounded-xl p-5 shadow-elev-1 transition-colors h-full">
       <div className="flex items-start gap-3">
