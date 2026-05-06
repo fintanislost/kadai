@@ -485,7 +485,7 @@ EOF
 
 **Goal:** A `kadai uninstall` command that reverses `kadai init` — removes `.kadai/` (unless `--keep-spine`), deletes the kadai entries from `.mcp.json` and `.claude/settings.json`, and strips the `## Kadai` section from `CLAUDE.md`. Confirms with the user unless `--yes`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/cli/uninstall.test.ts`:
 
@@ -568,7 +568,7 @@ test('runUninstall removes the ## Kadai section from CLAUDE.md', () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -577,7 +577,7 @@ bun test tests/cli/uninstall.test.ts
 
 Expected: FAIL — `runUninstall` not exported (module doesn't exist).
 
-- [ ] **Step 3: Implement uninstall.ts**
+- [x] **Step 3: Implement uninstall.ts**
 
 Create `/home/fintan/repos/kadai/src/cli/uninstall.ts`:
 
@@ -692,7 +692,7 @@ export const uninstallCommand = new Command('uninstall')
   });
 ```
 
-- [ ] **Step 4: Register in src/cli/index.ts**
+- [x] **Step 4: Register in src/cli/index.ts**
 
 Read `/home/fintan/repos/kadai/src/cli/index.ts`. Add the import alongside others:
 
@@ -706,7 +706,7 @@ Add the registration alongside other `program.addCommand(...)` calls:
 program.addCommand(uninstallCommand);
 ```
 
-- [ ] **Step 5: Run tests to verify they pass**
+- [x] **Step 5: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -718,11 +718,11 @@ kadai uninstall --help
 
 Expected: 6 uninstall tests pass; full suite 288 (282 + 6); typecheck clean; help shows `--keep-spine` and `-y, --yes`.
 
-- [ ] **Step 6: Tick the step checkboxes for Task 3 in the plan**
+- [x] **Step 6: Tick the step checkboxes for Task 3 in the plan**
 
 Tick all step checkboxes for Task 3.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

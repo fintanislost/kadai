@@ -13,6 +13,7 @@ import { hookCommand } from './hook';
 import { serveCommand } from './serve';
 import { getCommand } from './get';
 import { syncCommand } from './sync';
+import { uninstallCommand } from './uninstall';
 
 const program = new Command();
 program
@@ -34,5 +35,6 @@ program.addCommand(hookCommand);
 program.addCommand(serveCommand);
 program.addCommand(getCommand);
 program.addCommand(syncCommand);
+program.addCommand(uninstallCommand);
 
 program.parseAsync(process.argv);
