@@ -367,7 +367,7 @@ EOF
 
 **Goal:** All the small reusable building blocks the page rebuilds (Tasks 4-7) consume. Each component is small + focused; the file should fit in one screen.
 
-- [ ] **Step 1: Create IdPill.tsx (smallest, no deps)**
+- [x] **Step 1: Create IdPill.tsx (smallest, no deps)**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/components/IdPill.tsx`:
 
@@ -386,7 +386,7 @@ export function IdPill({ id, className = '' }: Props) {
 }
 ```
 
-- [ ] **Step 2: Create ProgressBar.tsx**
+- [x] **Step 2: Create ProgressBar.tsx**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/components/ProgressBar.tsx`:
 
@@ -411,7 +411,7 @@ export function ProgressBar({ done, inProgress, total, className = '' }: Props) 
 }
 ```
 
-- [ ] **Step 3: Create Card.tsx**
+- [x] **Step 3: Create Card.tsx**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/components/Card.tsx`:
 
@@ -444,7 +444,7 @@ export function Card({ title, count, headerAction, children, className = '' }: P
 }
 ```
 
-- [ ] **Step 4: Create Breadcrumb.tsx**
+- [x] **Step 4: Create Breadcrumb.tsx**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/components/Breadcrumb.tsx`:
 
@@ -496,7 +496,7 @@ export function Breadcrumb({ crumbs, current, activeSlug, className = '' }: Prop
 }
 ```
 
-- [ ] **Step 5: Create DocumentRow.tsx**
+- [x] **Step 5: Create DocumentRow.tsx**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/components/DocumentRow.tsx`:
 
@@ -537,7 +537,7 @@ export function DocumentRow({ kind, attached, meta, onClick }: Props) {
 }
 ```
 
-- [ ] **Step 6: Create Hero.tsx (the biggest of the foundation set)**
+- [x] **Step 6: Create Hero.tsx (the biggest of the foundation set)**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/components/Hero.tsx`:
 
@@ -598,7 +598,7 @@ export function Hero({ kind, id, title, status, phase, metaRight, progress, acti
 }
 ```
 
-- [ ] **Step 7: Build + verify**
+- [x] **Step 7: Build + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -609,11 +609,11 @@ bun test
 
 Expected: clean. Components aren't used yet; this just confirms they compile.
 
-- [ ] **Step 8: Tick the step checkboxes for Task 2 in the plan**
+- [x] **Step 8: Tick the step checkboxes for Task 2 in the plan**
 
 Tick all step checkboxes for Task 2.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
