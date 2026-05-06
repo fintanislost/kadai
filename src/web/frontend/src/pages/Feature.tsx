@@ -50,13 +50,13 @@ export function Feature() {
 
       {feature.body && (
         <div className="bg-panel rounded p-4">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-muted mb-2">Description</h2>
+          <h2 className="section-label mb-2">Description</h2>
           <Markdown>{feature.body}</Markdown>
         </div>
       )}
 
       <div>
-        <h2 className="text-sm font-bold uppercase tracking-wider text-muted mb-3">Stories</h2>
+        <h2 className="section-label mb-3">Stories</h2>
         {stories.length === 0 ? (
           <EmptyState icon={BookOpen} title="No stories yet" hint={`Add one with \`kadai add story --feature ${id}\``} />
         ) : (

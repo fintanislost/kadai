@@ -36,11 +36,11 @@ export function StatusPanel({ itemId, currentStatus, onStatusChange, slug }: Pro
 
   return (
     <div className="bg-panel rounded p-3 space-y-2">
-      <div className="text-xs font-bold uppercase tracking-wider text-muted">Status</div>
+      <div className="section-label">Status</div>
       <div className="text-sm">{currentStatus}</div>
       {allowed.length > 0 && (
         <div className="space-y-1 pt-2 border-t border-zinc-800">
-          <div className="text-[10px] text-muted uppercase">Move to</div>
+          <div className="section-label-sm">Move to</div>
           {allowed.map(s => (
             <button
               key={s}

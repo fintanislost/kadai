@@ -103,7 +103,7 @@ export function Story() {
             <div className="space-y-3">
               {d.acceptance_criteria && (
                 <div>
-                  <h3 className="text-sm font-bold uppercase tracking-wider text-muted mb-2">Acceptance criteria</h3>
+                  <h3 className="section-label mb-2">Acceptance criteria</h3>
                   <ul className="list-disc pl-5 space-y-1">
                     {d.acceptance_criteria.map((c, i) => <li key={i}>{c}</li>)}
                   </ul>

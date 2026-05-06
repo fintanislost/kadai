@@ -705,7 +705,7 @@ EOF
 
 **Goal:** The header is the first thing a user sees — it should feel like a product. Today it's: `Kadai title | phase pills | search | (Activity, Compare, Project) | picked indicator`. After: clearer visual hierarchy with a small left brand area, a quiet middle nav, the search box centered, and a right cluster for project + picked. Typography pass adds a `.section-label` utility for uppercase ALL-CAPS labels currently inlined as `text-xs font-bold uppercase tracking-wider text-muted` in many places.
 
-- [ ] **Step 1: Add typography helpers to styles.css**
+- [x] **Step 1: Add typography helpers to styles.css**
 
 Append to `/home/fintan/repos/kadai/src/web/frontend/src/styles.css`:
 
@@ -728,7 +728,7 @@ Append to `/home/fintan/repos/kadai/src/web/frontend/src/styles.css`:
 }
 ```
 
-- [ ] **Step 2: Refresh Layout.tsx**
+- [x] **Step 2: Refresh Layout.tsx**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/components/Layout.tsx`. Replace the `<header>` block with a refreshed structure:
 
@@ -785,13 +785,13 @@ Read `/home/fintan/repos/kadai/src/web/frontend/src/components/Layout.tsx`. Repl
 
 Make sure the `<SearchBox />`, `<ProjectIndicator />`, and `phases` data are still wired correctly in Layout. The existing imports stay; only the JSX inside `<header>` changes.
 
-- [ ] **Step 3: Apply section-label utility to in-page section headers**
+- [x] **Step 3: Apply section-label utility to in-page section headers**
 
 In Story.tsx, Epic.tsx, Feature.tsx, Compare.tsx — find any place that uses the inlined `text-xs font-bold uppercase tracking-wider text-muted` (or similar variants for `text-[10px]`). Replace with `className="section-label"` (or `section-label-sm` for the smaller variant).
 
 This is a search-and-replace pass: typically 3-6 occurrences per page. The visual result should be IDENTICAL since `.section-label` matches the same look — but the codebase becomes consistent.
 
-- [ ] **Step 4: Build + verify**
+- [x] **Step 4: Build + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -804,11 +804,11 @@ bunx playwright test
 
 Expected: clean.
 
-- [ ] **Step 5: Tick the step checkboxes for Task 5 in the plan**
+- [x] **Step 5: Tick the step checkboxes for Task 5 in the plan**
 
 Tick all step checkboxes for Task 5.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

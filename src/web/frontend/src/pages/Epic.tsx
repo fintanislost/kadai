@@ -47,7 +47,7 @@ export function Epic() {
       </div>
 
       <div>
-        <h2 className="text-sm font-bold uppercase tracking-wider text-muted mb-3">Features</h2>
+        <h2 className="section-label mb-3">Features</h2>
         {features.length === 0 ? (
           <EmptyState icon={Box} title="No features yet" hint={`Add one with \`kadai add feature --epic ${id}\``} />
         ) : (
