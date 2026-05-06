@@ -1,11 +1,14 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { handleApi } from './api';
+import { EventBus, startWatcher as startFsWatcher } from './events';
 
 export interface ServerOptions {
   rootDir: string;
   port: number;
   distDir?: string;
+  eventBus?: EventBus;
+  startWatcher?: boolean;  // default true
 }
 
 export interface ServerHandle {
@@ -45,6 +48,11 @@ export async function startServer(opts: ServerOptions): Promise<ServerHandle> {
   }
   const indexHtml = readFileSync(join(distDir, 'index.html'), 'utf8');
 
+  const bus = opts.eventBus ?? new EventBus();
+  const stopWatcher = (opts.startWatcher !== false)
+    ? startFsWatcher(opts.rootDir, bus)
+    : () => {};
+
   const server = Bun.serve({
     port: opts.port,
     async fetch(req) {
@@ -52,7 +60,7 @@ export async function startServer(opts: ServerOptions): Promise<ServerHandle> {
       const path = url.pathname;
 
       if (path.startsWith('/api/')) {
-        return handleApi(req, opts.rootDir);
+        return handleApi(req, opts.rootDir, bus);
       }
 
       if (path !== '/' && existsSync(join(distDir, path))) {
@@ -67,6 +75,6 @@ export async function startServer(opts: ServerOptions): Promise<ServerHandle> {
   return {
     port: server.port!,
     url: `http://localhost:${server.port}`,
-    stop: async () => { server.stop(); },
+    stop: async () => { stopWatcher(); server.stop(); },
   };
 }

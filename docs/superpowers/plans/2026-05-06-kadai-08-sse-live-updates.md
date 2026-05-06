@@ -413,7 +413,7 @@ EOF
 
 **Goal:** `GET /api/events` returns `text/event-stream`. The body is a `ReadableStream` that subscribes to the bus and writes `data: {"scope":"spine"}\n\n` on each event, plus a heartbeat comment (`: ping\n\n`) every 15 seconds. On client disconnect (stream cancel), unsubscribe.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `/home/fintan/repos/kadai/tests/web/sse.test.ts`:
 
@@ -476,7 +476,7 @@ test('GET /api/events delivers a notify() to a connected client', async () => {
 });
 ```
 
-- [ ] **Step 2: Run test — should fail (signature mismatch + missing route)**
+- [x] **Step 2: Run test — should fail (signature mismatch + missing route)**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -485,7 +485,7 @@ bun test tests/web/sse.test.ts
 
 Expected: TS error (startServer doesn't accept eventBus / startWatcher options yet) OR runtime error (route 404).
 
-- [ ] **Step 3: Update startServer signature in server.ts**
+- [x] **Step 3: Update startServer signature in server.ts**
 
 Edit `/home/fintan/repos/kadai/src/web/server.ts`. The current `ServerOptions` interface is:
 
@@ -542,7 +542,7 @@ Update the returned `ServerHandle.stop` to also tear down the watcher:
   };
 ```
 
-- [ ] **Step 4: Update handleApi signature in api.ts to accept the bus**
+- [x] **Step 4: Update handleApi signature in api.ts to accept the bus**
 
 Edit `/home/fintan/repos/kadai/src/web/api.ts`. Add this import alongside the existing ones:
 
@@ -601,7 +601,7 @@ Inside `handleApi`, after the `if (path === '/api/phases') ...` block (or anywhe
   }
 ```
 
-- [ ] **Step 5: Run tests to verify they pass**
+- [x] **Step 5: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -610,7 +610,7 @@ bun test tests/web/sse.test.ts
 
 Expected: 2 tests pass.
 
-- [ ] **Step 6: Run the full suite + typecheck**
+- [x] **Step 6: Run the full suite + typecheck**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -620,7 +620,7 @@ bun run typecheck
 
 Expected: ~213 tests pass (200 existing + 7 from Task 1 + 4 from Task 2 + 2 from Task 3 = 213). Typecheck clean.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

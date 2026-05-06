@@ -9,6 +9,7 @@ import { setStatus } from '../core/operations';
 import { legalNextStates } from '../core/state-machine';
 import type { Item } from '../core/types';
 import type { ItemKind, Status } from '../core/state-machine';
+import type { EventBus } from './events';
 
 function filterItems(
   items: Item[],
@@ -30,12 +31,47 @@ function readQuery(url: URL, key: string): string | undefined {
   return v ?? undefined;
 }
 
-export async function handleApi(req: Request, rootDir: string): Promise<Response> {
+export async function handleApi(req: Request, rootDir: string, bus?: EventBus): Promise<Response> {
   const url = new URL(req.url);
   const path = url.pathname;
 
   if (path === '/api/phases') {
     return Response.json(loadConfig(rootDir).phases);
+  }
+
+  if (path === '/api/events' && req.method === 'GET') {
+    if (!bus) {
+      return new Response('Event bus not configured', { status: 503 });
+    }
+    let cleanup: () => void = () => {};
+    const stream = new ReadableStream<Uint8Array>({
+      start(controller) {
+        const encoder = new TextEncoder();
+        const send = (text: string) => {
+          try { controller.enqueue(encoder.encode(text)); } catch { /* stream closed */ }
+        };
+        // Initial comment so EventSource immediately considers the connection open.
+        send(': open\n\n');
+        const unsub = bus.subscribe(event => {
+          send(`data: ${JSON.stringify(event)}\n\n`);
+        });
+        const heartbeat = setInterval(() => send(': ping\n\n'), 15_000);
+        cleanup = () => {
+          clearInterval(heartbeat);
+          unsub();
+        };
+      },
+      cancel() {
+        cleanup();
+      },
+    });
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/event-stream; charset=utf-8',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      },
+    });
   }
 
   if (path === '/api/epics') {
