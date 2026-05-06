@@ -15,11 +15,11 @@ function ProjectIndicator() {
       <div className="flex items-center gap-2 text-sm">
         <span className="text-muted">Project:</span>
         <span className="font-bold">{active?.name ?? mode.activeSlug}</span>
-        <Link to="/projects" className="text-xs text-muted hover:text-zinc-300">← Switch</Link>
+        <Link to="/projects" className="text-xs text-muted hover:text-text-primary">← Switch</Link>
       </div>
     );
   }
-  return <Link to="/projects" className="text-sm text-muted hover:text-zinc-300">Projects</Link>;
+  return <Link to="/projects" className="text-sm text-muted hover:text-text-primary">Projects</Link>;
 }
 
 export function Layout() {

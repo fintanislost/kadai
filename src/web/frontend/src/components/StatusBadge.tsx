@@ -7,7 +7,7 @@ const COLORS: Record<Status, { bg: string; text: string; ring: string }> = {
   blocked:     { bg: 'bg-status-blocked/10',            text: 'text-status-blocked',     ring: 'ring-status-blocked/20' },
   review:      { bg: 'bg-status-review/10',             text: 'text-status-review',      ring: 'ring-status-review/20' },
   done:        { bg: 'bg-status-done/10',               text: 'text-status-done',        ring: 'ring-status-done/20' },
-  cancelled:   { bg: 'bg-status-cancelled/20 line-through opacity-70', text: 'text-text-tertiary', ring: 'ring-white/10' },
+  cancelled:   { bg: 'bg-status-cancelled/20', text: 'text-text-tertiary', ring: 'ring-white/10' },
 };
 
 interface Props {
@@ -21,7 +21,7 @@ export function StatusBadge({ status, size = 'xs', className = '' }: Props) {
   const sizeClass = size === 'sm' ? 'text-xs px-2 py-0.5' : 'text-[10.5px] px-2 py-[3px]';
   return (
     <span
-      className={`inline-flex items-center gap-1.5 ${sizeClass} ${c.bg} ${c.text} rounded font-semibold tracking-[0.06em] uppercase ring-1 ring-inset ${c.ring} ${className}`}
+      className={`inline-flex items-center gap-1.5 ${sizeClass} ${c.bg} ${c.text} rounded font-semibold tracking-[0.06em] uppercase ring-1 ring-inset ${c.ring} ${status === 'cancelled' ? 'line-through opacity-70' : ''} ${className}`}
     >
       <span className={`w-[5px] h-[5px] rounded-full bg-current ${status === 'cancelled' ? 'hidden' : ''}`} />
       {status.replace('_', ' ')}
