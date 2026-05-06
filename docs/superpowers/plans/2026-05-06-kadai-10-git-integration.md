@@ -292,7 +292,7 @@ The append format is:
 
 Distinct from the hook-written format (`` `Write` src/foo.md ``) so the two never conflict.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/core/sync.test.ts`:
 
@@ -433,7 +433,7 @@ test('syncChangelogs does NOT auto-transition when config flag is off', () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -442,7 +442,7 @@ bun test tests/core/sync.test.ts
 
 Expected: FAIL with "Cannot find module ../../src/core/sync".
 
-- [ ] **Step 3: Implement core/sync.ts**
+- [x] **Step 3: Implement core/sync.ts**
 
 Create `/home/fintan/repos/kadai/src/core/sync.ts`:
 
@@ -533,7 +533,7 @@ export function syncChangelogs(rootDir: string, opts: SyncOptions = {}): SyncRes
 }
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -542,7 +542,7 @@ bun test tests/core/sync.test.ts
 
 Expected: 12 tests pass.
 
-- [ ] **Step 5: Run the full suite + typecheck**
+- [x] **Step 5: Run the full suite + typecheck**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -552,11 +552,11 @@ bun run typecheck
 
 Expected: 249 pass (237 + 12 new). Typecheck clean.
 
-- [ ] **Step 6: Tick the 5 checkboxes for Task 2 in the plan**
+- [x] **Step 6: Tick the 5 checkboxes for Task 2 in the plan**
 
 Tick all 5 step checkboxes for Task 2.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
