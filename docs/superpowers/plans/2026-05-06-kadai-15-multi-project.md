@@ -528,7 +528,7 @@ EOF
 
 Single-project mode is unchanged when the registry is empty (or `--single` is passed).
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/web/multi-project-api.test.ts`:
 
@@ -618,7 +618,7 @@ test('In multi-project mode, the legacy /api/items/X route returns 404', async (
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -627,7 +627,7 @@ bun test tests/web/multi-project-api.test.ts
 
 Expected: tests fail — `startServer` doesn't accept `projects` yet; routes don't exist.
 
-- [ ] **Step 3: Update server.ts to support multi-project mode**
+- [x] **Step 3: Update server.ts to support multi-project mode**
 
 Read `/home/fintan/repos/kadai/src/web/server.ts`. Update `ServerOptions`:
 
@@ -741,7 +741,7 @@ Update the returned `stop`:
 
 (NOTE: the rewriting `new Request(...)` constructor — Bun supports this and copies method/headers/body. The path `/api${rest}` becomes the URL the inner handler sees; since `handleApi` reads `new URL(req.url).pathname`, it'll dispatch correctly.)
 
-- [ ] **Step 4: Update src/cli/serve.ts to pass `projects` from the registry**
+- [x] **Step 4: Update src/cli/serve.ts to pass `projects` from the registry**
 
 Read `/home/fintan/repos/kadai/src/cli/serve.ts`. Add these imports alongside the existing ones:
 
@@ -780,7 +780,7 @@ Change to:
   });
 ```
 
-- [ ] **Step 5: Run tests to verify they pass**
+- [x] **Step 5: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -791,11 +791,11 @@ bun run typecheck
 
 Expected: 6 new tests pass + 332 total (326 + 6). Typecheck clean. (The existing api.test.ts uses single-project mode — make sure nothing regresses.)
 
-- [ ] **Step 6: Tick the step checkboxes for Task 3 in the plan**
+- [x] **Step 6: Tick the step checkboxes for Task 3 in the plan**
 
 Tick all step checkboxes for Task 3.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

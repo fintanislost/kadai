@@ -20,12 +20,20 @@ async function getEmbeddedAssets(): Promise<Record<string, EmbeddedAsset>> {
   return embeddedAssetsCache;
 }
 
+export interface ProjectConfig {
+  slug: string;
+  name: string;
+  rootDir: string;
+  eventBus?: EventBus;
+}
+
 export interface ServerOptions {
   rootDir: string;
   port: number;
   distDir?: string;
   eventBus?: EventBus;
   startWatcher?: boolean;  // default true
+  projects?: ProjectConfig[];
 }
 
 export interface ServerHandle {
@@ -72,10 +80,26 @@ export async function startServer(opts: ServerOptions): Promise<ServerHandle> {
     });
   }
 
-  const bus = opts.eventBus ?? new EventBus();
-  const stopWatcher = (opts.startWatcher !== false)
-    ? startFsWatcher(opts.rootDir, bus)
+  const isMulti = !!opts.projects && opts.projects.length > 0;
+
+  // Single-project bus + watcher (used only in single-project mode).
+  const singleBus = opts.eventBus ?? new EventBus();
+  const stopSingleWatcher = !isMulti && (opts.startWatcher !== false)
+    ? startFsWatcher(opts.rootDir, singleBus)
     : () => {};
+
+  // Multi-project map: slug → {bus, rootDir, name, stopWatcher}.
+  interface ProjectRuntime { bus: EventBus; rootDir: string; name: string; stopWatcher: () => void }
+  const projectRuntimes = new Map<string, ProjectRuntime>();
+  if (isMulti) {
+    for (const p of opts.projects!) {
+      const bus = p.eventBus ?? new EventBus();
+      const stopWatcher = (opts.startWatcher !== false)
+        ? startFsWatcher(p.rootDir, bus)
+        : () => {};
+      projectRuntimes.set(p.slug, { bus, rootDir: p.rootDir, name: p.name, stopWatcher });
+    }
+  }
 
   const server = Bun.serve({
     port: opts.port,
@@ -84,7 +108,28 @@ export async function startServer(opts: ServerOptions): Promise<ServerHandle> {
       const path = url.pathname;
 
       if (path.startsWith('/api/')) {
-        return handleApi(req, opts.rootDir, bus);
+        if (isMulti) {
+          if (path === '/api/projects' && req.method === 'GET') {
+            return Response.json(
+              Array.from(projectRuntimes.entries()).map(([slug, r]) => ({
+                slug, name: r.name, rootDir: r.rootDir,
+              })),
+            );
+          }
+          const m = path.match(/^\/api\/p\/([^/]+)(\/.*)?$/);
+          if (m) {
+            const [, slug, rest = '/'] = m;
+            const runtime = projectRuntimes.get(slug);
+            if (!runtime) return new Response('Project not found', { status: 404 });
+            const inner = new Request(
+              `${url.origin}/api${rest === '' ? '/' : rest}`,
+              req,
+            );
+            return handleApi(inner, runtime.rootDir, runtime.bus);
+          }
+          return new Response('Not found', { status: 404 });
+        }
+        return handleApi(req, opts.rootDir, singleBus);
       }
 
       // SPA serving: prefer embedded; fall back to filesystem.
@@ -114,6 +159,10 @@ export async function startServer(opts: ServerOptions): Promise<ServerHandle> {
   return {
     port: server.port!,
     url: `http://localhost:${server.port}`,
-    stop: async () => { stopWatcher(); server.stop(); },
+    stop: async () => {
+      stopSingleWatcher();
+      for (const r of projectRuntimes.values()) r.stopWatcher();
+      server.stop();
+    },
   };
 }
