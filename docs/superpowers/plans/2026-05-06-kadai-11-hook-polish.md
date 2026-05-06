@@ -319,7 +319,7 @@ The JSON shape:
 {"reason": "Picked story STORY-042 is still in_progress. Run `kadai set-status STORY-042 review` (or done) when finished, or `kadai unpick` to step back."}
 ```
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/cli/hook-stop.test.ts`:
 
@@ -419,7 +419,7 @@ test('kadai hook stop emits the JSON to stdout when relevant', () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -428,7 +428,7 @@ bun test tests/cli/hook-stop.test.ts
 
 Expected: FAIL — `buildStopReminder` not exported, subcommand doesn't exist.
 
-- [ ] **Step 3: Add `buildStopReminder` + the subcommand to hook.ts**
+- [x] **Step 3: Add `buildStopReminder` + the subcommand to hook.ts**
 
 Edit `/home/fintan/repos/kadai/src/cli/hook.ts`. Add this export (anywhere after `buildActiveStoryContext`):
 
@@ -485,7 +485,7 @@ hookCommand
   });
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -494,7 +494,7 @@ bun test tests/cli/hook-stop.test.ts
 
 Expected: 7 tests pass.
 
-- [ ] **Step 5: Run the full suite + typecheck**
+- [x] **Step 5: Run the full suite + typecheck**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -504,11 +504,11 @@ bun run typecheck
 
 Expected: 266 pass (259 + 7 new). Typecheck clean.
 
-- [ ] **Step 6: Tick the 5 checkboxes for Task 2 in the plan**
+- [x] **Step 6: Tick the 5 checkboxes for Task 2 in the plan**
 
 Tick all 5 step checkboxes for Task 2.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

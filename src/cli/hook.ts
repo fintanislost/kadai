@@ -1,4 +1,4 @@
-import { appendFileSync, mkdirSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, statSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { Command } from 'commander';
 import { loadConfig } from '../config/load';
@@ -130,6 +130,31 @@ export function buildActiveStoryContext(rootDir: string): string | null {
   return lines.join('\n');
 }
 
+const STOP_REMINDER_WINDOW_MS = 30 * 60 * 1000;  // 30 minutes
+
+export interface StopReminderOptions {
+  now?: Date;
+}
+
+export function buildStopReminder(rootDir: string, opts: StopReminderOptions = {}): string | null {
+  const pickedId = readPicked(rootDir);
+  if (!pickedId) return null;
+  const story = findById(rootDir, pickedId);
+  if (!story) return null;
+  if (story.data.status !== 'in_progress') return null;
+
+  const changelogPath = join(dirname(story.path), 'changelog.md');
+  if (!existsSync(changelogPath)) return null;
+
+  const now = (opts.now ?? new Date()).getTime();
+  const mtime = statSync(changelogPath).mtimeMs;
+  if (now - mtime > STOP_REMINDER_WINDOW_MS) return null;
+
+  const data = story.data as { id: string };
+  const reason = `Picked story ${data.id} is still in_progress. Run \`kadai set-status ${data.id} review\` (or done) when finished, or \`kadai unpick\` to step back.`;
+  return JSON.stringify({ reason });
+}
+
 async function readStdinJson<T>(): Promise<T> {
   return new Promise((resolve, reject) => {
     let data = '';
@@ -183,5 +208,17 @@ hookCommand
     try { await readStdinJson<unknown>(); } catch { /* empty stdin OK */ }
     const context = buildActiveStoryContext(root);
     if (context) process.stdout.write(context + '\n');
+    process.exit(0);
+  });
+
+hookCommand
+  .command('stop')
+  .description('Stop hook: reminds the agent to update the picked story status if work happened this turn')
+  .action(async () => {
+    const root = findKadaiRoot(process.cwd());
+    if (!root) process.exit(0);
+    try { await readStdinJson<unknown>(); } catch { /* empty stdin OK */ }
+    const reminder = buildStopReminder(root);
+    if (reminder) process.stdout.write(reminder + '\n');
     process.exit(0);
   });
