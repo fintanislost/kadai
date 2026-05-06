@@ -79,7 +79,7 @@ kadai-plugin/.claude-plugin/plugin.json            # MODIFIED: 0.3.0 → 0.4.0
 
 **Goal:** A tiny in-memory pub/sub plus a pure function that maps a changed file path to a `'spine' | 'picked' | 'config'` scope. No I/O — pure logic, easy to test.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/web/events.test.ts`:
 
@@ -143,7 +143,7 @@ test('inferScope: anything else → spine', () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -152,7 +152,7 @@ bun test tests/web/events.test.ts
 
 Expected: FAIL with "Cannot find module ../../src/web/events".
 
-- [ ] **Step 3: Implement events.ts (bus + scope only)**
+- [x] **Step 3: Implement events.ts (bus + scope only)**
 
 Create `/home/fintan/repos/kadai/src/web/events.ts`:
 
@@ -188,7 +188,7 @@ export function inferScope(path: string): ChangeScope {
 }
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -197,7 +197,7 @@ bun test tests/web/events.test.ts
 
 Expected: 7 tests pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
