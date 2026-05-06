@@ -8,6 +8,7 @@ import { readPicked } from '../core/picked';
 import { setStatus } from '../core/operations';
 import { legalNextStates } from '../core/state-machine';
 import { searchSpine } from '../core/search';
+import { buildActivity } from '../core/activity';
 import type { Item } from '../core/types';
 import type { ItemKind, Status } from '../core/state-machine';
 import type { EventBus } from './events';
@@ -46,6 +47,12 @@ export async function handleApi(req: Request, rootDir: string, bus?: EventBus): 
       return Response.json({ error: 'Missing required parameter: q' }, { status: 400 });
     }
     return Response.json(searchSpine(rootDir, q));
+  }
+
+  if (path === '/api/activity' && req.method === 'GET') {
+    const limitParam = url.searchParams.get('limit');
+    const limit = limitParam !== null ? Math.max(1, Math.min(1000, parseInt(limitParam, 10) || 100)) : undefined;
+    return Response.json(buildActivity(rootDir, { limit }));
   }
 
   if (path === '/api/events' && req.method === 'GET') {

@@ -19,6 +19,7 @@ export function Layout() {
       <div className="min-h-screen flex flex-col">
         <header className="bg-panel border-b border-zinc-800 px-6 py-3 flex items-center gap-4">
           <Link to="/" className="font-bold text-lg">Kadai</Link>
+          <Link to="/activity" className="text-sm text-muted hover:text-zinc-300">Activity</Link>
           <div className="flex items-center gap-2 text-sm">
             {phases.map(p => (
               <span

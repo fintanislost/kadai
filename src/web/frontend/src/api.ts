@@ -105,3 +105,18 @@ export async function searchSpine(query: string): Promise<SearchResult[]> {
   }
   return r.json() as Promise<SearchResult[]>;
 }
+
+export interface ActivityEntry {
+  ts: string;
+  kind: 'Write' | 'Edit' | 'commit' | 'note' | 'other';
+  payload: string;
+  itemId: string;
+  itemTitle: string;
+  itemKind: ItemKind;
+}
+
+export async function getActivity(limit = 100): Promise<ActivityEntry[]> {
+  const r = await fetch(`/api/activity?limit=${limit}`);
+  if (!r.ok) throw new Error(`/api/activity → ${r.status}`);
+  return r.json() as Promise<ActivityEntry[]>;
+}

@@ -5,6 +5,7 @@ import { Epic } from './pages/Epic';
 import { Feature } from './pages/Feature';
 import { Story } from './pages/Story';
 import { Search } from './pages/Search';
+import { Activity } from './pages/Activity';
 
 const rootRoute = createRootRoute({
   component: Layout,
@@ -43,7 +44,13 @@ const searchRoute = createRoute({
   },
 });
 
-const routeTree = rootRoute.addChildren([homeRoute, epicRoute, featureRoute, storyRoute, searchRoute]);
+const activityRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/activity',
+  component: Activity,
+});
+
+const routeTree = rootRoute.addChildren([homeRoute, epicRoute, featureRoute, storyRoute, searchRoute, activityRoute]);
 
 export const router = createRouter({ routeTree });
 

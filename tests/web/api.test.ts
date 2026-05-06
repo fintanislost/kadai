@@ -240,3 +240,17 @@ test('GET /api/search with no q parameter returns 400', async () => {
   const json = await r.json();
   expect(json.error).toMatch(/q/i);
 });
+
+test('GET /api/activity returns an empty list when no changelogs exist', async () => {
+  const r = await fetch(`${base()}/api/activity`);
+  expect(r.status).toBe(200);
+  const json = await r.json();
+  expect(Array.isArray(json)).toBe(true);
+});
+
+test('GET /api/activity?limit=10 caps the result count', async () => {
+  const r = await fetch(`${base()}/api/activity?limit=10`);
+  expect(r.status).toBe(200);
+  const json = await r.json();
+  expect(json.length).toBeLessThanOrEqual(10);
+});

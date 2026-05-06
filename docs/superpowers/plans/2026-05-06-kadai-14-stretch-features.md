@@ -395,7 +395,7 @@ EOF
 
 **Goal:** Aggregate every changelog entry across the spine into a flat reverse-chronological feed. Each entry is `{ ts, kind: 'Write' | 'commit' | 'note' | 'other', payload, itemId, itemTitle }`. New endpoint `GET /api/activity?limit=N` returns `Entry[]`. New page `/activity` renders them with a link to each item.
 
-- [ ] **Step 1: Write the failing test for the core**
+- [x] **Step 1: Write the failing test for the core**
 
 Create `/home/fintan/repos/kadai/tests/core/activity.test.ts`:
 
@@ -473,7 +473,7 @@ test('buildActivity respects limit parameter', () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -482,7 +482,9 @@ bun test tests/core/activity.test.ts
 
 Expected: FAIL with "Cannot find module ../../src/core/activity".
 
-- [ ] **Step 3: Implement core/activity.ts**
+- [x] **Step 2: Run tests to verify they fail**
+
+- [x] **Step 3: Implement core/activity.ts**
 
 Create `/home/fintan/repos/kadai/src/core/activity.ts`:
 
@@ -549,7 +551,7 @@ export function buildActivity(rootDir: string, opts: BuildActivityOptions = {}):
 }
 ```
 
-- [ ] **Step 4: Run core tests**
+- [x] **Step 4: Run core tests**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -558,7 +560,7 @@ bun test tests/core/activity.test.ts
 
 Expected: 4 tests pass.
 
-- [ ] **Step 5: Add the API endpoint + tests**
+- [x] **Step 5: Add the API endpoint + tests**
 
 Add tests to `/home/fintan/repos/kadai/tests/web/api.test.ts` (append):
 
@@ -602,7 +604,7 @@ bun test tests/web/api.test.ts
 
 Expected: all pass (existing + 2 new).
 
-- [ ] **Step 6: Add the client wrapper + page**
+- [x] **Step 6: Add the client wrapper + page**
 
 Append to `/home/fintan/repos/kadai/src/web/frontend/src/api.ts`:
 
@@ -707,7 +709,7 @@ Add a top-bar link in `Layout.tsx`. Read it first to find the right spot. Add th
 <Link to="/activity" className="text-sm text-muted hover:text-zinc-300">Activity</Link>
 ```
 
-- [ ] **Step 7: Build + verify**
+- [x] **Step 7: Build + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -718,11 +720,11 @@ bun test
 
 Expected: build clean, typecheck clean, 305 pass (301 + 4 core).
 
-- [ ] **Step 8: Tick the step checkboxes for Task 3 in the plan**
+- [x] **Step 8: Tick the step checkboxes for Task 3 in the plan**
 
 Tick all step checkboxes for Task 3.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
