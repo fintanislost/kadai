@@ -173,3 +173,9 @@ export async function listProjects(): Promise<ProjectInfo[]> {
   if (!r.ok) return [];
   return r.json() as Promise<ProjectInfo[]>;
 }
+
+export async function getSubtree(id: string, slug?: string | null): Promise<Item[]> {
+  const r = await fetch(withBase(slug, `/items/${id}/subtree`));
+  if (!r.ok) throw new Error(`/items/${id}/subtree → ${r.status}`);
+  return r.json() as Promise<Item[]>;
+}

@@ -648,7 +648,7 @@ EOF
 
 **Goal:** A new backend endpoint returns the item + all descendants flat (one fetch instead of N+1). The TreeView component renders this as a navigable tree with status badges, the current item highlighted, and click-to-navigate.
 
-- [ ] **Step 1: Write the failing API tests**
+- [x] **Step 1: Write the failing API tests**
 
 APPEND to `/home/fintan/repos/kadai/tests/web/api.test.ts`:
 
@@ -680,7 +680,7 @@ test('GET /api/items/EPIC-999/subtree returns 404 for unknown root', async () =>
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -689,7 +689,7 @@ bun test tests/web/api.test.ts
 
 Expected: 3 new tests fail with 404 (route not registered).
 
-- [ ] **Step 3: Implement /api/items/:id/subtree**
+- [x] **Step 3: Implement /api/items/:id/subtree**
 
 Read `/home/fintan/repos/kadai/src/web/api.ts`. Add this import (`walkSpine` is likely already imported via the existing list endpoints — confirm and skip if so):
 
@@ -726,7 +726,7 @@ Inside `handleApi`, after the existing `/api/items/:id/transitions` and BEFORE t
 
 Order matters: this must come BEFORE the catchall `itemMatch = path.match(/^\/api\/items\/(.+)$/)` because that pattern would match `EPIC-001/subtree` as `id="EPIC-001/subtree"` and 404.
 
-- [ ] **Step 4: Run API tests to verify they pass**
+- [x] **Step 4: Run API tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -735,7 +735,7 @@ bun test tests/web/api.test.ts
 
 Expected: all pass (existing + 3 new).
 
-- [ ] **Step 5: Add the client wrapper**
+- [x] **Step 5: Add the client wrapper**
 
 APPEND to `/home/fintan/repos/kadai/src/web/frontend/src/api.ts`:
 
@@ -749,7 +749,7 @@ export async function getSubtree(id: string, slug?: string | null): Promise<Item
 
 (`withBase` and `Item` are already in scope from prior plans — confirm by reading the file first.)
 
-- [ ] **Step 6: Implement TreeView.tsx**
+- [x] **Step 6: Implement TreeView.tsx**
 
 Create `/home/fintan/repos/kadai/src/web/frontend/src/components/TreeView.tsx`:
 
@@ -861,7 +861,7 @@ export function TreeView({ rootId, currentId }: Props) {
 }
 ```
 
-- [ ] **Step 7: Run the full suite + typecheck**
+- [x] **Step 7: Run the full suite + typecheck**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -871,11 +871,11 @@ bun run typecheck
 
 Expected: clean.
 
-- [ ] **Step 8: Tick the step checkboxes for Task 3 in the plan**
+- [x] **Step 8: Tick the step checkboxes for Task 3 in the plan**
 
 Tick all step checkboxes for Task 3.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

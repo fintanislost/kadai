@@ -217,6 +217,27 @@ export async function handleApi(req: Request, rootDir: string, bus?: EventBus): 
     return Response.json(updated);
   }
 
+  const subtreeMatch = path.match(/^\/api\/items\/([A-Z]+-\d+)\/subtree$/);
+  if (subtreeMatch && req.method === 'GET') {
+    const root = findById(rootDir, subtreeMatch[1]);
+    if (!root) return new Response('Not found', { status: 404 });
+    // Walk the whole spine, then filter to the root + descendants.
+    const all = walkSpine(rootDir);
+    const result = [root];
+    const visit = (parentId: string) => {
+      for (const item of all) {
+        const data = item.data as unknown as { id: string; parent?: string };
+        if (data.parent === parentId) {
+          result.push(item);
+          visit(data.id);
+        }
+      }
+    };
+    const rootData = root.data as unknown as { id: string };
+    visit(rootData.id);
+    return Response.json(result);
+  }
+
   const itemMatch = path.match(/^\/api\/items\/(.+)$/);
   if (itemMatch && req.method === 'GET') {
     const item = findById(rootDir, itemMatch[1]);

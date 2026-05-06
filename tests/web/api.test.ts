@@ -273,3 +273,29 @@ test('GET /api/compare with non-existent phase returns 404', async () => {
   const r = await fetch(`${base()}/api/compare?a=mvp&b=nope`);
   expect(r.status).toBe(404);
 });
+
+test('GET /api/items/:id/subtree returns the item + all descendants flat', async () => {
+  const r = await fetch(`${base()}/api/items/EPIC-001/subtree`);
+  expect(r.status).toBe(200);
+  const json = await r.json();
+  expect(Array.isArray(json)).toBe(true);
+  // EPIC-001 + FEAT-001 + STORY-001 = 3 items in the seed.
+  expect(json.length).toBeGreaterThanOrEqual(3);
+  const ids = json.map((i: { data: { id: string } }) => i.data.id).sort();
+  expect(ids).toContain('EPIC-001');
+  expect(ids).toContain('FEAT-001');
+  expect(ids).toContain('STORY-001');
+});
+
+test('GET /api/items/STORY-001/subtree returns just the story (and any tasks)', async () => {
+  const r = await fetch(`${base()}/api/items/STORY-001/subtree`);
+  expect(r.status).toBe(200);
+  const json = await r.json();
+  expect(json.length).toBeGreaterThanOrEqual(1);
+  expect(json[0].data.id).toBe('STORY-001');
+});
+
+test('GET /api/items/EPIC-999/subtree returns 404 for unknown root', async () => {
+  const r = await fetch(`${base()}/api/items/EPIC-999/subtree`);
+  expect(r.status).toBe(404);
+});
