@@ -128,3 +128,42 @@ test('runInit + runAdd produces a usable spine (the path -y will take after Task
   const epicId = runAdd({ rootDir: tmp, kind: 'epic', title: 'Project setup', phase: 'mvp' });
   expect(epicId).toBe('EPIC-001');
 });
+
+test('runInit registers all four hook entries in .claude/settings.json', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'kadai-init-hooks-'));
+  try {
+    runInit({ rootDir: tmp, productDescription: 'X', skipFirstEpic: true });
+    const settings = JSON.parse(readFileSync(join(tmp, '.claude', 'settings.json'), 'utf8')) as {
+      hooks: Record<string, Array<{ matcher?: string; hooks: Array<{ command: string }> }>>;
+    };
+    const eventNames = Object.keys(settings.hooks).sort();
+    expect(eventNames).toEqual(['PostToolUse', 'PreToolUse', 'Stop', 'UserPromptSubmit']);
+
+    const ups = settings.hooks.UserPromptSubmit[0];
+    expect(ups.matcher ?? '').toBe('');
+    expect(ups.hooks[0].command).toBe('kadai hook user-prompt-submit');
+
+    const stop = settings.hooks.Stop[0];
+    expect(stop.matcher ?? '').toBe('');
+    expect(stop.hooks[0].command).toBe('kadai hook stop');
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('runInit is idempotent — re-running does not duplicate hook entries', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'kadai-init-idempotent-'));
+  try {
+    runInit({ rootDir: tmp, productDescription: 'X', skipFirstEpic: true });
+    runInit({ rootDir: tmp, productDescription: 'X', skipFirstEpic: true });
+    const settings = JSON.parse(readFileSync(join(tmp, '.claude', 'settings.json'), 'utf8')) as {
+      hooks: Record<string, unknown[]>;
+    };
+    expect(settings.hooks.PreToolUse.length).toBe(1);
+    expect(settings.hooks.PostToolUse.length).toBe(1);
+    expect(settings.hooks.UserPromptSubmit.length).toBe(1);
+    expect(settings.hooks.Stop.length).toBe(1);
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
+});

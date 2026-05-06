@@ -104,7 +104,28 @@ function mergeKadaiHooksIntoSettingsJson(rootDir: string): void {
     });
   }
 
-  if (!hasPre || !hasPost) {
+  if (!parsed.hooks.UserPromptSubmit) parsed.hooks.UserPromptSubmit = [];
+  if (!parsed.hooks.Stop) parsed.hooks.Stop = [];
+
+  const hasUps = parsed.hooks.UserPromptSubmit.some(entry =>
+    entry.hooks?.some(h => h.command === 'kadai hook user-prompt-submit'));
+  if (!hasUps) {
+    parsed.hooks.UserPromptSubmit.push({
+      matcher: '',
+      hooks: [{ type: 'command', command: 'kadai hook user-prompt-submit' }],
+    });
+  }
+
+  const hasStop = parsed.hooks.Stop.some(entry =>
+    entry.hooks?.some(h => h.command === 'kadai hook stop'));
+  if (!hasStop) {
+    parsed.hooks.Stop.push({
+      matcher: '',
+      hooks: [{ type: 'command', command: 'kadai hook stop' }],
+    });
+  }
+
+  if (!hasPre || !hasPost || !hasUps || !hasStop) {
     mkdirSync(join(rootDir, '.claude'), { recursive: true });
     writeFileAtomic(path, JSON.stringify(parsed, null, 2) + '\n');
   }

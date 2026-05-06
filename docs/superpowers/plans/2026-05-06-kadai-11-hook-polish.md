@@ -538,7 +538,7 @@ EOF
 
 The two new entries (UserPromptSubmit and Stop) have empty matchers — these hook events fire on every occurrence (no per-tool matcher).
 
-- [ ] **Step 1: Update tests/cli/init.test.ts**
+- [x] **Step 1: Update tests/cli/init.test.ts**
 
 Read `/home/fintan/repos/kadai/tests/cli/init.test.ts` to find the existing assertions about `.claude/settings.json`. Add (or amend) tests that assert:
 
@@ -585,7 +585,7 @@ test('runInit is idempotent — re-running does not duplicate hook entries', () 
 
 (If `mkdtempSync, rmSync, readFileSync, tmpdir, join` aren't already imported in the test file, add them. The existing `runInit` import should already be there.)
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -594,7 +594,7 @@ bun test tests/cli/init.test.ts
 
 Expected: the new tests fail — current `init` only registers PreToolUse and PostToolUse.
 
-- [ ] **Step 3: Update mergeKadaiHooksIntoSettingsJson in init.ts**
+- [x] **Step 3: Update mergeKadaiHooksIntoSettingsJson in init.ts**
 
 Read `/home/fintan/repos/kadai/src/cli/init.ts`. Find `mergeKadaiHooksIntoSettingsJson`. Inside that function, after the existing PreToolUse + PostToolUse blocks, insert these two:
 
@@ -630,7 +630,7 @@ The condition that triggers the file write at the bottom of the function current
   }
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -639,7 +639,7 @@ bun test tests/cli/init.test.ts
 
 Expected: all tests pass (existing + 2 new).
 
-- [ ] **Step 5: Run the full suite + typecheck**
+- [x] **Step 5: Run the full suite + typecheck**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -649,11 +649,11 @@ bun run typecheck
 
 Expected: 268 pass (266 + 2 new). Typecheck clean.
 
-- [ ] **Step 6: Tick the 5 checkboxes for Task 3 in the plan**
+- [x] **Step 6: Tick the 5 checkboxes for Task 3 in the plan**
 
 Tick all 5 step checkboxes for Task 3.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
