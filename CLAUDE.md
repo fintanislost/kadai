@@ -12,7 +12,7 @@ If you're a fresh Claude session, read in this order:
 
 ## Active plan
 
-> 🎉 **All 15 plans shipped. Post-MVP backlog drained.** kadai-plugin is at **v1.1.0**.
+> 🎉 **All 16 plans shipped.** kadai-plugin is at **v1.2.0** — post-MVP backlog drained + visual polish pass complete.
 >
 > What's working today:
 > - `kadai init [--markdown-only] / add / list / get / status / pick / unpick / set-status / phases / config / sync / uninstall` — full CLI
@@ -22,7 +22,8 @@ If you're a fresh Claude session, read in this order:
 > - `kadai sync` — scrapes git log for item ID refs and appends to `changelog.md`
 > - **Distribution**: `bun run build` produces a self-contained `dist/kadai` binary; `bun run build:all` cross-compiles for 5 targets; install scripts + Homebrew formula templates ready
 > - **Tech debt drained**: atomic counter writes, no `as any`/`@ts-ignore` in CLI, safe phase migration on rename/remove
-> - `kadai-plugin/` v1.1.0 — installable Claude Code plugin (skill + 5 slash commands)
+> - **Visual polish (v1.2.0)**: status color palette, lucide-react icons per kind, skeleton loaders, structured empty states with CLI hints, refreshed header
+> - `kadai-plugin/` v1.2.0 — installable Claude Code plugin (skill + 5 slash commands)
 >
 > **What's left:** Only one-shot release-publishing user actions remain — publish GitHub Releases (binaries from `bun run build:all`), submit Homebrew formula PR (template at `scripts/Formula/kadai.rb`), npm publish. Not engineering tasks; release operations.
 
