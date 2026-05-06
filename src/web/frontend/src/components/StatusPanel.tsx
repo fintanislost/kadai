@@ -6,16 +6,17 @@ interface Props {
   itemId: string;
   currentStatus: Status;
   onStatusChange: (newStatus: Status) => void;
+  slug?: string | null;
 }
 
-export function StatusPanel({ itemId, currentStatus, onStatusChange }: Props) {
+export function StatusPanel({ itemId, currentStatus, onStatusChange, slug }: Props) {
   const [allowed, setAllowed] = useState<Status[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
   useEffect(() => {
-    getTransitions(itemId).then(t => setAllowed(t?.allowed ?? []));
-  }, [itemId, currentStatus]);
+    getTransitions(itemId, slug).then(t => setAllowed(t?.allowed ?? []));
+  }, [itemId, currentStatus, slug]);
 
   async function move(target: Status) {
     setPending(true);
@@ -23,7 +24,7 @@ export function StatusPanel({ itemId, currentStatus, onStatusChange }: Props) {
     const previous = currentStatus;
     onStatusChange(target);
     try {
-      await setItemStatus(itemId, target);
+      await setItemStatus(itemId, target, slug);
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : String(e);
       setError(msg);

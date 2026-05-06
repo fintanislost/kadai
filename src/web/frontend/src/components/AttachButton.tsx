@@ -5,9 +5,10 @@ interface Props {
   itemId: string;
   kind: 'spec' | 'plan';
   onAttached: () => void;
+  slug?: string | null;
 }
 
-export function AttachButton({ itemId, kind, onAttached }: Props) {
+export function AttachButton({ itemId, kind, onAttached, slug }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -18,7 +19,7 @@ export function AttachButton({ itemId, kind, onAttached }: Props) {
     setPending(true);
     setError(null);
     try {
-      await attachFile(itemId, kind, file);
+      await attachFile(itemId, kind, file, slug);
       onAttached();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);

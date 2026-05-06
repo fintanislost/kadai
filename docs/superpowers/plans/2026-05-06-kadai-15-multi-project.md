@@ -1071,7 +1071,7 @@ EOF
 
 This task is mostly mechanical duplication. To keep it tight: each page accepts an optional `slug` (from new route params) and threads it through every API call.
 
-- [ ] **Step 1: Register the project-scoped routes in router.tsx**
+- [x] **Step 1: Register the project-scoped routes in router.tsx**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/router.tsx`. Add this block after the existing routes:
 
@@ -1128,7 +1128,7 @@ const projectCompareRoute = createRoute({
 
 Add all of them to `addChildren([...])`.
 
-- [ ] **Step 2: Update each page to consume slug + thread it through API calls**
+- [x] **Step 2: Update each page to consume slug + thread it through API calls**
 
 For each of the 7 pages, the change is:
 
@@ -1192,7 +1192,7 @@ Actually a cleaner approach: TanStack Router supports `to` as a templated path (
 
 That's verbose but typesafe. Apply across all internal links.
 
-- [ ] **Step 3: Build + verify**
+- [x] **Step 3: Build + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1204,7 +1204,7 @@ bun test
 
 Expected: build clean, typecheck clean, 332 tests pass.
 
-- [ ] **Step 4: Smoke-test single-project mode (no regression)**
+- [x] **Step 4: Smoke-test single-project mode (no regression)**
 
 ```bash
 TMP=$(mktemp -d)
@@ -1223,7 +1223,7 @@ cd / && rm -rf "$TMP"
 
 Expected: returns the EPIC-001 JSON (single-project mode unchanged).
 
-- [ ] **Step 5: Smoke-test multi-project mode**
+- [x] **Step 5: Smoke-test multi-project mode**
 
 ```bash
 PROJ_A=$(mktemp -d -t kadai-mp-a-XXXXXX)
@@ -1262,11 +1262,11 @@ rm -rf "$PROJ_A" "$PROJ_B"
 
 Expected: `/api/projects` returns alpha + beta; each `/api/p/<slug>/items/EPIC-001` returns that project's epic.
 
-- [ ] **Step 6: Tick the step checkboxes for Task 5 in the plan**
+- [x] **Step 6: Tick the step checkboxes for Task 5 in the plan**
 
 Tick all step checkboxes for Task 5.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

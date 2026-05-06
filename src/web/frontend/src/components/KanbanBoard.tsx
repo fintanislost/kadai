@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from '@tanstack/react-router';
 import {
   DndContext,
   PointerSensor,
@@ -11,15 +10,17 @@ import {
 } from '@dnd-kit/core';
 import type { Item, Status } from '../types';
 import { setItemStatus } from '../api';
+import { ProjectScopedLink } from '../project';
 
 const COLUMNS: Status[] = ['backlog', 'ready', 'in_progress', 'blocked', 'review', 'done'];
 
 interface Props {
   stories: Item[];
   onLocalStatusChange: (storyId: string, newStatus: Status) => void;
+  activeSlug?: string | null;
 }
 
-export function KanbanBoard({ stories, onLocalStatusChange }: Props) {
+export function KanbanBoard({ stories, onLocalStatusChange, activeSlug }: Props) {
   const [error, setError] = useState<string | null>(null);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
 
@@ -34,7 +35,7 @@ export function KanbanBoard({ stories, onLocalStatusChange }: Props) {
     onLocalStatusChange(storyId, target);
     setError(null);
     try {
-      await setItemStatus(storyId, target);
+      await setItemStatus(storyId, target, activeSlug);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       setError(msg);
@@ -51,7 +52,7 @@ export function KanbanBoard({ stories, onLocalStatusChange }: Props) {
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           {COLUMNS.map(col => (
-            <Column key={col} status={col} stories={stories.filter(s => s.data.status === col)} />
+            <Column key={col} status={col} stories={stories.filter(s => s.data.status === col)} activeSlug={activeSlug ?? null} />
           ))}
         </div>
       </DndContext>
@@ -59,7 +60,7 @@ export function KanbanBoard({ stories, onLocalStatusChange }: Props) {
   );
 }
 
-function Column({ status, stories }: { status: Status; stories: Item[] }) {
+function Column({ status, stories, activeSlug }: { status: Status; stories: Item[]; activeSlug: string | null }) {
   const { isOver, setNodeRef } = useDroppable({ id: status });
   return (
     <div
@@ -69,13 +70,13 @@ function Column({ status, stories }: { status: Status; stories: Item[] }) {
     >
       <div className="text-xs font-semibold uppercase tracking-wider text-muted mb-2">{status}</div>
       <div className="space-y-2">
-        {stories.map(s => <Card key={(s.data as any).id} story={s} />)}
+        {stories.map(s => <Card key={(s.data as any).id} story={s} activeSlug={activeSlug} />)}
       </div>
     </div>
   );
 }
 
-function Card({ story }: { story: Item }) {
+function Card({ story, activeSlug }: { story: Item; activeSlug: string | null }) {
   const d = story.data as { id: string; title: string };
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({ id: d.id });
   const style = transform ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` } : undefined;
@@ -90,7 +91,7 @@ function Card({ story }: { story: Item }) {
       {...attributes}
     >
       <div className="text-muted text-[10px]">{d.id}</div>
-      <Link to="/stories/$id" params={{ id: d.id }} className="block">{d.title}</Link>
+      <ProjectScopedLink activeSlug={activeSlug} to="/stories/$id" params={{ id: d.id }} className="block">{d.title}</ProjectScopedLink>
     </div>
   );
 }

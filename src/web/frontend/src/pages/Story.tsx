@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from '@tanstack/react-router';
+import { useParams } from '@tanstack/react-router';
 import { getItem, getFile, listTasks } from '../api';
 import { AttachButton } from '../components/AttachButton';
 import { Markdown } from '../components/Markdown';
 import { StatusPanel } from '../components/StatusPanel';
 import { useLiveKey } from '../live';
+import { useProjectMode, ProjectScopedLink } from '../project';
 import type { Item } from '../types';
 import type { Status } from '../types';
 
 type TabName = 'story' | 'spec' | 'plan' | 'changelog' | 'tasks';
 
 export function Story() {
-  const { id } = useParams({ from: '/stories/$id' });
+  // useParams without `from` to support both /stories/$id and /p/$slug/stories/$id
+  const params = useParams({ strict: false }) as { id?: string; slug?: string };
+  const id = params.id ?? '';
   const [story, setStory] = useState<Item | null>(null);
   const [tasks, setTasks] = useState<Item[]>([]);
   const [spec, setSpec] = useState<string | null>(null);
@@ -19,14 +22,16 @@ export function Story() {
   const [changelog, setChangelog] = useState<string | null>(null);
   const [tab, setTab] = useState<TabName>('story');
   const liveKey = useLiveKey();
+  const { activeSlug } = useProjectMode();
 
   useEffect(() => {
-    getItem(id).then(setStory);
-    listTasks({ story_id: id }).then(setTasks);
-    getFile(id, 'spec.md').then(setSpec);
-    getFile(id, 'plan.md').then(setPlan);
-    getFile(id, 'changelog.md').then(setChangelog);
-  }, [id, liveKey]);
+    if (!id) return;
+    getItem(id, activeSlug).then(setStory);
+    listTasks({ story_id: id }, activeSlug).then(setTasks);
+    getFile(id, 'spec.md', activeSlug).then(setSpec);
+    getFile(id, 'plan.md', activeSlug).then(setPlan);
+    getFile(id, 'changelog.md', activeSlug).then(setChangelog);
+  }, [id, liveKey, activeSlug]);
 
   if (!story) return <div className="text-muted">Loading or not found…</div>;
   const d = story.data as {
@@ -45,7 +50,7 @@ export function Story() {
   }
 
   function reloadAttached(filename: 'spec.md' | 'plan.md') {
-    getFile(d.id, filename).then(content => {
+    getFile(d.id, filename, activeSlug).then(content => {
       if (filename === 'spec.md') setSpec(content);
       else setPlan(content);
     });
@@ -55,7 +60,7 @@ export function Story() {
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_220px] gap-6">
       <div className="space-y-6">
         <div>
-          <Link to="/features/$id" params={{ id: d.parent }} className="text-xs text-muted hover:text-zinc-300">← back to {d.parent}</Link>
+          <ProjectScopedLink activeSlug={activeSlug} to="/features/$id" params={{ id: d.parent }} className="text-xs text-muted hover:text-zinc-300">← back to {d.parent}</ProjectScopedLink>
           <div className="mt-2 text-xs text-muted">{d.id} · phase {d.phase} · {d.status}</div>
           <h1 className="text-2xl font-bold">{d.title}</h1>
         </div>
@@ -91,7 +96,7 @@ export function Story() {
           ) : (
             <div className="space-y-3">
               <div className="text-muted italic">No spec attached.</div>
-              <AttachButton itemId={d.id} kind="spec" onAttached={() => reloadAttached('spec.md')} />
+              <AttachButton itemId={d.id} kind="spec" slug={activeSlug} onAttached={() => reloadAttached('spec.md')} />
             </div>
           ))}
           {tab === 'plan' && (plan ? (
@@ -99,7 +104,7 @@ export function Story() {
           ) : (
             <div className="space-y-3">
               <div className="text-muted italic">No plan attached.</div>
-              <AttachButton itemId={d.id} kind="plan" onAttached={() => reloadAttached('plan.md')} />
+              <AttachButton itemId={d.id} kind="plan" slug={activeSlug} onAttached={() => reloadAttached('plan.md')} />
             </div>
           ))}
           {tab === 'changelog' && (changelog ? <Markdown>{changelog}</Markdown> : <div className="text-muted italic">No changelog yet.</div>)}
@@ -128,6 +133,7 @@ export function Story() {
           itemId={d.id}
           currentStatus={d.status as Status}
           onStatusChange={patchStatus}
+          slug={activeSlug}
         />
       </aside>
     </div>

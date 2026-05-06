@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Link, useSearch } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 import { searchSpine, type SearchResult } from '../api';
+import { useProjectMode, ProjectScopedLink } from '../project';
 
 const ROUTE_BY_KIND: Record<string, string> = {
   epic: '/epics/$id',
@@ -23,11 +24,13 @@ function Highlighted({ snippet, matchStart, matchEnd }: { snippet: string; match
 }
 
 export function Search() {
-  const search = useSearch({ from: '/search' }) as { q?: string };
+  // useSearch without `from` to support both /search and /p/$slug/search
+  const search = useSearch({ strict: false }) as { q?: string };
   const q = search.q ?? '';
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { activeSlug } = useProjectMode();
 
   useEffect(() => {
     if (q.length < 2) {
@@ -36,11 +39,11 @@ export function Search() {
     }
     setLoading(true);
     setError(null);
-    searchSpine(q)
+    searchSpine(q, activeSlug)
       .then(setResults)
       .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)))
       .finally(() => setLoading(false));
-  }, [q]);
+  }, [q, activeSlug]);
 
   return (
     <div className="space-y-4">
@@ -64,8 +67,9 @@ export function Search() {
         {results.map(r => {
           const route = ROUTE_BY_KIND[r.kind] ?? '/';
           return (
-            <Link
+            <ProjectScopedLink
               key={r.id}
+              activeSlug={activeSlug}
               to={route}
               params={{ id: r.id }}
               className="block bg-panel border border-zinc-800 rounded p-3 hover:border-zinc-600"
@@ -83,7 +87,7 @@ export function Search() {
                   <Highlighted snippet={r.snippet} matchStart={r.matchStart} matchEnd={r.matchEnd} />
                 </div>
               )}
-            </Link>
+            </ProjectScopedLink>
           );
         })}
       </div>

@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import { useRouter } from '@tanstack/react-router';
+import { Link, useRouter } from '@tanstack/react-router';
 
 export interface ProjectInfo {
   slug: string;
@@ -67,4 +67,40 @@ export function apiBase(activeSlug: string | null): string {
  */
 export function projectLink(activeSlug: string | null, path: string): string {
   return activeSlug ? `/p/${activeSlug}${path}` : path;
+}
+
+/**
+ * A Link component that's project-aware. When activeSlug is set, maps legacy
+ * paths like '/epics/$id' to '/p/$slug/epics/$id'.
+ *
+ * Note: `as never` casts are needed because TanStack Router's typed routes are
+ * very strict and don't accept dynamic string concatenation for the `to` prop.
+ * This is a pragmatic compromise for the multi-project feature.
+ */
+export function ProjectScopedLink({
+  activeSlug,
+  to,
+  params,
+  children,
+  className,
+}: {
+  activeSlug: string | null;
+  to: string;
+  params?: Record<string, string>;
+  children?: React.ReactNode;
+  className?: string;
+}) {
+  if (activeSlug && to.startsWith('/')) {
+    const projectTo = `/p/$slug${to}` as never;
+    return (
+      <Link to={projectTo} params={{ slug: activeSlug, ...params } as never} className={className}>
+        {children}
+      </Link>
+    );
+  }
+  return (
+    <Link to={to as never} params={params as never} className={className}>
+      {children}
+    </Link>
+  );
 }

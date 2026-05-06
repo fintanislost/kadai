@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Link, useSearch } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 import { listPhases, comparePhasesApi, type CompareResult } from '../api';
+import { useProjectMode, ProjectScopedLink } from '../project';
 import type { PhaseConfig } from '../types';
 
 const ROUTE_BY_KIND: Record<string, string> = {
@@ -11,19 +12,21 @@ const ROUTE_BY_KIND: Record<string, string> = {
 };
 
 export function Compare() {
-  const search = useSearch({ from: '/compare' }) as { a?: string; b?: string };
+  // useSearch without `from` to support both /compare and /p/$slug/compare
+  const search = useSearch({ strict: false }) as { a?: string; b?: string };
   const a = search.a ?? '';
   const b = search.b ?? '';
   const [phases, setPhases] = useState<PhaseConfig[]>([]);
   const [result, setResult] = useState<CompareResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { activeSlug } = useProjectMode();
 
-  useEffect(() => { listPhases().then(setPhases); }, []);
+  useEffect(() => { listPhases(activeSlug).then(setPhases); }, [activeSlug]);
   useEffect(() => {
     if (!a || !b) return;
     setError(null);
-    comparePhasesApi(a, b).then(setResult).catch(e => setError(e instanceof Error ? e.message : String(e)));
-  }, [a, b]);
+    comparePhasesApi(a, b, activeSlug).then(setResult).catch(e => setError(e instanceof Error ? e.message : String(e)));
+  }, [a, b, activeSlug]);
 
   if (!a || !b) {
     return (
@@ -53,7 +56,8 @@ export function Compare() {
                   const inCommon = result.common.titles.includes(item.title);
                   return (
                     <li key={item.id}>
-                      <Link
+                      <ProjectScopedLink
+                        activeSlug={activeSlug}
                         to={ROUTE_BY_KIND[item.kind] ?? '/'}
                         params={{ id: item.id }}
                         className={`block text-xs p-1.5 rounded ${inCommon ? 'bg-amber-900/30 hover:bg-amber-900/50' : 'bg-zinc-800 hover:bg-zinc-700'}`}
@@ -62,7 +66,7 @@ export function Compare() {
                         <span className="text-muted text-[10px] mr-2">{item.id}</span>
                         <span>{item.title}</span>
                         <span className="ml-2 text-[10px] text-muted">[{item.status}]</span>
-                      </Link>
+                      </ProjectScopedLink>
                     </li>
                   );
                 })}

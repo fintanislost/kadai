@@ -68,7 +68,60 @@ const projectsRoute = createRoute({
   component: Projects,
 });
 
-const routeTree = rootRoute.addChildren([homeRoute, epicRoute, featureRoute, storyRoute, searchRoute, activityRoute, compareRoute, projectsRoute]);
+// Project-scoped routes — mirror the above under /p/$slug/
+const projectHomeRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/p/$slug/',
+  component: Home,
+});
+
+const projectEpicRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/p/$slug/epics/$id',
+  component: Epic,
+});
+
+const projectFeatureRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/p/$slug/features/$id',
+  component: Feature,
+});
+
+const projectStoryRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/p/$slug/stories/$id',
+  component: Story,
+});
+
+const projectSearchRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/p/$slug/search',
+  component: Search,
+  validateSearch: (s: Record<string, unknown>): { q?: string } => ({
+    q: typeof s.q === 'string' ? s.q : undefined,
+  }),
+});
+
+const projectActivityRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/p/$slug/activity',
+  component: Activity,
+});
+
+const projectCompareRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/p/$slug/compare',
+  component: Compare,
+  validateSearch: (s: Record<string, unknown>): { a?: string; b?: string } => ({
+    a: typeof s.a === 'string' ? s.a : undefined,
+    b: typeof s.b === 'string' ? s.b : undefined,
+  }),
+});
+
+const routeTree = rootRoute.addChildren([
+  homeRoute, epicRoute, featureRoute, storyRoute, searchRoute, activityRoute, compareRoute, projectsRoute,
+  projectHomeRoute, projectEpicRoute, projectFeatureRoute, projectStoryRoute, projectSearchRoute, projectActivityRoute, projectCompareRoute,
+]);
 
 export const router = createRouter({ routeTree });
 
