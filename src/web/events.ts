@@ -53,19 +53,17 @@ export function startWatcher(rootDir: string, bus: EventBus, opts: WatcherOption
   const kadaiDir = join(rootDir, '.kadai');
 
   let stopped = false;
-  let timer: ReturnType<typeof setTimeout> | null = null;
-  let pendingScope: ChangeScope = 'spine';
+  const timers = new Map<ChangeScope, ReturnType<typeof setTimeout>>();
   const watchers = new Map<string, FSWatcher>();
 
   function scheduleNotify(scope: ChangeScope): void {
     if (stopped) return;
-    pendingScope = scope;
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(() => {
-      if (!stopped) bus.notify(pendingScope);
-      pendingScope = 'spine';
-      timer = null;
-    }, debounceMs);
+    const existing = timers.get(scope);
+    if (existing) clearTimeout(existing);
+    timers.set(scope, setTimeout(() => {
+      timers.delete(scope);
+      if (!stopped) bus.notify(scope);
+    }, debounceMs));
   }
 
   function addDirWatch(dir: string): void {
@@ -84,6 +82,11 @@ export function startWatcher(rootDir: string, bus: EventBus, opts: WatcherOption
         }
       });
       watchers.set(dir, w);
+      w.on('error', () => {
+        // Filesystem entry may have been removed (e.g., git checkout). Drop this watcher.
+        try { w.close(); } catch { /* already closed */ }
+        watchers.delete(dir);
+      });
     } catch { /* directory may not exist */ }
   }
 
@@ -118,7 +121,8 @@ export function startWatcher(rootDir: string, bus: EventBus, opts: WatcherOption
 
   return () => {
     stopped = true;
-    if (timer) { clearTimeout(timer); timer = null; }
+    for (const t of timers.values()) clearTimeout(t);
+    timers.clear();
     for (const w of watchers.values()) w.close();
     watchers.clear();
     unwatchFile(pickedPath);

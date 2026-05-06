@@ -103,3 +103,27 @@ test('startWatcher fires events for files in deeply nested directories that exis
   const event = await waitForEvent(bus, 1500);
   expect(event.scope).toBe('spine');
 });
+
+test('startWatcher delivers each scope as a separate event when scopes differ within the window', async () => {
+  const bus = new EventBus();
+  stop = startWatcher(tmp, bus, { debounceMs: 50 });
+
+  const events: string[] = [];
+  bus.subscribe(e => events.push(e.scope));
+
+  await new Promise(r => setTimeout(r, 50));
+  // First a spine change…
+  writeFileSync(join(tmp, '.kadai', 'note.tmp'), 'x');
+  // …then a picked change before the spine debounce fires.
+  await new Promise(r => setTimeout(r, 10));
+  writeFileSync(join(tmp, '.kadai', '.picked'), 'STORY-001');
+  // …and a config change.
+  await new Promise(r => setTimeout(r, 60));
+  writeFileSync(join(tmp, '.kadai', 'config.toml'), 'x');
+
+  await new Promise(r => setTimeout(r, 200));
+
+  expect(events).toContain('spine');
+  expect(events).toContain('picked');
+  expect(events).toContain('config');
+});

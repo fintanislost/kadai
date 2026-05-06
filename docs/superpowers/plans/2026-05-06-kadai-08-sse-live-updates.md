@@ -980,7 +980,7 @@ EOF
 
 **Goal:** Two small hardening fixes: (a) the watcher should not crash if `.kadai/` is renamed/deleted while running (e.g., during `git checkout`), and (b) successive distinct-scope events within the debounce window should fire as separate events, not collapse into one. We tighten this without changing the public API.
 
-- [ ] **Step 1: Add the failing test**
+- [x] **Step 1: Add the failing test**
 
 APPEND to `/home/fintan/repos/kadai/tests/web/watcher.test.ts`:
 
@@ -1010,7 +1010,7 @@ test('startWatcher delivers each scope as a separate event when scopes differ wi
 });
 ```
 
-- [ ] **Step 2: Run tests to verify the failure**
+- [x] **Step 2: Run tests to verify the failure**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1019,7 +1019,7 @@ bun test tests/web/watcher.test.ts
 
 Expected: the new test fails — the existing `startWatcher` collapses *everything* in the debounce window into a single event using whatever scope landed last.
 
-- [ ] **Step 3: Update startWatcher to track per-scope debounces**
+- [x] **Step 3: Update startWatcher to track per-scope debounces**
 
 In `/home/fintan/repos/kadai/src/web/events.ts`, replace the body of `startWatcher` with a per-scope timer map:
 
@@ -1061,7 +1061,7 @@ export function startWatcher(rootDir: string, bus: EventBus, opts: WatcherOption
 }
 ```
 
-- [ ] **Step 4: Run tests to verify they all pass**
+- [x] **Step 4: Run tests to verify they all pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1070,7 +1070,7 @@ bun test tests/web/watcher.test.ts
 
 Expected: 5 tests pass (the original 4 still green plus the new multi-scope one).
 
-- [ ] **Step 5: Run the full suite + typecheck**
+- [x] **Step 5: Run the full suite + typecheck**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1080,7 +1080,7 @@ bun run typecheck
 
 Expected: 214 tests pass (213 + 1 new); typecheck clean.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
