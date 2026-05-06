@@ -3,8 +3,10 @@ import { useParams } from '@tanstack/react-router';
 import { getItem, listStories } from '../api';
 import { EmptyState } from '../components/EmptyState';
 import { KanbanBoard } from '../components/KanbanBoard';
+import { KindIcon } from '../components/KindIcon';
 import { Markdown } from '../components/Markdown';
 import { SkeletonStack } from '../components/Skeleton';
+import { StatusBadge } from '../components/StatusBadge';
 import { useLiveKey } from '../live';
 import { useProjectMode, ProjectScopedLink } from '../project';
 import type { Item, Status } from '../types';
@@ -36,8 +38,14 @@ export function Feature() {
     <div className="space-y-6">
       <div>
         <ProjectScopedLink activeSlug={activeSlug} to="/epics/$id" params={{ id: d.parent }} className="text-xs text-muted hover:text-zinc-300">← back to {d.parent}</ProjectScopedLink>
-        <div className="mt-2 text-xs text-muted">{d.id} · phase {d.phase} · {d.status}</div>
-        <h1 className="text-2xl font-bold">{d.title}</h1>
+        <div className="mt-2 flex items-center gap-2 text-xs text-muted">
+          <span>{d.id} · phase {d.phase}</span>
+          <StatusBadge status={d.status as Status} />
+        </div>
+        <h1 className="mt-1 flex items-center gap-2 text-2xl font-bold">
+          <KindIcon kind="feature" size={20} />
+          {d.title}
+        </h1>
       </div>
 
       {feature.body && (

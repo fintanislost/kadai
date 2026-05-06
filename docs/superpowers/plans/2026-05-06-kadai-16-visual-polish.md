@@ -618,13 +618,13 @@ For each file:
 2. Find every place a status string is rendered as a badge — replace with `<StatusBadge status={x} />`.
 3. Find every place an item kind is rendered (often as text label) — add a `<KindIcon kind={x} size={14} />` to its left.
 
-- [ ] **Step 1: Update EpicCard.tsx**
+- [x] **Step 1: Update EpicCard.tsx**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/components/EpicCard.tsx`. Wherever the epic's status is rendered, replace with `<StatusBadge status={status as Status} />`. Add `<KindIcon kind="epic" />` next to the epic title.
 
 (The component is small; if you can't easily extract status, accept a Status prop and replace the existing status display.)
 
-- [ ] **Step 2: Update KanbanBoard.tsx**
+- [x] **Step 2: Update KanbanBoard.tsx**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/components/KanbanBoard.tsx`.
 
@@ -644,7 +644,7 @@ const COLUMN_HEADER_BY_STATUS: Record<Status, string> = {
 
 Apply `border-l-2 ${COLUMN_HEADER_BY_STATUS[status]}` (or similar) to each column wrapper so they have a small color stripe. Keep card story cards minimal — add a tiny `<StatusBadge size="xs" status={story.data.status} />` next to the card title if room allows.
 
-- [ ] **Step 3: Update each page**
+- [x] **Step 3: Update each page**
 
 For Epic.tsx, Feature.tsx, Story.tsx, Search.tsx, Activity.tsx, Compare.tsx — find every status text/badge and replace with `<StatusBadge status={...} />`. Find every kind label (uppercase "epic"/"feature"/etc.) and prepend `<KindIcon kind={...} size={14} />`.
 
@@ -656,7 +656,7 @@ Specifically:
 - Activity.tsx: Add `<KindIcon kind={e.itemKind} />` next to the item ID. (Keep the existing kind badge for the change kind — Write/commit/note — that's a different concept.)
 - Compare.tsx: each item line gets `<KindIcon kind={item.kind} />` and `<StatusBadge status={item.status} />`.
 
-- [ ] **Step 4: Build + verify**
+- [x] **Step 4: Build + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -669,11 +669,11 @@ bunx playwright test
 
 Expected: clean. Playwright may need selector updates if a test asserted `text=in_progress` and the badge now renders `IN PROGRESS` (uppercase via `tracking-wide uppercase`). Update affected selectors to match new casing — use `text=IN PROGRESS` or `text=/in[ _]progress/i` for case-insensitive match.
 
-- [ ] **Step 5: Tick the step checkboxes for Task 4 in the plan**
+- [x] **Step 5: Tick the step checkboxes for Task 4 in the plan**
 
 Tick all step checkboxes for Task 4.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

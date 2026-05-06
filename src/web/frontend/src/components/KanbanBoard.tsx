@@ -14,6 +14,16 @@ import { ProjectScopedLink } from '../project';
 
 const COLUMNS: Status[] = ['backlog', 'ready', 'in_progress', 'blocked', 'review', 'done'];
 
+const COLUMN_BORDER_BY_STATUS: Record<Status, string> = {
+  backlog:     'border-l-status-backlog/50',
+  ready:       'border-l-status-ready/50',
+  in_progress: 'border-l-status-in_progress/50',
+  blocked:     'border-l-status-blocked/50',
+  review:      'border-l-status-review/50',
+  done:        'border-l-status-done/50',
+  cancelled:   'border-l-status-cancelled/50',
+};
+
 interface Props {
   stories: Item[];
   onLocalStatusChange: (storyId: string, newStatus: Status) => void;
@@ -66,7 +76,7 @@ function Column({ status, stories, activeSlug }: { status: Status; stories: Item
     <div
       ref={setNodeRef}
       data-testid={`column-${status}`}
-      className={`bg-panel rounded p-2 ${isOver ? 'ring-2 ring-zinc-400' : ''}`}
+      className={`bg-panel rounded p-2 border-l-2 ${COLUMN_BORDER_BY_STATUS[status]} ${isOver ? 'ring-2 ring-zinc-400' : ''}`}
     >
       <div className="text-xs font-semibold uppercase tracking-wider text-muted mb-2">{status}</div>
       <div className="space-y-2">

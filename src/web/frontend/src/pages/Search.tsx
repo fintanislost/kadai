@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useSearch } from '@tanstack/react-router';
 import { searchSpine, type SearchResult } from '../api';
 import { EmptyState } from '../components/EmptyState';
+import { KindIcon } from '../components/KindIcon';
+import { StatusBadge } from '../components/StatusBadge';
 import { useProjectMode, ProjectScopedLink } from '../project';
 import { SearchX } from 'lucide-react';
 
@@ -76,11 +78,12 @@ export function Search() {
               params={{ id: r.id }}
               className="block bg-panel border border-zinc-800 rounded p-3 hover:border-zinc-600"
             >
-              <div className="flex items-baseline gap-3">
+              <div className="flex items-center gap-3">
+                <KindIcon kind={r.kind} size={14} />
                 <span className="text-xs text-muted uppercase">{r.kind}</span>
                 <span className="text-xs text-muted">{r.id}</span>
                 {r.phase && <span className="text-xs bg-zinc-800 px-2 py-0.5 rounded">{r.phase}</span>}
-                <span className="text-xs bg-zinc-800 px-2 py-0.5 rounded">{r.status}</span>
+                <StatusBadge status={r.status} />
                 <span className="ml-auto text-[10px] text-muted">{r.matchType} match</span>
               </div>
               <div className="mt-1 font-medium">{r.title}</div>

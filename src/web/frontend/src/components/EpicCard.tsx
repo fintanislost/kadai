@@ -1,5 +1,7 @@
 import { Link } from '@tanstack/react-router';
-import type { Item } from '../types';
+import { KindIcon } from './KindIcon';
+import { StatusBadge } from './StatusBadge';
+import type { Item, Status } from '../types';
 
 export function EpicCard({ epic }: { epic: Item }) {
   const d = epic.data as { id: string; title: string; status: string; phase: string };
@@ -10,9 +12,12 @@ export function EpicCard({ epic }: { epic: Item }) {
       className="block bg-panel border border-zinc-700 rounded p-3 hover:border-zinc-500 transition"
     >
       <div className="text-xs text-muted">{d.id}</div>
-      <div className="font-medium">{d.title}</div>
+      <div className="flex items-center gap-1.5 font-medium">
+        <KindIcon kind="epic" size={14} />
+        {d.title}
+      </div>
       <div className="mt-1 text-xs">
-        <span className="bg-zinc-800 px-2 py-0.5 rounded">{d.status}</span>
+        <StatusBadge status={d.status as Status} />
       </div>
     </Link>
   );

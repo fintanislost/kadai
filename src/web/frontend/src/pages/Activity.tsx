@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getActivity, type ActivityEntry } from '../api';
 import { EmptyState } from '../components/EmptyState';
+import { KindIcon } from '../components/KindIcon';
 import { SkeletonStack } from '../components/Skeleton';
 import { useLiveKey } from '../live';
 import { useProjectMode, ProjectScopedLink } from '../project';
@@ -47,12 +48,15 @@ export function Activity() {
           <li key={i} className="flex items-baseline gap-3 text-sm">
             <span className="text-xs text-muted font-mono w-44 shrink-0">{e.ts}</span>
             <span className={`text-[10px] px-1.5 py-0.5 rounded ${KIND_BADGE[e.kind] ?? KIND_BADGE.other}`}>{e.kind}</span>
-            <ProjectScopedLink
-              activeSlug={activeSlug}
-              to={ROUTE_BY_KIND[e.itemKind] ?? '/'}
-              params={{ id: e.itemId }}
-              className="text-xs text-muted hover:text-zinc-300 shrink-0"
-            >{e.itemId}</ProjectScopedLink>
+            <span className="flex items-center gap-1 shrink-0">
+              <KindIcon kind={e.itemKind} size={12} />
+              <ProjectScopedLink
+                activeSlug={activeSlug}
+                to={ROUTE_BY_KIND[e.itemKind] ?? '/'}
+                params={{ id: e.itemId }}
+                className="text-xs text-muted hover:text-zinc-300"
+              >{e.itemId}</ProjectScopedLink>
+            </span>
             <span className="text-zinc-300 truncate">{e.payload}</span>
           </li>
         ))}

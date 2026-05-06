@@ -3,13 +3,14 @@ import { useParams } from '@tanstack/react-router';
 import { getItem, getFile, listTasks } from '../api';
 import { AttachButton } from '../components/AttachButton';
 import { EmptyState } from '../components/EmptyState';
+import { KindIcon } from '../components/KindIcon';
 import { Markdown } from '../components/Markdown';
 import { SkeletonStack } from '../components/Skeleton';
+import { StatusBadge } from '../components/StatusBadge';
 import { StatusPanel } from '../components/StatusPanel';
 import { useLiveKey } from '../live';
 import { useProjectMode, ProjectScopedLink } from '../project';
-import type { Item } from '../types';
-import type { Status } from '../types';
+import type { Item, Status } from '../types';
 import { CheckSquare, Clock, FileQuestion, FileText } from 'lucide-react';
 
 type TabName = 'story' | 'spec' | 'plan' | 'changelog' | 'tasks';
@@ -75,8 +76,14 @@ export function Story() {
       <div className="space-y-6">
         <div>
           <ProjectScopedLink activeSlug={activeSlug} to="/features/$id" params={{ id: d.parent }} className="text-xs text-muted hover:text-zinc-300">← back to {d.parent}</ProjectScopedLink>
-          <div className="mt-2 text-xs text-muted">{d.id} · phase {d.phase} · {d.status}</div>
-          <h1 className="text-2xl font-bold">{d.title}</h1>
+          <div className="mt-2 flex items-center gap-2 text-xs text-muted">
+            <span>{d.id} · phase {d.phase}</span>
+            <StatusBadge status={d.status as Status} />
+          </div>
+          <h1 className="mt-1 flex items-center gap-2 text-2xl font-bold">
+            <KindIcon kind="story" size={20} />
+            {d.title}
+          </h1>
         </div>
 
         <div className="border-b border-zinc-800 flex gap-4">
@@ -139,9 +146,10 @@ export function Story() {
                 return (
                   <div key={td.id} className="flex items-center gap-3">
                     <input type="checkbox" checked={td.status === 'done'} readOnly />
+                    <KindIcon kind="task" size={12} className="shrink-0" />
                     <span className="text-xs text-muted">{td.id}</span>
                     <span>{td.title}</span>
-                    <span className="ml-auto text-xs bg-zinc-800 px-2 py-0.5 rounded">{td.status}</span>
+                    <StatusBadge status={td.status as Status} className="ml-auto" />
                   </div>
                 );
               })}

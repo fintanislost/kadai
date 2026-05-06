@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import { useSearch } from '@tanstack/react-router';
 import { listPhases, comparePhasesApi, type CompareResult } from '../api';
 import { EmptyState } from '../components/EmptyState';
+import { KindIcon } from '../components/KindIcon';
+import { StatusBadge } from '../components/StatusBadge';
 import { useProjectMode, ProjectScopedLink } from '../project';
-import type { PhaseConfig } from '../types';
+import type { PhaseConfig, Status } from '../types';
 import { Columns2 } from 'lucide-react';
 
 const ROUTE_BY_KIND: Record<string, string> = {
@@ -67,10 +69,12 @@ export function Compare() {
                           params={{ id: item.id }}
                           className={`block text-xs p-1.5 rounded ${inCommon ? 'bg-amber-900/30 hover:bg-amber-900/50' : 'bg-zinc-800 hover:bg-zinc-700'}`}
                         >
-                          <span className="text-muted text-[10px] uppercase mr-2">{item.kind}</span>
+                          <span className="inline-flex items-center gap-1 mr-1">
+                            <KindIcon kind={item.kind} size={12} />
+                          </span>
                           <span className="text-muted text-[10px] mr-2">{item.id}</span>
                           <span>{item.title}</span>
-                          <span className="ml-2 text-[10px] text-muted">[{item.status}]</span>
+                          <StatusBadge status={item.status as Status} size="xs" className="ml-2" />
                         </ProjectScopedLink>
                       </li>
                     );

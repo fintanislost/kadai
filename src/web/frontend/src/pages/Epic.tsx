@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { useParams } from '@tanstack/react-router';
 import { getItem, listFeatures } from '../api';
 import { EmptyState } from '../components/EmptyState';
+import { KindIcon } from '../components/KindIcon';
 import { SkeletonStack } from '../components/Skeleton';
+import { StatusBadge } from '../components/StatusBadge';
 import { useLiveKey } from '../live';
 import { useProjectMode, ProjectScopedLink } from '../project';
-import type { Item } from '../types';
+import type { Item, Status } from '../types';
 import { Box, FileQuestion } from 'lucide-react';
 
 export function Epic() {
@@ -34,8 +36,14 @@ export function Epic() {
     <div className="space-y-6">
       <div>
         <ProjectScopedLink activeSlug={activeSlug} to="/" className="text-xs text-muted hover:text-zinc-300">← back to roadmap</ProjectScopedLink>
-        <div className="mt-2 text-xs text-muted">{d.id} · phase {d.phase} · {d.status}</div>
-        <h1 className="text-2xl font-bold">{d.title}</h1>
+        <div className="mt-2 flex items-center gap-2 text-xs text-muted">
+          <span>{d.id} · phase {d.phase}</span>
+          <StatusBadge status={d.status as Status} />
+        </div>
+        <h1 className="mt-1 flex items-center gap-2 text-2xl font-bold">
+          <KindIcon kind="epic" size={20} />
+          {d.title}
+        </h1>
       </div>
 
       <div>
@@ -55,8 +63,11 @@ export function Epic() {
                   className="block bg-panel border border-zinc-700 rounded p-3 hover:border-zinc-500"
                 >
                   <div className="text-xs text-muted">{fd.id}</div>
-                  <div className="font-medium">{fd.title}</div>
-                  <div className="mt-1 text-xs"><span className="bg-zinc-800 px-2 py-0.5 rounded">{fd.status}</span></div>
+                  <div className="flex items-center gap-1.5 font-medium">
+                    <KindIcon kind="feature" size={14} />
+                    {fd.title}
+                  </div>
+                  <div className="mt-1 text-xs"><StatusBadge status={fd.status as Status} /></div>
                 </ProjectScopedLink>
               );
             })}
