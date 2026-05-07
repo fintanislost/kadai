@@ -1856,11 +1856,11 @@ EOF
 
 **Goal:** Wiki updates so the new surface is discoverable + the failure modes are documented.
 
-- [ ] **Step 1: Update `docs/wiki/plugin.md`**
+- [x] **Step 1: Update `docs/wiki/plugin.md`**
 
 Read the file first, then add a new section "Wrapper skills (kadai-brainstorming, kadai-writing-plans, kadai-runner)" describing each, with example usage. Mention that the wrappers are the recommended path; upstream skills still work but lose spine plumbing.
 
-- [ ] **Step 2: Update `docs/wiki/cli-reference.md`**
+- [x] **Step 2: Update `docs/wiki/cli-reference.md`**
 
 Add entries for:
 
@@ -1888,7 +1888,7 @@ kadai run --resume        # (currently a no-op from the CLI; use /kadai-run from
 State is persisted in `.kadai/runner.json` and survives across sessions.
 ```
 
-- [ ] **Step 3: Update `docs/wiki/concepts.md`**
+- [x] **Step 3: Update `docs/wiki/concepts.md`**
 
 Add a section explaining the runner state model + the fast-follow-up dependency edge:
 
@@ -1914,7 +1914,7 @@ When a story enters the fast-follow-up flow, the runner records a `dependsOn: [F
 The runner queues blocked stories on a `pausedStack`; when the unblocker finishes, the top of the stack is resumed automatically.
 ```
 
-- [ ] **Step 4: Update `docs/wiki/troubleshooting.md`**
+- [x] **Step 4: Update `docs/wiki/troubleshooting.md`**
 
 Add entries:
 
@@ -1949,7 +1949,7 @@ kadai pick STORY-001
 **Fix:** Be explicit in your prompt: "Use kadai-brainstorming to design X" forces the wrapper. Alternatively, the kadai discipline skill's description points agents at the wrappers — make sure the kadai plugin is reloaded after every plugin update (`/plugin uninstall kadai` then `/plugin install kadai@kadai`) so the latest descriptions are indexed.
 ```
 
-- [ ] **Step 5: Verify the wikis are valid markdown**
+- [x] **Step 5: Verify the wikis are valid markdown**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1959,7 +1959,7 @@ for f in docs/wiki/plugin.md docs/wiki/cli-reference.md docs/wiki/concepts.md do
 done
 ```
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

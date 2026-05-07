@@ -149,3 +149,26 @@ The Activity page (`/activity` in the web viewer) renders all three uniformly wi
 - **Multi-project mode** (registry has ≥1 entry): the server tracks each project independently — separate `EventBus`, separate filesystem watcher, independent SSE channel. URLs are `/p/<slug>/...`, `/api/p/<slug>/...`. The picker at `/projects` lists registered projects.
 
 Switch modes by running `kadai serve register [path]` to enter multi-project mode, or `--single` flag to force single-project mode regardless of registry contents.
+
+## The runner state model
+
+When you use `/kadai-run` (or inspect with `kadai run --status`), state is persisted at `.kadai/runner.json` so the runner survives crashes and session boundaries. The `--resume` flag lives in the `/kadai-run` slash command, not the CLI — the CLI's `kadai run` is informational only.
+
+Statuses:
+
+| Status | Meaning |
+|---|---|
+| `idle` | No run in flight (default). |
+| `running` | Actively executing a story. |
+| `paused-blocked` | Implementer reported a blocker that requires manual resolution. |
+| `paused-needs-feature` | Implementer reported the work needs a fast-follow-up feature; user prompted to plan it. |
+| `paused-review` | Story finished, awaiting user confirmation to advance. |
+| `error` | Last invocation crashed unrecoverably. |
+
+Transitions are explicit; the runner never silently advances past a `paused-*` state. Each state change is written to `.kadai/runner.json` before the next action begins, so a crash mid-run leaves the state file in the last-known-good state.
+
+## The dependency edge (`dependsOn`)
+
+When a story enters the fast-follow-up flow (the implementer reports "this needs a new feature to unblock it"), the runner records a `dependsOn: [FEAT-XXX]` field on the blocked story's frontmatter. This is the durable record of "STORY-007 was paused because it needed FEAT-009" — it survives runner crashes, is visible to `kadai status`, the web viewer, and human readers of the spine.
+
+The runner queues blocked stories on a `pausedStack`; when the unblocker feature's stories finish, the top of the stack is resumed automatically. If multiple stories are waiting in the stack (nested fast-follow-up chains), they are resumed in LIFO order.

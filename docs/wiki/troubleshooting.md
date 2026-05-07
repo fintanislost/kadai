@@ -88,6 +88,45 @@ A `kadai set-status <id> <status>` CLI command is on the post-MVP backlog.
 
 **Status:** Post-MVP. There's no `kadai delete` command yet. Workaround: directly `rm -rf` the item's directory, then run a counter rebuild (also post-MVP — for now you can edit `.kadai/.counters.json` by hand if you need to recycle IDs).
 
+## "The runner is stuck in paused-needs-feature and won't advance"
+
+**Cause:** The runner is waiting for you to confirm the unblocker plan. Inspect the current state:
+
+```bash
+kadai run --status
+```
+
+The `lastBlocker` field shows what feature the implementer asked for. Three ways to resolve:
+
+1. **Plan the unblocker:** `/kadai-run` from Claude Code re-presents the prompt; answer Y to invoke `kadai-brainstorming` in fast-follow-up scope. The runner will then queue the original story and start on the new feature's stories.
+2. **Skip:** Mark the original story blocked manually (`kadai set-status STORY-XXX blocked`) and start a fresh `/kadai-run` — it will see no runnable story and stop cleanly.
+3. **Reset state:** If the runner is genuinely stuck (e.g., from a crash), `kadai run --status` shows the problem. Manually editing `.kadai/runner.json` (set `status: "idle"`, clear `pausedStack: []`) will get you out — but you'll lose the resume context.
+
+## "kadai run says no story picked but I have stories"
+
+**Cause:** The runner consults `.kadai/.picked` for the current target. If you have stories in your spine but none is picked, run:
+
+```bash
+kadai pick STORY-001
+/kadai-run
+```
+
+`kadai status` shows the full ready queue — pick the story you want the runner to start with before invoking `/kadai-run`.
+
+## "Wrapper skill didn't fire — I see superpowers:brainstorming was loaded instead"
+
+**Cause:** Skill matching is heuristic. Claude picked the upstream skill because the prompt matched its description more directly. The kadai wrappers are designed to take precedence when a `.kadai/` directory is present, but the matching is not deterministic.
+
+**Fix:** Be explicit in your prompt — "Use kadai-brainstorming to design X" forces the wrapper. Alternatively, if the problem persists across sessions, reload the plugin so the latest SKILL.md descriptions are indexed:
+
+```
+/plugin uninstall kadai
+/plugin install kadai@kadai
+/reload-plugins
+```
+
+The kadai discipline skill's description points agents at the wrappers — make sure you're on the latest plugin version before filing a bug.
+
 ## "Tests fail with permission errors on `proper-lockfile`"
 
 **Cause:** `proper-lockfile` uses an OS-level advisory lock. On some filesystems (e.g., NFS, certain CI environments) the lock primitive isn't supported.
