@@ -50,7 +50,7 @@ docs/wiki/troubleshooting.md                 MODIFIED — cassette diff failures
 
 **Goal:** Pure functions for serializing a `.kadai/` tree, normalizing volatile fields, and diffing two snapshots. Heavily tested before anything depends on them.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/cassette/snapshot.test.ts`:
 
@@ -151,7 +151,7 @@ test('diffSpines surfaces content mismatch with the path + a hint', () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -160,7 +160,7 @@ bun test tests/cassette/snapshot.test.ts
 
 Expected: 9 failures, "Cannot find module".
 
-- [ ] **Step 3: Implement snapshot.ts**
+- [x] **Step 3: Implement snapshot.ts**
 
 Create `/home/fintan/repos/kadai/src/cassette/snapshot.ts`:
 
@@ -233,7 +233,7 @@ export function diffSpines(captured: Snapshot, produced: Snapshot): string | nul
 }
 ```
 
-- [ ] **Step 4: Run tests, verify they pass**
+- [x] **Step 4: Run tests, verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -243,7 +243,7 @@ bun run typecheck
 
 Expected: 9 pass + typecheck clean.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
