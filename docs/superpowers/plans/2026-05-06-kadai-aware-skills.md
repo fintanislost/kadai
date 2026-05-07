@@ -1353,7 +1353,7 @@ EOF
 
 **Goal:** Glue the runner pieces (state, dispatch, blocker) into a working CLI command, plus the Claude Code surface that handles the conversational "plan the unblocker?" prompt.
 
-- [ ] **Step 1: Write the integration test**
+- [x] **Step 1: Write the integration test**
 
 Create `/home/fintan/repos/kadai/tests/cli/run.integration.test.ts`:
 
@@ -1481,7 +1481,7 @@ test('runOnce --resume picks up from a paused-needs-feature state when the unblo
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1490,7 +1490,7 @@ bun test tests/cli/run.integration.test.ts
 
 Expected: 5 failures, "Cannot find module '../../src/cli/run'".
 
-- [ ] **Step 3: Implement run.ts**
+- [x] **Step 3: Implement run.ts**
 
 Create `/home/fintan/repos/kadai/src/cli/run.ts`:
 
@@ -1583,7 +1583,7 @@ export const runCommand = new Command('run')
 
 (The CLI deliberately does NOT execute the dispatcher — the real dispatcher requires Claude Code's Task tool. The slash command + skill are what actually drive runs. The CLI is for inspection + scripting.)
 
-- [ ] **Step 4: Wire `kadai run` into the CLI**
+- [x] **Step 4: Wire `kadai run` into the CLI**
 
 In `src/cli/index.ts`, add:
 
@@ -1592,7 +1592,7 @@ import { runCommand } from './run';
 program.addCommand(runCommand);
 ```
 
-- [ ] **Step 5: Run tests, verify they pass**
+- [x] **Step 5: Run tests, verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1602,7 +1602,7 @@ bun run typecheck
 
 Expected: 5 pass, typecheck clean.
 
-- [ ] **Step 6: Write the kadai-runner skill**
+- [x] **Step 6: Write the kadai-runner skill**
 
 Create `/home/fintan/repos/kadai/kadai-plugin/skills/kadai-runner/SKILL.md`:
 
@@ -1690,7 +1690,7 @@ Idempotent: re-running while still in `paused-needs-feature` re-presents the pro
 - Hooks (the safety net): the PreToolUse gate still bites if an implementer tries to write outside the picked story's scope.
 ```
 
-- [ ] **Step 7: Write the slash command files**
+- [x] **Step 7: Write the slash command files**
 
 Create `/home/fintan/repos/kadai/kadai-plugin/commands/kadai-run.md`:
 
@@ -1739,7 +1739,7 @@ Render all descendant story plans of an epic, feature, or story as one composite
 Backed by `kadai plan compose <id>` CLI.
 ```
 
-- [ ] **Step 8: Verify the plugin files**
+- [x] **Step 8: Verify the plugin files**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1749,7 +1749,7 @@ ls kadai-plugin/commands/
 # Expected: includes kadai-run.md, kadai-plan-compose.md
 ```
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

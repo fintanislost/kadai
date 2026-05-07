@@ -15,6 +15,7 @@ import { getCommand } from './get';
 import { syncCommand } from './sync';
 import { uninstallCommand } from './uninstall';
 import { composeCommand } from './compose';
+import { runCommand } from './run';
 
 const program = new Command();
 program
@@ -42,5 +43,6 @@ const planCommand = new Command('plan')
   .description('Plan composition + analysis tools');
 planCommand.addCommand(composeCommand);
 program.addCommand(planCommand);
+program.addCommand(runCommand);
 
 program.parseAsync(process.argv);

@@ -72,9 +72,9 @@ export function transition(state: RunnerState, t: Transition): RunnerState {
       return { ...base, currentTaskId: null };
     case 'story-done': {
       // If we have a paused story to return to, do nothing yet — the runner loop calls 'resume-paused' next.
-      // If not, transition to paused-review.
+      // If not, transition to paused-review and clear the current story/task.
       if (state.pausedStack.length > 0) return base;
-      return { ...base, status: 'paused-review' };
+      return { ...base, status: 'paused-review', currentStoryId: null, currentTaskId: null };
     }
     case 'block':
       return { ...base, status: 'paused-blocked', lastBlocker: t.blocker };
