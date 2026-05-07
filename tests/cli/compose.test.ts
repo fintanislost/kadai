@@ -75,3 +75,19 @@ test('compose marks stories without plan.md as "no plan yet"', () => {
     rmSync(tmp, { recursive: true, force: true });
   }
 });
+
+test('compose STORY-001 returns just that story (story-rooted scope)', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'kadai-compose-'));
+  try {
+    seedSpine(tmp);
+    const out = composePlan(tmp, 'STORY-001');
+    expect(out).toContain('# Composite plan — STORY-001');
+    expect(out).toContain('## STORY-001 — Magic link delivery');
+    expect(out).toContain('Wire SES');
+    // Sibling story should NOT be included when scoping to a single story
+    expect(out).not.toContain('STORY-002');
+    expect(out).not.toContain('Token rotation');
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
+});

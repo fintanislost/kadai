@@ -18,12 +18,13 @@ export function composePlan(rootDir: string, id: string): string | null {
   const stories: Item[] = [];
 
   // Collect all descendant stories (recursive parent walk).
+  // Tasks are leaves; we never recurse into them.
   const collectStories = (parentId: string) => {
     for (const item of all) {
       if (getParent(item.data) !== parentId) continue;
       if (item.kind === 'story') {
         stories.push(item);
-      } else {
+      } else if (item.kind === 'epic' || item.kind === 'feature') {
         collectStories(item.data.id);
       }
     }
