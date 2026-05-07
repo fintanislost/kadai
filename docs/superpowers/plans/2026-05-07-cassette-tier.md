@@ -528,7 +528,7 @@ EOF
 
 **Goal:** Discover all cassettes in `tests/cassettes/*/`, replay each against a fresh temp dir, snapshot the resulting spine, diff against the captured snapshot.
 
-- [ ] **Step 1: Write the test runner**
+- [x] **Step 1: Write the test runner**
 
 Create `/home/fintan/repos/kadai/tests/cassette/replay.test.ts`:
 
@@ -599,7 +599,7 @@ for (const name of cassettes) {
 }
 ```
 
-- [ ] **Step 2: Create empty cassettes dir**
+- [x] **Step 2: Create empty cassettes dir**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -607,7 +607,7 @@ mkdir -p tests/cassettes
 touch tests/cassettes/.gitkeep
 ```
 
-- [ ] **Step 3: Run the replay test (should pass with the sentinel since no cassettes yet)**
+- [x] **Step 3: Run the replay test (should pass with the sentinel since no cassettes yet)**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -616,7 +616,7 @@ bun test tests/cassette/replay.test.ts 2>&1 | tail -3
 
 Expected: 1 sentinel test passes (no real cassettes yet).
 
-- [ ] **Step 4: Run full suite + typecheck**
+- [x] **Step 4: Run full suite + typecheck**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -626,7 +626,7 @@ bun run typecheck
 
 Expected: full suite green (372 ish: 367 + 9 snap + 4 recorder + 1 sentinel — but Bun test counts may differ depending on per-file vs per-test counting). Typecheck clean.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
