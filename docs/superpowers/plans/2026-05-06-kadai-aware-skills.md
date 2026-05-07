@@ -320,7 +320,7 @@ EOF
 
 **Goal:** The state machine + JSON persistence layer that the runner loop and blocker handler will both depend on. Independent + heavily tested before anything builds on it.
 
-- [ ] **Step 1: Write the types**
+- [x] **Step 1: Write the types**
 
 Create `/home/fintan/repos/kadai/src/runner/types.ts`:
 
@@ -362,7 +362,7 @@ export const INITIAL_STATE: RunnerState = {
 };
 ```
 
-- [ ] **Step 2: Write the failing state-model tests**
+- [x] **Step 2: Write the failing state-model tests**
 
 Create `/home/fintan/repos/kadai/tests/runner/state.test.ts`:
 
@@ -494,7 +494,7 @@ test('readState recovers from a malformed runner.json by returning INITIAL_STATE
 });
 ```
 
-- [ ] **Step 3: Run tests to verify they fail**
+- [x] **Step 3: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -503,7 +503,7 @@ bun test tests/runner/state.test.ts
 
 Expected: 9 failures, all "Cannot find module".
 
-- [ ] **Step 4: Implement state.ts**
+- [x] **Step 4: Implement state.ts**
 
 Create `/home/fintan/repos/kadai/src/runner/state.ts`:
 
@@ -602,7 +602,7 @@ export function transition(state: RunnerState, t: Transition): RunnerState {
 }
 ```
 
-- [ ] **Step 5: Run tests, verify they pass**
+- [x] **Step 5: Run tests, verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -612,7 +612,7 @@ bun run typecheck
 
 Expected: 9 pass, typecheck clean.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
