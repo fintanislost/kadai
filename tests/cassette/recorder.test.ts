@@ -74,3 +74,51 @@ test('CLI records non-zero exits too', () => {
     expect(parsed.exit).toBe(result.status);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
+
+test('CLI does NOT record `hook` subcommands (session lifecycle noise)', () => {
+  const root = mkdtempSync(join(tmpdir(), 'kadai-rec-'));
+  try {
+    const cassettePath = join(root, 'calls.jsonl');
+    // hook subcommands read stdin; we feed empty stdin so they exit cleanly.
+    runKadai({ KADAI_RECORD_TO: cassettePath }, 'hook', '--help');
+    if (existsSync(cassettePath)) {
+      const lines = readFileSync(cassettePath, 'utf8').trim().split('\n').filter(Boolean);
+      // No line should record a `hook ...` invocation.
+      for (const line of lines) {
+        const parsed = JSON.parse(line) as { argv: string[] };
+        expect(parsed.argv[0]).not.toBe('hook');
+      }
+    }
+    // No file is also acceptable — it means filter ran and nothing was written.
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('CLI does NOT record `mcp` or `serve` subcommands', () => {
+  const root = mkdtempSync(join(tmpdir(), 'kadai-rec-'));
+  try {
+    const cassettePath = join(root, 'calls.jsonl');
+    runKadai({ KADAI_RECORD_TO: cassettePath }, 'mcp', '--help');
+    runKadai({ KADAI_RECORD_TO: cassettePath }, 'serve', '--help');
+    if (existsSync(cassettePath)) {
+      const lines = readFileSync(cassettePath, 'utf8').trim().split('\n').filter(Boolean);
+      for (const line of lines) {
+        const parsed = JSON.parse(line) as { argv: string[] };
+        expect(parsed.argv[0]).not.toBe('mcp');
+        expect(parsed.argv[0]).not.toBe('serve');
+      }
+    }
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('CLI DOES record spine-mutating subcommands like `add` and `init`', () => {
+  const root = mkdtempSync(join(tmpdir(), 'kadai-rec-'));
+  try {
+    const cassettePath = join(root, 'calls.jsonl');
+    runKadai({ KADAI_RECORD_TO: cassettePath }, 'init', '-y');
+    expect(existsSync(cassettePath)).toBe(true);
+    const lines = readFileSync(cassettePath, 'utf8').trim().split('\n').filter(Boolean);
+    expect(lines.length).toBeGreaterThanOrEqual(1);
+    const initCall = lines.map(l => JSON.parse(l) as { argv: string[] }).find(c => c.argv[0] === 'init');
+    expect(initCall).toBeTruthy();
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
