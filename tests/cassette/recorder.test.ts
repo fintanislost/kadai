@@ -60,14 +60,17 @@ test('CLI records non-zero exits too', () => {
   const root = mkdtempSync(join(tmpdir(), 'kadai-rec-'));
   try {
     const cassettePath = join(root, 'calls.jsonl');
-    // `kadai status` from outside any kadai project should exit non-zero.
-    runKadai({ KADAI_RECORD_TO: cassettePath, PWD: root }, 'status');
-    if (existsSync(cassettePath)) {
-      const line = readFileSync(cassettePath, 'utf8').trim();
-      const parsed = JSON.parse(line);
-      expect(parsed.argv).toEqual(['status']);
-      // Exit may be 0 or non-zero depending on whether status errors when no kadai project — capture either way.
-      expect(typeof parsed.exit).toBe('number');
-    }
+    // Pass an unknown subcommand; commander returns a non-zero exit reliably.
+    const result = runKadai({ KADAI_RECORD_TO: cassettePath }, 'definitely-not-a-real-subcommand');
+    // Cassette MUST exist regardless of what the CLI returned — that's the whole point of the test.
+    expect(existsSync(cassettePath)).toBe(true);
+    const line = readFileSync(cassettePath, 'utf8').trim();
+    const parsed = JSON.parse(line);
+    expect(parsed.argv).toEqual(['definitely-not-a-real-subcommand']);
+    // Commander exits non-zero on unknown subcommand — verify both the captured exit
+    // and the actual subprocess exit are non-zero (and consistent with each other).
+    expect(parsed.exit).not.toBe(0);
+    expect(result.status).not.toBe(0);
+    expect(parsed.exit).toBe(result.status);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
