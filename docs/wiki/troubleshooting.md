@@ -132,3 +132,26 @@ The kadai discipline skill's description points agents at the wrappers — make 
 **Cause:** `proper-lockfile` uses an OS-level advisory lock. On some filesystems (e.g., NFS, certain CI environments) the lock primitive isn't supported.
 
 **Fix:** Tests should use temp dirs on local disk (the existing `mkdtempSync(tmpdir(), ...)` pattern does this). If you're hitting it elsewhere, file an issue.
+
+## "Cassette test failed: cassette diverged"
+
+**Cause:** The replay test (Tier 2) found that current code produces a different `.kadai/` state than the captured cassette expected. Either:
+
+- A real bug — your change breaks the wrapper's spine writes
+- A valid behavior change — the wrapper now produces a different (still-correct) end state
+
+**Diagnostic:** read the diff message carefully. It lists `missing:` / `extra:` / `content mismatch:` paths with a hint at the divergence position.
+
+**Fix paths:**
+
+1. **If it's a bug:** revert the change OR fix it so the cassette replays cleanly.
+2. **If the behavior change is intentional:** re-record the cassette:
+
+   ```
+   rm -rf tests/cassettes/<name>
+   bun scripts/record-cassette.ts <name> "<original prompt>"
+   git add tests/cassettes/<name>
+   git commit
+   ```
+
+   Be deliberate — the cassette is the contract. Re-recording is fine when the behavior change is intended (e.g., new `kadai add story` flag, schema migration). It's NOT fine to silently re-record because the test is annoying — that defeats the whole tier.

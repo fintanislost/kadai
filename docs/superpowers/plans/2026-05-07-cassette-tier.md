@@ -867,7 +867,7 @@ EOF
 
 **Goal:** Make the cassette tier discoverable for next-time-someone-touches-the-wrapper situations.
 
-- [ ] **Step 1: Update concepts.md with a "Test tiers" section**
+- [x] **Step 1: Update concepts.md with a "Test tiers" section**
 
 Read `/home/fintan/repos/kadai/docs/wiki/concepts.md` first. Append (or insert near other testing-related content):
 
@@ -896,7 +896,7 @@ git commit
 Tier 3 (real e2e) is the canary for skill-matching drift — Claude shipping a model update that stops loading the wrapper skill. Treat it as a periodic check, not a PR gate.
 ```
 
-- [ ] **Step 2: Update troubleshooting.md with a cassette-divergence entry**
+- [x] **Step 2: Update troubleshooting.md with a cassette-divergence entry**
 
 Append:
 
@@ -925,7 +925,7 @@ Append:
    Be deliberate — the cassette is the contract. Re-recording is fine when the behavior change is intended (e.g., new `kadai add story` flag, schema migration). It's NOT fine to silently re-record because the test is annoying — that defeats the whole tier.
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -948,9 +948,9 @@ EOF
 
 ## Plan self-review checklist
 
-- [ ] All 6 tasks completed.
+- [ ] All 6 tasks completed (Task 5 deferred — needs real `claude` session).
 - [ ] `bun test` passes (≥367 baseline + 9 snap + 4 recorder + 1 cassette + 1 sentinel-or-replay = ~382).
 - [ ] `bun run typecheck` passes.
 - [ ] At least one cassette in `tests/cassettes/` (Task 5 may be deferred to whoever has `claude` on PATH).
-- [ ] `KADAI_RECORD_TO` is documented in `docs/wiki/concepts.md` or similar.
-- [ ] `bun scripts/record-cassette.ts` prints clean usage when run with no args.
+- [x] `KADAI_RECORD_TO` is documented in `docs/wiki/concepts.md` or similar.
+- [x] `bun scripts/record-cassette.ts` prints clean usage when run with no args.

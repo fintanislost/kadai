@@ -172,3 +172,26 @@ Transitions are explicit; the runner never silently advances past a `paused-*` s
 When a story enters the fast-follow-up flow (the implementer reports "this needs a new feature to unblock it"), the runner records a `dependsOn: [FEAT-XXX]` field on the blocked story's frontmatter. This is the durable record of "STORY-007 was paused because it needed FEAT-009" — it survives runner crashes, is visible to `kadai status`, the web viewer, and human readers of the spine.
 
 The runner queues blocked stories on a `pausedStack`; when the unblocker feature's stories finish, the top of the stack is resumed automatically. If multiple stories are waiting in the stack (nested fast-follow-up chains), they are resumed in LIFO order.
+
+## Test tiers
+
+Kadai's tests live in three tiers, deliberately gated to balance signal vs cost:
+
+| Tier | What it runs | Cost | Frequency |
+|---|---|---|---|
+| **1 — Unit** (`bun test`) | Pure logic, mocked LLM, in-process | Free | Every PR |
+| **2 — Cassette** (`bun test tests/cassette/`) | Captured `claude -p` runs replayed against the kadai CLI; no model calls | Free | Every PR |
+| **3 — Real e2e** (`RUN_DOGFOOD_E2E=1 bun test tests/dogfood/`) | Live `claude -p` against a fresh kadai project | $$ + 5–10min | Pre-release / nightly |
+
+Tier 2 is the cassette pattern — recorded sequences of `kadai` CLI invocations + a serialized `.kadai/` snapshot. The replay verifies that current code, given the same call sequence, produces the same final spine state. It catches schema regressions, plumbing bugs, and any code change that breaks the wrapper's spine writes — without needing to call Claude.
+
+**To re-record a cassette** (after intentional behavior changes):
+
+```
+rm -rf tests/cassettes/<name>
+bun scripts/record-cassette.ts <name> "<prompt>"
+git add tests/cassettes/<name>
+git commit
+```
+
+Tier 3 (real e2e) is the canary for skill-matching drift — Claude shipping a model update that stops loading the wrapper skill. Treat it as a periodic check, not a PR gate.
