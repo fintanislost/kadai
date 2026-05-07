@@ -140,7 +140,7 @@ The kadai discipline skill's description points agents at the wrappers — make 
 - A real bug — your change breaks the wrapper's spine writes
 - A valid behavior change — the wrapper now produces a different (still-correct) end state
 
-**Diagnostic:** read the diff message carefully. It lists `missing:` / `extra:` / `content mismatch:` paths with a hint at the divergence position.
+**Diagnostic:** read the diff message carefully. It lists `missing:` / `extra:` / `content mismatch:` paths with a hint at the divergence position. The divergence might originate from either a CLI subcommand or an MCP tool call — both are captured in cassettes. Inspect the cassette's `calls.jsonl` (`kind: 'cli'` vs `kind: 'mcp'` lines) to see which path the captured run took at each step.
 
 **Fix paths:**
 

@@ -183,7 +183,23 @@ Kadai's tests live in three tiers, deliberately gated to balance signal vs cost:
 | **2 — Cassette** (`bun test tests/cassette/`) | Captured `claude -p` runs replayed against the kadai CLI; no model calls | Free | Every PR |
 | **3 — Real e2e** (`RUN_DOGFOOD_E2E=1 bun test tests/dogfood/`) | Live `claude -p` against a fresh kadai project | $$ + 5–10min | Pre-release / nightly |
 
-Tier 2 is the cassette pattern — recorded sequences of `kadai` CLI invocations + a serialized `.kadai/` snapshot. The replay verifies that current code, given the same call sequence, produces the same final spine state. It catches schema regressions, plumbing bugs, and any code change that breaks the wrapper's spine writes — without needing to call Claude.
+Tier 2 is the cassette pattern — recorded sequences of kadai operations + a serialized `.kadai/` snapshot. Each cassette line is one of:
+
+- `kind: 'cli'` — a `kadai <subcommand>` invocation captured during the recording. Replayed via `execFileSync('bun', [cli, ...argv])`.
+- `kind: 'mcp'` — a kadai MCP tool call (e.g., `create_epic`, `attach_spec`) captured from the MCP server during the recording. Replayed via in-process `tool.handler(args, { rootDir: tmp })` against the same handler registry the production server uses.
+
+Replay applies all entries in order to a fresh temp spine, then diffs the resulting `.kadai/` against the captured snapshot. Identical = pass; divergent = fail with a path-by-path diff.
+
+**Captured:**
+- All spine-mutating CLI subcommands: `init`, `add`, `pick`, `set-status`, `attach-*`, `config`, `sync`, etc.
+- All spine-mutating MCP tools: `create_epic`, `create_feature`, `create_story`, `create_task`, `attach_spec`, `attach_plan`, `pick_story`, `unpick`, `set_status`, `record_change`.
+
+**Filtered out (recorder-side):**
+- `kadai hook` calls — Claude Code session lifecycle noise that fires once per Edit/Write the agent makes.
+- `kadai mcp` and `kadai serve` — long-running launches.
+- MCP read tools (`list_*`, `get_*`, `search`) — they don't mutate state, so they don't need replay.
+
+The cassette catches: schema regressions, plumbing bugs, gray-matter cache poisoning, atomic-write bugs, any code change that breaks the wrapper's spine writes. All without calling Claude.
 
 **To re-record a cassette** (after intentional behavior changes):
 
