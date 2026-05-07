@@ -1,4 +1,4 @@
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, lstatSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 export type Snapshot = Record<string, string>;
@@ -11,10 +11,14 @@ function walk(dir: string, baseKadai: string, out: Snapshot): void {
   for (const entry of readdirSync(dir).sort()) {
     if (SKIP_FILES.has(entry)) continue;
     const full = join(dir, entry);
-    const stat = statSync(full);
+    // lstatSync (not statSync) so we don't follow symlinks. A circular
+    // symlink in .kadai/ would otherwise hang the walker. Symlinks aren't
+    // a kadai-supported pattern; we just skip them silently.
+    const stat = lstatSync(full);
+    if (stat.isSymbolicLink()) continue;
     if (stat.isDirectory()) {
       walk(full, baseKadai, out);
-    } else {
+    } else if (stat.isFile()) {
       const key = relative(baseKadai, full);
       out[key] = readFileSync(full, 'utf8');
     }
@@ -31,7 +35,10 @@ export function serializeSpine(rootDir: string): Snapshot {
 // Match an ISO datetime (with time component) inside any quoted string in YAML frontmatter,
 // e.g.  updated: "2026-05-07T14:30:00.123Z"  →  updated: "<TIMESTAMP>"
 // Date-only strings ("2026-05-07") are intentionally NOT matched.
-const ISO_DATETIME_REGEX = /"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?"/g;
+// The timezone marker (Z or +HH:MM offset) is REQUIRED — kadai always writes
+// Z-suffixed datetimes, and a timezone-naive string (e.g., one that turned out
+// to be deterministic across runs) should NOT be silently normalized away.
+const ISO_DATETIME_REGEX = /"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})"/g;
 
 export function normalizeSpine(snap: Snapshot): Snapshot {
   const out: Snapshot = {};

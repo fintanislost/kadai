@@ -92,3 +92,21 @@ test('diffSpines surfaces content mismatch with the path + a hint', () => {
   expect(diff).not.toBeNull();
   expect(diff!).toContain('epics/E/epic.md');
 });
+
+test('normalizeSpine is a no-op when content has no ISO datetimes (preserves bytes)', () => {
+  const snap: Snapshot = {
+    'config.toml': '[guardrail]\nallowed_paths = []\n',
+    'epics/E/epic.md': '---\nid: EPIC-001\ntitle: Just a title\n---\n# Body\nNo timestamps here.\n',
+  };
+  const normalized = normalizeSpine(snap);
+  expect(normalized['config.toml']).toBe(snap['config.toml']);
+  expect(normalized['epics/E/epic.md']).toBe(snap['epics/E/epic.md']);
+});
+
+test('normalizeSpine does NOT replace timezone-naive datetimes ("2026-05-07T14:30:00" without Z)', () => {
+  const snap: Snapshot = { 'epics/E/epic.md': 'updated: "2026-05-07T14:30:00"\n' };
+  const normalized = normalizeSpine(snap);
+  // Timezone-naive is preserved — kadai always writes Z-suffixed; if a value lacks Z it's
+  // intentional (or someone's hand edit) and should not be silently normalized.
+  expect(normalized['epics/E/epic.md']).toBe('updated: "2026-05-07T14:30:00"\n');
+});
