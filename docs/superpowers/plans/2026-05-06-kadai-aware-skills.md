@@ -1197,7 +1197,7 @@ EOF
 
 **Goal:** Wrapper that invokes the upstream writing-plans flow but emits **one plan.md per story** directly into the spine, with each `### Task N` block becoming a real `kadai add task` call.
 
-- [ ] **Step 1: Write the SKILL.md**
+- [x] **Step 1: Write the SKILL.md**
 
 Create `/home/fintan/repos/kadai/kadai-plugin/skills/kadai-writing-plans/SKILL.md`:
 
@@ -1299,7 +1299,7 @@ Same check as `kadai-brainstorming`. If `.kadai/` is missing, fall through to `s
 - Next step: `kadai-runner` (or one of the manual execution skills).
 ```
 
-- [ ] **Step 2: Verify the file**
+- [x] **Step 2: Verify the file**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1309,7 +1309,7 @@ wc -l kadai-plugin/skills/kadai-writing-plans/SKILL.md
 
 Expected: frontmatter present, line count > 60.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
