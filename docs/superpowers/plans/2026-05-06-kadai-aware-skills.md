@@ -1071,7 +1071,7 @@ EOF
 
 **Goal:** Wrapper skill that invokes the upstream brainstorming flow verbatim, then plumbs the spec into the spine (auto-creates epic if needed, creates feature, attaches spec). On rework of an existing feature, replaces the spec and backs up the old one.
 
-- [ ] **Step 1: Write the SKILL.md**
+- [x] **Step 1: Write the SKILL.md**
 
 Create `/home/fintan/repos/kadai/kadai-plugin/skills/kadai-brainstorming/SKILL.md`:
 
@@ -1146,7 +1146,7 @@ If non-kadai → fall through to `superpowers:brainstorming` and warn the user o
 - Kadai discipline: the `kadai` skill (passive guidance + MCP tool reference)
 ```
 
-- [ ] **Step 2: No tests for skill content directly — coverage comes via the dogfood test (Task 10).** Verify the file is valid markdown:
+- [x] **Step 2: No tests for skill content directly — coverage comes via the dogfood test (Task 10).** Verify the file is valid markdown:
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1156,7 +1156,7 @@ wc -l kadai-plugin/skills/kadai-brainstorming/SKILL.md
 
 Expected: prints frontmatter, line count > 50.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
