@@ -44,7 +44,7 @@ tests/cassettes/blog-mvp/                 RE-RECORDED (Task 4, deferred if no cl
 
 **Goal:** Update the cassette format to be a discriminated union on `kind`. Add `appendMcpCallToCassette({tool, args, ok})`. Define the `MUTATING_MCP_TOOLS` allowlist as the single source of truth for "which MCP tools are spine-mutating." Existing `appendCallToCassette` writes `kind: 'cli'`. Verify back-compat parsing.
 
-- [ ] **Step 1: Write the new tests**
+- [x] **Step 1: Write the new tests**
 
 APPEND to `tests/cassette/recorder.test.ts`:
 
@@ -123,7 +123,7 @@ test('MUTATING_MCP_TOOLS includes the expected mutating tools', async () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -132,7 +132,7 @@ bun test tests/cassette/replay-format-compat.test.ts
 
 Expected: 5 failures (parseCassetteLine doesn't exist; MUTATING_MCP_TOOLS doesn't exist).
 
-- [ ] **Step 3: Update recorder.ts**
+- [x] **Step 3: Update recorder.ts**
 
 Read `src/cassette/recorder.ts`. Replace its contents with:
 
@@ -230,7 +230,7 @@ export function parseCassetteLine(line: string): CassetteEntry {
 }
 ```
 
-- [ ] **Step 4: Run all tests**
+- [x] **Step 4: Run all tests**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -241,7 +241,7 @@ bun run typecheck
 
 Expected: all pass (existing 7 recorder tests + 1 new + 5 in replay-format-compat = 13 in cassette/, full suite green).
 
-- [ ] **Step 5: Tick the plan checkboxes for Task 1 + commit**
+- [x] **Step 5: Tick the plan checkboxes for Task 1 + commit**
 
 ```bash
 cd /home/fintan/repos/kadai

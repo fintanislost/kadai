@@ -122,3 +122,16 @@ test('CLI DOES record spine-mutating subcommands like `add` and `init`', () => {
     expect(initCall).toBeTruthy();
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
+
+test('CLI calls now record with kind:cli', () => {
+  const root = mkdtempSync(join(tmpdir(), 'kadai-rec-'));
+  try {
+    const cassettePath = join(root, 'calls.jsonl');
+    runKadai({ KADAI_RECORD_TO: cassettePath }, '--version');
+    const lines = readFileSync(cassettePath, 'utf8').trim().split('\n').filter(Boolean);
+    expect(lines.length).toBe(1);
+    const parsed = JSON.parse(lines[0]) as { kind: string; argv: string[] };
+    expect(parsed.kind).toBe('cli');
+    expect(parsed.argv).toEqual(['--version']);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
