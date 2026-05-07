@@ -1,5 +1,5 @@
 import { test, expect } from 'bun:test';
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { runOnce } from '../../src/cli/run';
@@ -107,15 +107,21 @@ test('runOnce --resume picks up from a paused-needs-feature state when the unblo
 
     // Step 3: Run STORY-099 to completion — dispatcher always succeeds now.
     const dispatchB: Dispatcher = async () => ({ status: 'DONE' });
-    await runOnce(root, dispatchB);
-    // Story-99 done → state should advance to paused-review… BUT the pausedStack has STORY-001 waiting.
-    // The runner should NOT enter paused-review here; it should resume STORY-001 instead.
-    const stateAfter = readState(root);
-    expect(['running', 'paused-review']).toContain(stateAfter.status);
-    // Prove STORY-001 is the active story now (resume happened) OR it's been popped to currentStoryId via subsequent --resume.
-    // Acceptable: either runner.json says STORY-001 is active, or pausedStack has been cleared and STORY-001 is currentStoryId.
-    if (stateAfter.status === 'running') {
-      expect(stateAfter.currentStoryId).toBe('STORY-001');
+    const result = await runOnce(root, dispatchB);
+    // The runner MUST resume STORY-001 — pausedStack had it waiting.
+    // Permissive assertions ([running, paused-review]) hide whether the resume
+    // actually happened, so assert the exact outcome.
+    expect(result.kind).toBe('resumed');
+    if (result.kind === 'resumed') {
+      expect(result.storyId).toBe('STORY-001');
     }
+    const stateAfter = readState(root);
+    expect(stateAfter.status).toBe('running');
+    expect(stateAfter.currentStoryId).toBe('STORY-001');
+    expect(stateAfter.pausedStack).toHaveLength(0);
+    // CRITICAL: .kadai/picked must also point at STORY-001 now, otherwise
+    // the next runOnce dispatches the wrong story.
+    const picked = readFileSync(join(root, '.kadai/picked'), 'utf8').trim();
+    expect(picked).toBe('STORY-001');
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

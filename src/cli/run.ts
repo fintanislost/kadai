@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { Command } from 'commander';
 import { findKadaiRoot } from '../core/find-root';
@@ -6,12 +6,15 @@ import { readState, writeState, transition } from '../runner/state';
 import { runStory, type Dispatcher } from '../runner/dispatch';
 
 export type RunOnceResult =
-  | { kind: 'story-done' }
   | { kind: 'paused-review' }
   | { kind: 'paused-needs-feature'; description: string }
   | { kind: 'paused-blocked'; reason: string }
   | { kind: 'no-story-picked' }
-  | { kind: 'resumed' };
+  | { kind: 'resumed'; storyId: string };
+
+function writePicked(rootDir: string, storyId: string): void {
+  writeFileSync(join(rootDir, '.kadai/picked'), storyId, 'utf8');
+}
 
 export async function runOnce(rootDir: string, dispatcher: Dispatcher): Promise<RunOnceResult> {
   const pickedPath = join(rootDir, '.kadai/picked');
@@ -34,7 +37,11 @@ export async function runOnce(rootDir: string, dispatcher: Dispatcher): Promise<
       // from 'running' precisely so this transition works without an intermediate step.
       const popped = transition(state, { kind: 'resume-paused' });
       writeState(rootDir, popped);
-      return { kind: 'resumed' };
+      // CRITICAL: also update .kadai/picked so the next runOnce call dispatches the
+      // resumed story, not the unblocker we just finished. Without this, the next
+      // call would read the stale picked file and dispatch the wrong story.
+      if (popped.currentStoryId) writePicked(rootDir, popped.currentStoryId);
+      return { kind: 'resumed', storyId: popped.currentStoryId ?? storyId };
     }
     state = transition(state, { kind: 'story-done' });
     writeState(rootDir, state);
@@ -54,15 +61,18 @@ export async function runOnce(rootDir: string, dispatcher: Dispatcher): Promise<
     return { kind: 'paused-blocked', reason };
   }
 
-  // result.kind === 'error'
+  // result.kind === 'error' — also persist as a generic blocker so subsequent
+  // readState() calls reflect the actual situation (consistent with the
+  // returned RunOnceResult kind).
+  state = transition(state, { kind: 'block', blocker: { kind: 'generic', reason: result.message } });
+  writeState(rootDir, state);
   return { kind: 'paused-blocked', reason: result.message };
 }
 
 export const runCommand = new Command('run')
   .description("Autonomous runner — execute the picked story's plan task-by-task")
-  .option('--resume', 'resume from paused state instead of starting fresh')
   .option('--status', 'just print runner state, do nothing')
-  .action(async (opts: { resume?: boolean; status?: boolean }) => {
+  .action(async (opts: { status?: boolean }) => {
     const root = findKadaiRoot(process.cwd());
     if (!root) { process.stderr.write('Not inside a kadai project\n'); process.exit(1); }
 
@@ -72,9 +82,9 @@ export const runCommand = new Command('run')
       return;
     }
 
-    // The CLI version of the runner uses a no-op dispatcher placeholder — the real
-    // dispatcher requires Claude Code's Task tool, which only runs inside a Claude
-    // Code session. From the CLI, we just print the next-action prompt and exit.
+    // The CLI cannot dispatch implementer subagents — that requires Claude Code's
+    // Task tool. The CLI is informational only; the real runner lives in the
+    // /kadai-run slash command, which invokes the kadai-runner skill.
     process.stdout.write(
       'kadai run from the CLI is informational only — it prints state.\n' +
       'To actually run, use the /kadai-run slash command from Claude Code.\n' +
