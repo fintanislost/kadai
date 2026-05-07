@@ -84,3 +84,20 @@ test('runStory tolerates a plan with no Task headings (empty plan)', async () =>
     expect(result.kind).toBe('story-done');  // vacuously done
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
+
+test('runStory escalates NEEDS_CONTEXT as blocked with prefixed reason', async () => {
+  const root = mkdtempSync(join(tmpdir(), 'kadai-dispatch-'));
+  try {
+    seedStory(root, 'STORY-006', '# Plan\n\n## Task 1: A\n\nbody\n');
+    const dispatcher: Dispatcher = async () => ({ status: 'NEEDS_CONTEXT', missing: 'the auth schema' });
+    const result = await runStory(root, 'STORY-006', dispatcher);
+    expect(result.kind).toBe('blocked');
+    if (result.kind === 'blocked') {
+      expect(result.blocker.kind).toBe('generic');
+      if (result.blocker.kind === 'generic') {
+        expect(result.blocker.reason).toBe('needs context: the auth schema');
+      }
+      expect(result.completedTasks).toBe(0);
+    }
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});

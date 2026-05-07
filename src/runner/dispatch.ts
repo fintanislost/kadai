@@ -55,8 +55,7 @@ export async function runStory(rootDir: string, storyId: string, dispatcher: Dis
   if (!existsSync(planPath)) return { kind: 'error', message: `Story ${storyId} has no plan.md` };
 
   const tasks = parseTasks(readFileSync(planPath, 'utf8'));
-  const sd = story.data as { id: string; title: string };
-  const ctx = { id: sd.id, title: sd.title };
+  const ctx = { id: story.data.id, title: story.data.title };
 
   let completed = 0;
   for (const task of tasks) {
