@@ -80,7 +80,7 @@ CLAUDE.md                                          # MODIFIED: active state → 
 
 **Goal:** Smallest task, no dependencies on the runner — builds confidence and gets the composite-plan rendering done before the runner needs it for review tooling.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `/home/fintan/repos/kadai/tests/cli/compose.test.ts`:
 
@@ -168,7 +168,7 @@ test('compose skips stories without plan.md', () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -177,7 +177,7 @@ bun test tests/cli/compose.test.ts
 
 Expected: 4 failures, "Cannot find module '../../src/cli/compose'".
 
-- [ ] **Step 3: Implement composePlan**
+- [x] **Step 3: Implement composePlan**
 
 Create `/home/fintan/repos/kadai/src/cli/compose.ts`:
 
@@ -254,7 +254,7 @@ export const composeCommand = new Command('compose')
   });
 ```
 
-- [ ] **Step 4: Wire into the CLI as `kadai plan compose`**
+- [x] **Step 4: Wire into the CLI as `kadai plan compose`**
 
 Read `/home/fintan/repos/kadai/src/cli/index.ts` to find where subcommands are registered. Add a `plan` parent command with `compose` as its child:
 
@@ -267,7 +267,7 @@ planCommand.addCommand(composeCommand);
 program.addCommand(planCommand);
 ```
 
-- [ ] **Step 5: Run tests to verify they pass**
+- [x] **Step 5: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -277,7 +277,7 @@ bun run typecheck
 
 Expected: 4 pass, typecheck clean.
 
-- [ ] **Step 6: Smoke-test the CLI surface**
+- [x] **Step 6: Smoke-test the CLI surface**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -285,7 +285,7 @@ bun src/cli/index.ts plan compose --help
 # Should print usage. Exit 0.
 ```
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
