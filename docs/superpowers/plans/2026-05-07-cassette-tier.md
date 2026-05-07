@@ -664,7 +664,7 @@ EOF
 
 **Goal:** Dev-only one-shot tool: takes a scenario name + a Claude prompt, runs `claude -p` against a fresh kadai-init'd temp dir with `KADAI_RECORD_TO` set, then writes both the calls.jsonl and the spine snapshot into `tests/cassettes/<name>/`.
 
-- [ ] **Step 1: Implement the recorder**
+- [x] **Step 1: Implement the recorder**
 
 Create `/home/fintan/repos/kadai/scripts/record-cassette.ts`:
 
@@ -748,7 +748,7 @@ try {
 }
 ```
 
-- [ ] **Step 2: Smoke-test the recorder script (no real claude run — just verify the CLI surface)**
+- [x] **Step 2: Smoke-test the recorder script (no real claude run — just verify the CLI surface)**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -759,7 +759,7 @@ bun scripts/record-cassette.ts BadName "test" 2>&1 | head -2
 # Expected: prints "Invalid scenario name", exits 1.
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
