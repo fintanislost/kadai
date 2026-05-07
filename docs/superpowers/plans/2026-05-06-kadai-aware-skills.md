@@ -887,7 +887,7 @@ EOF
 
 **Goal:** When dispatch returns `needs-feature`, this module handles the fast-follow-up flow: surfacing the blocker, recording the dependency edge in the spine, and managing the resume order.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/runner/blocker.test.ts`:
 
@@ -957,7 +957,7 @@ test('formatBlockerPrompt produces a different summary for generic blockers', ()
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -966,7 +966,7 @@ bun test tests/runner/blocker.test.ts
 
 Expected: 4 failures.
 
-- [ ] **Step 3: Implement blocker.ts**
+- [x] **Step 3: Implement blocker.ts**
 
 Create `/home/fintan/repos/kadai/src/runner/blocker.ts`:
 
@@ -1022,7 +1022,7 @@ export function formatBlockerPrompt(ctx: BlockerContext): string {
 }
 ```
 
-- [ ] **Step 4: Run tests, verify they pass**
+- [x] **Step 4: Run tests, verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1032,7 +1032,7 @@ bun run typecheck
 
 Expected: 4 pass, typecheck clean.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
