@@ -35,6 +35,27 @@ test('recordDependencyEdge appends to existing dependsOn array (idempotent for s
     recordDependencyEdge(root, 'STORY-007', 'FEAT-009');  // duplicate, no-op
     const updated = readFileSync(join(storyDir, 'story.md'), 'utf8');
     expect(updated).toMatch(/dependsOn:\s*\[FEAT-009, FEAT-010\]/);
+    // Other frontmatter fields must NOT be corrupted across rewrites.
+    // (Reviewer caught a date-corruption bug where unquoted YAML dates got
+    // re-stringified as a localized Date.toString() across the second call.)
+    expect(updated).toContain('id: STORY-007');
+    expect(updated).toContain('parent: FEAT-001');
+    expect(updated).toContain('title: Original story');
+    expect(updated).toContain('phase: mvp');
+    expect(updated).toMatch(/created: 2026-01-01\b/);
+    expect(updated).toMatch(/updated: 2026-01-01\b/);
+    expect(updated).toContain('order: 1');
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('recordDependencyEdge dedupes case-insensitively', () => {
+  const root = mkdtempSync(join(tmpdir(), 'kadai-blocker-'));
+  try {
+    const storyDir = seedStory(root);
+    recordDependencyEdge(root, 'STORY-007', 'FEAT-009');
+    recordDependencyEdge(root, 'STORY-007', 'feat-009');  // same dep, different case
+    const updated = readFileSync(join(storyDir, 'story.md'), 'utf8');
+    expect(updated).toMatch(/dependsOn:\s*\[FEAT-009\]$/m);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
