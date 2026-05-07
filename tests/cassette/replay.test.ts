@@ -1,5 +1,5 @@
 import { test, expect } from 'bun:test';
-import { mkdtempSync, existsSync, readdirSync, readFileSync, rmSync, statSync } from 'node:fs';
+import { mkdtempSync, existsSync, readdirSync, readFileSync, rmSync, lstatSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -12,11 +12,19 @@ function listCassettes(): string[] {
   if (!existsSync(CASSETTES_DIR)) return [];
   return readdirSync(CASSETTES_DIR).filter(name => {
     const dir = join(CASSETTES_DIR, name);
-    return statSync(dir).isDirectory()
-      && existsSync(join(dir, 'calls.jsonl'))
+    // lstatSync (matches snapshot.ts): symlinks are not valid cassettes.
+    const stat = lstatSync(dir);
+    if (stat.isSymbolicLink() || !stat.isDirectory()) return false;
+    return existsSync(join(dir, 'calls.jsonl'))
       && existsSync(join(dir, 'spine.snapshot.json'));
   });
 }
+
+// Neutralise KADAI_RECORD_TO when invoking the CLI from the replay runner.
+// Otherwise a developer who set the env var (e.g., to record a cassette and
+// forgot to unset it) would silently corrupt the recording on the next
+// `bun test` because every replayed call would append to that same file.
+const REPLAY_ENV: NodeJS.ProcessEnv = { ...process.env, KADAI_RECORD_TO: '' };
 
 const cassettes = listCassettes();
 
@@ -43,7 +51,7 @@ for (const name of cassettes) {
         const call = calls[i];
         let actualExit = 0;
         try {
-          execFileSync('bun', [KADAI_CLI, ...call.argv], { cwd: tmp, stdio: 'pipe' });
+          execFileSync('bun', [KADAI_CLI, ...call.argv], { cwd: tmp, stdio: 'pipe', env: REPLAY_ENV });
         } catch (e) {
           actualExit = (e as { status?: number }).status ?? 1;
         }
