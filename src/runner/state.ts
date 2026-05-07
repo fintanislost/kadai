@@ -5,19 +5,24 @@ import { INITIAL_STATE, type RunnerState, type Blocker, type RunnerStatus } from
 const STATE_PATH = '.kadai/runner.json';
 const VALID_STATUSES: RunnerStatus[] = ['idle', 'running', 'paused-blocked', 'paused-needs-feature', 'paused-review', 'error'];
 
+function freshInitial(): RunnerState {
+  // Return a fresh shallow copy so callers that mutate the result don't corrupt
+  // the module-level INITIAL_STATE constant for the rest of the process.
+  return { ...INITIAL_STATE, pausedStack: [] };
+}
+
 export function readState(rootDir: string): RunnerState {
   const path = join(rootDir, STATE_PATH);
-  if (!existsSync(path)) return INITIAL_STATE;
+  if (!existsSync(path)) return freshInitial();
   try {
     const raw = readFileSync(path, 'utf8');
     const parsed = JSON.parse(raw);
     if (!parsed || typeof parsed !== 'object' || !VALID_STATUSES.includes(parsed.status)) {
-      // Malformed — recover to initial state (caller can warn).
-      return INITIAL_STATE;
+      return freshInitial();
     }
-    return { ...INITIAL_STATE, ...parsed, version: 1 };
+    return { ...freshInitial(), ...parsed, version: 1 };
   } catch {
-    return INITIAL_STATE;
+    return freshInitial();
   }
 }
 
@@ -74,9 +79,12 @@ export function transition(state: RunnerState, t: Transition): RunnerState {
     case 'block':
       return { ...base, status: 'paused-blocked', lastBlocker: t.blocker };
     case 'needs-feature': {
+      if (!state.currentStoryId) {
+        throw new Error('needs-feature: no current story (cannot push paused frame)');
+      }
       const blocker: Blocker = { kind: 'needs-feature', description: t.description, suggestedTitle: t.suggestedTitle };
       // Push current onto the pausedStack so we can resume after the unblocker.
-      const pausedFrame = { storyId: state.currentStoryId!, taskId: state.currentTaskId, reason: t.description };
+      const pausedFrame = { storyId: state.currentStoryId, taskId: state.currentTaskId, reason: t.description };
       return { ...base, status: 'paused-needs-feature', lastBlocker: blocker, pausedStack: [...state.pausedStack, pausedFrame] };
     }
     case 'resume-paused': {
