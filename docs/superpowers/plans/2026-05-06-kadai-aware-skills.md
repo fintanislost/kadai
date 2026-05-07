@@ -649,7 +649,7 @@ EOF
 
 **Goal:** The loop that, given a picked story, walks its plan's tasks, dispatches an implementer, and reports outcome. Pure logic (no actual subagent — that's injected). Heavily mockable.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/runner/dispatch.test.ts`:
 
@@ -742,7 +742,7 @@ test('runStory tolerates a plan with no Task headings (empty plan)', async () =>
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -751,7 +751,7 @@ bun test tests/runner/dispatch.test.ts
 
 Expected: 5 failures.
 
-- [ ] **Step 3: Implement dispatch.ts**
+- [x] **Step 3: Implement dispatch.ts**
 
 Create `/home/fintan/repos/kadai/src/runner/dispatch.ts`:
 
@@ -838,7 +838,7 @@ export async function runStory(rootDir: string, storyId: string, dispatcher: Dis
 }
 ```
 
-- [ ] **Step 4: Run tests, verify they pass**
+- [x] **Step 4: Run tests, verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -848,7 +848,7 @@ bun run typecheck
 
 Expected: 5 pass, typecheck clean.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
