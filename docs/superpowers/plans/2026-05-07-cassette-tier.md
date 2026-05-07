@@ -278,7 +278,7 @@ EOF
 
 **Goal:** When `KADAI_RECORD_TO=<path>` is set in the environment, every `kadai` CLI invocation appends one JSONL line `{argv, exit}` to that file. Append-only, atomic-enough for our single-writer use case. Zero behavior change when the env var is unset.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/cassette/recorder.test.ts`:
 
@@ -358,7 +358,7 @@ test('CLI records non-zero exits too', () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -367,7 +367,7 @@ bun test tests/cassette/recorder.test.ts
 
 Expected: failures with "cassette file does not exist" — the CLI doesn't yet write to it.
 
-- [ ] **Step 3: Implement recorder.ts**
+- [x] **Step 3: Implement recorder.ts**
 
 Create `/home/fintan/repos/kadai/src/cassette/recorder.ts`:
 
@@ -390,7 +390,7 @@ export function appendCallToCassette(record: CallRecord): void {
 }
 ```
 
-- [ ] **Step 4: Wire into the CLI**
+- [x] **Step 4: Wire into the CLI**
 
 Read `/home/fintan/repos/kadai/src/cli/index.ts`. Find the entry point — typically a `program.parse(process.argv)` or `program.parseAsync(process.argv)` call near the bottom.
 
@@ -473,7 +473,7 @@ process.on('exit', (code) => recordOnce(code));
 
 This handles both explicit `process.exit(N)` and natural-completion paths.
 
-- [ ] **Step 5: Run tests, verify they pass**
+- [x] **Step 5: Run tests, verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -484,7 +484,7 @@ bun run typecheck
 
 Expected: 4 recorder tests pass, full suite green, typecheck clean.
 
-- [ ] **Step 6: Sanity-check no behavior change without env var**
+- [x] **Step 6: Sanity-check no behavior change without env var**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -493,7 +493,7 @@ bun src/cli/index.ts --version
 ls calls.jsonl 2>/dev/null && echo "BUG: file created without env" || echo "OK: no file"
 ```
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
