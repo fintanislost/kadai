@@ -280,7 +280,7 @@ EOF
 
 **Goal:** When the dispatch handler in `src/mcp/server.ts` invokes a tool, also call `appendMcpCallToCassette` with the outcome. Single ~5-line change at the dispatch site. Test that a mutating tool invocation produces the cassette line; non-mutating reads do not.
 
-- [ ] **Step 1: Write the integration test**
+- [x] **Step 1: Write the integration test**
 
 Create `tests/mcp/server-recording.test.ts`:
 
@@ -433,7 +433,7 @@ test('appendMcpCallToCassette records ok:false on handler failure', () => {
 });
 ```
 
-- [ ] **Step 2: Run the new tests; they should mostly pass already** (since `appendMcpCallToCassette` was implemented in Task 1)
+- [x] **Step 2: Run the new tests; they should mostly pass already** (since `appendMcpCallToCassette` was implemented in Task 1)
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -442,7 +442,7 @@ bun test tests/mcp/server-recording.test.ts
 
 Expected: 4 pass. (If you put these tests in the recorder test file in Task 1 instead, that's fine — same outcome.)
 
-- [ ] **Step 3: Wire `appendMcpCallToCassette` into the server dispatch handler**
+- [x] **Step 3: Wire `appendMcpCallToCassette` into the server dispatch handler**
 
 Read `src/mcp/server.ts`. Modify the `CallToolRequestSchema` handler. The current dispatch code is:
 
@@ -490,7 +490,7 @@ try {
 
 (The schema-parse failure case won't record because we don't have a parsed args object then — that's fine; replay couldn't replay schema failures anyway.)
 
-- [ ] **Step 4: Verify no regressions**
+- [x] **Step 4: Verify no regressions**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -500,7 +500,7 @@ bun run typecheck
 
 Expected: full suite green; typecheck clean.
 
-- [ ] **Step 5: Tick the plan checkboxes for Task 2 + commit**
+- [x] **Step 5: Tick the plan checkboxes for Task 2 + commit**
 
 ```bash
 cd /home/fintan/repos/kadai

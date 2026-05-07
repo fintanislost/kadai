@@ -4,6 +4,7 @@ import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprot
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { listTools, getTool } from './registry';
 import type { ToolContext } from './types';
+import { appendMcpCallToCassette } from '../cassette/recorder';
 
 export async function runServer(rootDir: string): Promise<void> {
   const server = new Server(
@@ -34,7 +35,16 @@ export async function runServer(rootDir: string): Promise<void> {
     }
     try {
       const parsed = tool.inputSchema.parse(args ?? {});
-      const result = await tool.handler(parsed, ctx);
+      let result: unknown;
+      let ok = true;
+      try {
+        result = await tool.handler(parsed, ctx);
+      } catch (e) {
+        ok = false;
+        appendMcpCallToCassette({ tool: name, args: parsed, ok });
+        throw e;
+      }
+      appendMcpCallToCassette({ tool: name, args: parsed, ok });
       // Only `undefined` is the void/sentinel case (e.g. handlers that return nothing).
       // `null` is a meaningful value for tools like `get` (item not found) — serialize as JSON null
       // so the agent sees it clearly instead of an ambiguous "OK".
