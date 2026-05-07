@@ -14,8 +14,12 @@ const HAS_KADAI_CLI = (() => {
   catch { return false; }
 })();
 
-// Skip the test entirely if either CLI is missing — running in CI without them is fine.
-test.skipIf(!HAS_CLAUDE_CLI || !HAS_KADAI_CLI)(
+// The claude -p e2e test is opt-in (set RUN_DOGFOOD_E2E=1) because:
+// - It takes 5–10 minutes (real Claude session, real model calls)
+// - Routine `bun test` runs should stay fast
+// - It still skips if either binary is missing
+const RUN_E2E = process.env.RUN_DOGFOOD_E2E === '1';
+test.skipIf(!RUN_E2E || !HAS_CLAUDE_CLI || !HAS_KADAI_CLI)(
   'claude -p in a fresh kadai repo runs the wrapper flow end-to-end',
   async () => {
     const tmp = mkdtempSync(join(tmpdir(), 'kadai-dogfood-'));
