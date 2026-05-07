@@ -1791,13 +1791,13 @@ EOF
 
 **Goal:** Register the three new skills + two new commands; bump version. Make the kadai discipline skill direct agents to the new wrappers.
 
-- [ ] **Step 1: Bump plugin.json**
+- [x] **Step 1: Bump plugin.json**
 
 In `/home/fintan/repos/kadai/kadai-plugin/.claude-plugin/plugin.json`, change `"version": "1.3.0"` to `"version": "1.4.0"`.
 
 (The plugin manifest doesn't have explicit lists of skills/commands — Claude Code discovers them by directory scan. So the only edit is the version.)
 
-- [ ] **Step 2: Update kadai/SKILL.md to reference wrappers**
+- [x] **Step 2: Update kadai/SKILL.md to reference wrappers**
 
 In `/home/fintan/repos/kadai/kadai-plugin/skills/kadai/SKILL.md`, replace the "Spec → feature, plan → story" section with:
 
@@ -1813,7 +1813,7 @@ When the user asks for planning, brainstorming, or new feature work in this repo
 The upstream skills work, but they produce a freeform `docs/superpowers/` doc that someone has to translate into spine items by hand. The wrappers do that plumbing automatically and keep the spine in sync.
 ```
 
-- [ ] **Step 3: Verify**
+- [x] **Step 3: Verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1822,7 +1822,7 @@ grep '"version"' kadai-plugin/.claude-plugin/plugin.json
 grep 'kadai-brainstorming\|kadai-writing-plans\|kadai-runner' kadai-plugin/skills/kadai/SKILL.md | head -5
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
