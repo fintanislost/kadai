@@ -63,11 +63,36 @@ export function diffSpines(captured: Snapshot, produced: Snapshot): string | nul
   for (const k of [...aKeys].sort()) {
     if (!bKeys.has(k)) continue;
     if (a[k] !== b[k]) {
-      // Provide the path + a short hint about the divergence position.
-      const aShort = a[k].slice(0, 80).replace(/\n/g, '\\n');
-      const bShort = b[k].slice(0, 80).replace(/\n/g, '\\n');
-      issues.push(`content mismatch: ${k}\n  expected: ${aShort}\n  actual:   ${bShort}`);
+      issues.push(`content mismatch: ${k}\n${formatContentDiff(a[k], b[k])}`);
     }
   }
   return issues.length === 0 ? null : issues.join('\n');
+}
+
+function formatContentDiff(expected: string, actual: string): string {
+  // Find the first byte that differs.
+  const minLen = Math.min(expected.length, actual.length);
+  let divergePos = minLen;
+  for (let i = 0; i < minLen; i++) {
+    if (expected[i] !== actual[i]) { divergePos = i; break; }
+  }
+  // If they only differ in length (one is a prefix of the other), divergePos = minLen.
+
+  // Show a window of 40 chars before + 60 chars after the divergence.
+  const windowStart = Math.max(0, divergePos - 40);
+  const windowEnd = divergePos + 60;
+  const escape = (s: string) => s.replace(/\n/g, '\\n').replace(/\t/g, '\\t');
+  const expectedWindow = escape(expected.slice(windowStart, windowEnd));
+  const actualWindow = escape(actual.slice(windowStart, windowEnd));
+
+  // Compute the caret position relative to the window for visual alignment.
+  const caretOffset = divergePos - windowStart;
+  const caretLine = ' '.repeat(caretOffset) + '^';
+
+  return [
+    `  divergence at byte ${divergePos} (expected length ${expected.length}, actual length ${actual.length})`,
+    `  expected: ${expectedWindow}`,
+    `  actual:   ${actualWindow}`,
+    `            ${caretLine}`,
+  ].join('\n');
 }
