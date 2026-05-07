@@ -9,7 +9,7 @@ Wraps `superpowers:writing-plans`. The "DRY / YAGNI / TDD / frequent commits" di
 
 ## What this skill adds
 
-Plans no longer come out as one big `<feature>.md`. They're sliced **per story**, and each `### Task N` becomes a real kadai task.
+Plans no longer come out as one big `<feature>.md`. They're sliced **per story**, and each `### Task N` becomes a real kadai task with its real ID baked into the plan markup at attach time. (Earlier versions of this wrapper attached the plan with `<!-- placeholder -->` comments and then edited them to real IDs after `create_task` — that two-step dance is replaced by the create-tasks-first ordering below.)
 
 ### 1. Read the feature spec
 
@@ -36,34 +36,49 @@ kadai add story --feature <feature-id> --title "<name>" --phase <inherited from 
 
 (Or via MCP: `kadai.create_story(...)`.) Capture the returned story IDs.
 
-### 4. Write per-story plans
+### 4. Decompose each story into task TITLES (not full plan content yet)
 
-For each story, run the upstream writing-plans question content (file structure, task decomposition, code blocks per step) but limit the scope to **just that story's tasks**. Don't include cross-story tasks in the same plan.
+For each story, run the upstream writing-plans question content (file structure, task decomposition) far enough to identify the **list of task titles** for that story. Don't write the full `## Step N:` code blocks yet — just the task headings + a one-line summary of what each does.
 
-Output: one `plan.md` per story, written via `kadai attach_plan <story-id> <tmp-path>`.
+Limit the scope to **just that story's tasks**. Don't include cross-story tasks in the same story's task list.
 
-### 5. Create the tasks
+### 5. Create the tasks (get real IDs)
 
-For each `### Task N: <title>` block in each plan, create a real kadai task:
+For each task title in each story, create a real kadai task:
 
 ```bash
 kadai add task --story <story-id> --title "<title>"
 ```
 
-Back-reference the task ID in the plan as a comment: `<!-- TASK-001 -->` immediately after the heading. This lets the runner correlate plan tasks with spine tasks.
+(Or via MCP: `kadai.create_task(...)`.) Capture the returned task IDs (TASK-001, TASK-002, ...). You'll need them in step 6.
 
-### 6. Self-review per story
+### 6. Write the per-story plans, with real task IDs already in the markup
+
+NOW compose the full plan.md for each story. Each task block uses the real ID:
+
+```markdown
+### Task 1: <title>
+<!-- TASK-001 -->
+
+<full code blocks, files, steps per upstream writing-plans>
+```
+
+Output: one `plan.md` per story, written via `kadai attach_plan <story-id> <tmp-path>`. The plan is correct at the moment of attach — no post-attach edits needed.
+
+This ordering matters: creating tasks first (step 5) means we know the IDs when we compose the plan (step 6), which means a single `attach_plan` call lands the final correct content. The previous order (attach a plan with `<!-- placeholder -->` comments, then create_task, then edit the placeholders to real IDs) created a fragile two-phase commit — if anything went wrong between the attach and the edits, you got a permanently corrupted plan with placeholders stuck in it.
+
+### 7. Self-review per story
 
 Run the per-story self-review (placeholder scan, type consistency, spec coverage). The cross-story consistency check ("does Task 7 in STORY-002 align with the deliverable from STORY-001?") is harder; flag uncertainties for the user.
 
-### 7. Auto-pick the first story
+### 8. Auto-pick the first story
 
 ```bash
 kadai pick STORY-001
 # kadai pick auto-transitions to in_progress
 ```
 
-### 8. Present the runner option
+### 9. Present the runner option
 
 Tell the user:
 
