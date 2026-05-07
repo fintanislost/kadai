@@ -53,3 +53,48 @@ test('MUTATING_MCP_TOOLS includes the expected mutating tools', async () => {
   expect(MUTATING_MCP_TOOLS.has('get_item')).toBe(false);
   expect(MUTATING_MCP_TOOLS.has('search')).toBe(false);
 });
+
+import { mkdtempSync, writeFileSync, rmSync as _rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join as pjoin } from 'node:path';
+import { captureReferencedFiles } from '../../src/cassette/recorder';
+
+test('captureReferencedFiles snapshots source_path file contents', () => {
+  const tmp = mkdtempSync(pjoin(tmpdir(), 'kadai-cap-'));
+  try {
+    const specPath = pjoin(tmp, 'spec.md');
+    writeFileSync(specPath, '# Hello\nbody\n', 'utf8');
+    const captured = captureReferencedFiles({ feature_id: 'FEAT-001', source_path: specPath });
+    expect(captured).toEqual({ [specPath]: '# Hello\nbody\n' });
+  } finally { _rmSync(tmp, { recursive: true, force: true }); }
+});
+
+test('captureReferencedFiles returns undefined when no source_path arg', () => {
+  expect(captureReferencedFiles({ id: 'STORY-001' })).toBeUndefined();
+  expect(captureReferencedFiles({})).toBeUndefined();
+  expect(captureReferencedFiles(null)).toBeUndefined();
+  expect(captureReferencedFiles('not an object')).toBeUndefined();
+});
+
+test('captureReferencedFiles skips source_path when file does not exist', () => {
+  const captured = captureReferencedFiles({ source_path: '/nonexistent/file/path.md' });
+  expect(captured).toBeUndefined();
+});
+
+test('parseCassetteLine round-trips files field', () => {
+  const line = '{"kind":"mcp","tool":"attach_spec","args":{"feature_id":"FEAT-001","source_path":"/tmp/spec.md"},"ok":true,"files":{"/tmp/spec.md":"# Body\\n"}}';
+  const entry = parseCassetteLine(line);
+  expect(entry.kind).toBe('mcp');
+  if (entry.kind === 'mcp') {
+    expect(entry.files).toEqual({ '/tmp/spec.md': '# Body\n' });
+  }
+});
+
+test('parseCassetteLine handles MCP entries without files field (back-compat)', () => {
+  const line = '{"kind":"mcp","tool":"create_epic","args":{"title":"X"},"ok":true}';
+  const entry = parseCassetteLine(line);
+  expect(entry.kind).toBe('mcp');
+  if (entry.kind === 'mcp') {
+    expect(entry.files).toBeUndefined();
+  }
+});

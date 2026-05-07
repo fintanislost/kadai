@@ -1,5 +1,6 @@
 import { test, expect } from 'bun:test';
-import { mkdtempSync, existsSync, readdirSync, readFileSync, rmSync, lstatSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, existsSync, readdirSync, readFileSync, writeFileSync, rmSync, lstatSync } from 'node:fs';
+import { dirname } from 'node:path';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -77,6 +78,14 @@ for (const name of cassettes) {
           // entry.kind === 'mcp'
           const tool = getTool(entry.tool);
           if (!tool) throw new Error(`[cassette: ${name}] mcp call ${i}: unknown tool "${entry.tool}"`);
+          // Materialize any captured source files at their original paths so handlers
+          // that read+remove them (attach_spec, attach_plan) work on replay.
+          if (entry.files) {
+            for (const [path, content] of Object.entries(entry.files)) {
+              mkdirSync(dirname(path), { recursive: true });
+              writeFileSync(path, content, 'utf8');
+            }
+          }
           let threw = false;
           try {
             const parsed = tool.inputSchema.parse(entry.args);
