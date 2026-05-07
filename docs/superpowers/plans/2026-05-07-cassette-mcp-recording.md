@@ -535,7 +535,7 @@ EOF
 
 **Goal:** When the replay test reads a cassette line with `kind: 'mcp'`, dispatch it via `tool.handler(args, {rootDir: tmp})` against the in-process registry. CLI lines continue to use the existing `execFileSync` path.
 
-- [ ] **Step 1: Update the replay test runner**
+- [x] **Step 1: Update the replay test runner**
 
 Read `tests/cassette/replay.test.ts`. Update the test loop:
 
@@ -652,7 +652,7 @@ Key changes:
 - Use `parseCassetteLine` to discriminate
 - Add the `entry.kind === 'mcp'` branch that dispatches via `tool.handler(parsed, { rootDir: tmp })`
 
-- [ ] **Step 2: Run the replay test**
+- [x] **Step 2: Run the replay test**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -663,7 +663,7 @@ bun run typecheck
 
 Expected: sentinel test passes (no cassettes yet); full suite green; typecheck clean.
 
-- [ ] **Step 3: Tick the plan checkboxes for Task 3 + commit**
+- [x] **Step 3: Tick the plan checkboxes for Task 3 + commit**
 
 ```bash
 cd /home/fintan/repos/kadai
