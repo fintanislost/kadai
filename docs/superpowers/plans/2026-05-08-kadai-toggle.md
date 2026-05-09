@@ -804,7 +804,7 @@ EOF
 
 **Goal:** Every mutating CLI subcommand checks the disabled flag at the top of its action and errors with a friendly, consistent message. Reads are unaffected.
 
-- [ ] **Step 1: Write the parameterized failing test**
+- [x] **Step 1: Write the parameterized failing test**
 
 Create `/home/fintan/repos/kadai/tests/cli/mutation-guards.test.ts`:
 
@@ -885,7 +885,7 @@ describe('mutation guards', () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to confirm they fail**
+- [x] **Step 2: Run tests to confirm they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -894,7 +894,7 @@ bun test tests/cli/mutation-guards.test.ts
 
 Expected: the "errors when disabled" tests fail (no guard installed yet).
 
-- [ ] **Step 3: Add an `assertEnabled` helper**
+- [x] **Step 3: Add an `assertEnabled` helper**
 
 Add to `/home/fintan/repos/kadai/src/core/toggle.ts`:
 
@@ -939,7 +939,7 @@ export function assertEnabled(): void {
 }
 ```
 
-- [ ] **Step 4: Add guards to every mutating subcommand**
+- [x] **Step 4: Add guards to every mutating subcommand**
 
 For each of these files, add `import { assertEnabled } from '../core/toggle';` at the top, and `assertEnabled();` as the first line inside each action handler:
 
@@ -955,7 +955,7 @@ Read each file first to understand its action handler shape.
 
 Important: do NOT add the guard to `src/cli/init.ts` (init is fine when disabled), `src/cli/run.ts` (escape hatch), `src/cli/disable.ts`, `src/cli/enable.ts`, or any reads (`list.ts`, `status.ts`, `get-file.ts`, `phases list`, `config get`, `compose.ts`, `serve.ts`, `mcp.ts`, `hook.ts`).
 
-- [ ] **Step 5: Run tests to verify they pass**
+- [x] **Step 5: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -966,7 +966,7 @@ bun run typecheck
 
 Expected: all mutation-guard tests pass + full suite green + typecheck clean.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

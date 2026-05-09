@@ -1,5 +1,6 @@
 import { Command } from 'commander';
 import pc from 'picocolors';
+import { assertEnabled } from '../core/toggle';
 import { loadConfig, saveConfig } from '../config/load';
 
 function getNested(obj: unknown, path: string[]): unknown {
@@ -52,6 +53,7 @@ export const configCommand = new Command('config')
     if (eq === -1) {
       console.log(JSON.stringify(getConfigKey(rootDir, expr)));
     } else {
+      assertEnabled();
       const key = expr.slice(0, eq);
       const value = expr.slice(eq + 1);
       setConfigKey(rootDir, key, value);

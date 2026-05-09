@@ -1,4 +1,5 @@
 import { dirname } from 'node:path';
+import { assertEnabled } from '../core/toggle';
 import { Command } from 'commander';
 import pc from 'picocolors';
 import prompts from 'prompts';
@@ -95,6 +96,7 @@ export const addCommand = new Command('add')
   .option('--feature <id>', 'parent feature ID — alias for --parent when adding a story')
   .option('--story <id>', 'parent story ID — alias for --parent when adding a task')
   .action(async (kind: string, opts: { title?: string; phase?: string; order?: number; parent?: string; epic?: string; feature?: string; story?: string }) => {
+    assertEnabled();
     if (!['epic', 'feature', 'story', 'task'].includes(kind)) {
       throw new Error(`unknown kind: ${kind}`);
     }
