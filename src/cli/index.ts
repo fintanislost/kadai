@@ -16,6 +16,8 @@ import { syncCommand } from './sync';
 import { uninstallCommand } from './uninstall';
 import { composeCommand } from './compose';
 import { runCommand } from './run';
+import { disableCommand } from './disable';
+import { enableCommand } from './enable';
 import { appendCallToCassette } from '../cassette/recorder';
 
 let alreadyRecorded = false;
@@ -54,6 +56,8 @@ program.addCommand(serveCommand);
 program.addCommand(getCommand);
 program.addCommand(syncCommand);
 program.addCommand(uninstallCommand);
+program.addCommand(disableCommand);
+program.addCommand(enableCommand);
 
 const planCommand = new Command('plan')
   .description('Plan composition + analysis tools');

@@ -589,7 +589,7 @@ EOF
 
 **Goal:** New CLI subcommands. `kadai disable [--reason "..."]` writes `.kadai/disabled`. `kadai enable` removes it. Both idempotent. Error messages are friendly.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/cli/disable-enable.test.ts`:
 
@@ -672,7 +672,7 @@ test('kadai enable while already enabled is a no-op + info', () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to confirm they fail**
+- [x] **Step 2: Run tests to confirm they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -681,7 +681,7 @@ bun test tests/cli/disable-enable.test.ts
 
 Expected: 5 failures, "Unknown command: disable" / "Unknown command: enable".
 
-- [ ] **Step 3: Implement disable.ts and enable.ts**
+- [x] **Step 3: Implement disable.ts and enable.ts**
 
 Create `/home/fintan/repos/kadai/src/cli/disable.ts`:
 
@@ -732,7 +732,7 @@ export const enableCommand = new Command('enable')
   });
 ```
 
-- [ ] **Step 4: Wire into the CLI**
+- [x] **Step 4: Wire into the CLI**
 
 In `/home/fintan/repos/kadai/src/cli/index.ts`, add at the top with the other CLI imports:
 
@@ -748,7 +748,7 @@ program.addCommand(disableCommand);
 program.addCommand(enableCommand);
 ```
 
-- [ ] **Step 5: Run tests + verify**
+- [x] **Step 5: Run tests + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -761,7 +761,7 @@ bun src/cli/index.ts enable --help
 
 Expected: 5 tests pass + full suite green + typecheck clean + both CLI helps print.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
