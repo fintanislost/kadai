@@ -423,7 +423,7 @@ EOF
 
 **Goal:** When kadai is disabled, the MCP dispatch handler returns a clear error for any mutating tool call. Read tools (list_*, get_*, search) work normally.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/mcp/server-disabled.test.ts`:
 
@@ -492,7 +492,7 @@ test('isDisabled gate does NOT fire when not disabled (any tool)', () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -501,7 +501,7 @@ bun test tests/mcp/server-disabled.test.ts
 
 Expected: failures around `shouldRefuseMcpCall` not being exported.
 
-- [ ] **Step 3: Refactor server.ts to expose the guard + use it in dispatch**
+- [x] **Step 3: Refactor server.ts to expose the guard + use it in dispatch**
 
 Read `/home/fintan/repos/kadai/src/mcp/server.ts`. Add at the top:
 
@@ -539,7 +539,7 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
     // ... rest of the existing dispatch unchanged
 ```
 
-- [ ] **Step 4: Run tests + verify**
+- [x] **Step 4: Run tests + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -550,7 +550,7 @@ bun run typecheck
 
 Expected: 4 server-disabled tests pass + full suite green + typecheck clean.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

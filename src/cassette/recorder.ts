@@ -1,4 +1,7 @@
 import { appendFileSync, existsSync, readFileSync } from 'node:fs';
+import { MUTATING_MCP_TOOLS } from '../mcp/mutating-tools';
+
+export { MUTATING_MCP_TOOLS };  // re-export for back-compat with existing test imports
 
 export type CassetteEntry =
   | { kind: 'cli'; argv: string[]; exit: number }
@@ -48,21 +51,6 @@ export function captureReferencedFiles(args: unknown): Record<string, string> | 
 // - serve: the web viewer; long-running; orthogonal to the wrapper.
 const NOISE_SUBCOMMANDS = new Set(['hook', 'mcp', 'serve']);
 
-// MCP tools that mutate spine state. Source of truth for what gets recorded
-// from the MCP server's dispatch path. Reads (list_*, get_*, search) are
-// intentionally excluded — they don't need replay because they don't change state.
-export const MUTATING_MCP_TOOLS = new Set<string>([
-  'create_epic',
-  'create_feature',
-  'create_story',
-  'create_task',
-  'attach_spec',
-  'attach_plan',
-  'pick_story',
-  'unpick',
-  'set_status',
-  'record_change',
-]);
 
 function writeLine(path: string, entry: CassetteEntry): void {
   try {
