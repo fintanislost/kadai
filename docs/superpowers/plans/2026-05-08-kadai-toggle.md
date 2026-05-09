@@ -1141,7 +1141,7 @@ EOF
 
 **Goal:** When the active project is disabled, the web viewer's topbar shows a "DISABLED" banner with the reason (tooltip on hover). API endpoint provides the data.
 
-- [ ] **Step 1: Add the API test**
+- [x] **Step 1: Add the API test**
 
 APPEND to `/home/fintan/repos/kadai/tests/web/api.test.ts`:
 
@@ -1171,7 +1171,7 @@ test('GET /api/disabled-status returns disabled:true with since + reason when di
 
 (If the test file doesn't expose `SEED_ROOT` cleanly, adapt to use whatever the existing API tests use to point at the seed dir.)
 
-- [ ] **Step 2: Implement the endpoint**
+- [x] **Step 2: Implement the endpoint**
 
 In `/home/fintan/repos/kadai/src/web/api.ts`, add the endpoint inside `handleApi` near the other simple GET handlers:
 
@@ -1188,7 +1188,7 @@ if (path === '/api/disabled-status' && req.method === 'GET') {
 
 (Adapt `rootDir` to whatever variable name the `handleApi` already uses; also handle multi-project mode if applicable — there should be a per-project rootDir already in scope.)
 
-- [ ] **Step 3: Run API tests + add the client wrapper**
+- [x] **Step 3: Run API tests + add the client wrapper**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1213,7 +1213,7 @@ export async function getDisabledStatus(slug?: string | null): Promise<DisabledS
 }
 ```
 
-- [ ] **Step 4: Add the banner to Layout.tsx**
+- [x] **Step 4: Add the banner to Layout.tsx**
 
 Read `/home/fintan/repos/kadai/src/web/frontend/src/components/Layout.tsx`. In the topbar JSX (between the brand/nav and the picked indicator), add:
 
@@ -1239,7 +1239,7 @@ useEffect(() => {
 
 (Adapt token classes to whatever Layout uses. The accent color is intentional — disabled is a deliberate state, not an error.)
 
-- [ ] **Step 5: Build + verify**
+- [x] **Step 5: Build + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1252,7 +1252,7 @@ cd src/web/frontend && bunx tsc --noEmit -p tsconfig.json && cd /home/fintan/rep
 
 Expected: all green.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai

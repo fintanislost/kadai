@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, Outlet } from '@tanstack/react-router';
-import { getPicked } from '../api';
+import { getPicked, getDisabledStatus, type DisabledStatus } from '../api';
 import type { Item } from '../types';
-import { LiveUpdatesProvider } from '../live';
+import { LiveUpdatesProvider, useLiveKey } from '../live';
 import { SearchBox } from './SearchBox';
 import { ProjectModeProvider, useProjectMode } from '../project';
 
@@ -20,6 +20,32 @@ function ProjectIndicator() {
     );
   }
   return <Link to="/projects" className="text-sm text-muted hover:text-text-primary">Projects</Link>;
+}
+
+function DisabledBanner() {
+  const { activeSlug } = useProjectMode();
+  const liveKey = useLiveKey();
+  const [status, setStatus] = React.useState<DisabledStatus>({ disabled: false });
+
+  React.useEffect(() => {
+    getDisabledStatus(activeSlug).then(setStatus).catch(() => setStatus({ disabled: false }));
+  }, [activeSlug, liveKey]);
+
+  if (!status.disabled) return null;
+  const tooltipText = [
+    `Disabled since ${status.since}`,
+    status.reason ? `Reason: ${status.reason}` : '',
+    'Run `kadai enable` to re-enable.',
+  ].filter(Boolean).join('\n');
+
+  return (
+    <span
+      title={tooltipText}
+      className="bg-accent/[0.10] text-accent border border-accent/25 rounded-md px-2.5 py-1 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide cursor-help"
+    >
+      ⚠ DISABLED
+    </span>
+  );
 }
 
 export function Layout() {
@@ -44,6 +70,7 @@ export function Layout() {
                 <Link to="/activity" className="text-text-tertiary hover:text-text-primary transition-colors">Activity</Link>
                 <Link to="/compare" className="text-text-tertiary hover:text-text-primary transition-colors">Compare</Link>
               </nav>
+              <DisabledBanner />
               <div className="flex-1 max-w-[380px]">
                 <SearchBox />
               </div>

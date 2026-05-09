@@ -6,6 +6,7 @@ import { runInit } from '../../src/cli/init';
 import { runAdd } from '../../src/cli/add';
 import { setPicked } from '../../src/core/picked';
 import { startServer, type ServerHandle } from '../../src/web/server';
+import { setDisabled, clearDisabled } from '../../src/core/toggle';
 
 let tmp: string;
 let server: ServerHandle;
@@ -299,4 +300,24 @@ test('GET /api/items/STORY-001/subtree returns just the story (and any tasks)', 
 test('GET /api/items/EPIC-999/subtree returns 404 for unknown root', async () => {
   const r = await fetch(`${base()}/api/items/EPIC-999/subtree`);
   expect(r.status).toBe(404);
+});
+
+test('GET /api/disabled-status returns disabled:false when no disabled flag', async () => {
+  const r = await fetch(`${base()}/api/disabled-status`);
+  expect(r.status).toBe(200);
+  const json = await r.json();
+  expect(json.disabled).toBe(false);
+});
+
+test('GET /api/disabled-status returns disabled:true with since + reason when disabled', async () => {
+  setDisabled(tmp, 'test');
+  try {
+    const r = await fetch(`${base()}/api/disabled-status`);
+    const json = await r.json();
+    expect(json.disabled).toBe(true);
+    expect(json.since).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    expect(json.reason).toBe('test');
+  } finally {
+    clearDisabled(tmp);
+  }
 });
