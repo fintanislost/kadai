@@ -88,7 +88,7 @@ docs/wiki/troubleshooting.md                MODIFIED
 
 **Goal:** A single helper module every kadai surface depends on. Pure file I/O — no logging, no side effects beyond the file write itself.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `/home/fintan/repos/kadai/tests/core/toggle.test.ts`:
 
@@ -182,7 +182,7 @@ test('getDisabledInfo returns since but undefined reason when disabled with no r
 });
 ```
 
-- [ ] **Step 2: Run tests to confirm they fail**
+- [x] **Step 2: Run tests to confirm they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -191,7 +191,7 @@ bun test tests/core/toggle.test.ts
 
 Expected: 8 failures, "Cannot find module".
 
-- [ ] **Step 3: Implement toggle.ts**
+- [x] **Step 3: Implement toggle.ts**
 
 Create `/home/fintan/repos/kadai/src/core/toggle.ts`:
 
@@ -241,7 +241,7 @@ export function getDisabledInfo(rootDir: string): DisabledInfo | null {
 }
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -251,7 +251,7 @@ bun run typecheck
 
 Expected: 8 pass, typecheck clean.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
