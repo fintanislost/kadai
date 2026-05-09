@@ -1286,7 +1286,7 @@ EOF
 
 **Goal:** `/kadai-disable [reason...]` and `/kadai-enable` slash commands accessible from any Claude Code session.
 
-- [ ] **Step 1: Create the slash command files**
+- [x] **Step 1: Create the slash command files**
 
 `/home/fintan/repos/kadai/kadai-plugin/commands/kadai-disable.md`:
 
@@ -1325,11 +1325,11 @@ Re-enable kadai in the current project. Hooks resume gating, mutating commands w
 No drift detection — if you did spine-relevant work while kadai was disabled, you'll need to record it manually.
 ```
 
-- [ ] **Step 2: Bump the plugin version**
+- [x] **Step 2: Bump the plugin version**
 
 Read `/home/fintan/repos/kadai/kadai-plugin/.claude-plugin/plugin.json`. Bump `version` (e.g., `1.4.0` → `1.4.1`, or whatever the current+0.0.1 is).
 
-- [ ] **Step 3: Verify**
+- [x] **Step 3: Verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1337,7 +1337,7 @@ ls kadai-plugin/commands/ | grep -E "kadai-(disable|enable)"
 grep '"version"' kadai-plugin/.claude-plugin/plugin.json
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
