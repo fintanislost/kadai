@@ -1003,7 +1003,7 @@ EOF
 
 **Goal:** When kadai is disabled, `kadai status` prepends a prominent DISABLED preamble showing timestamp + reason + how to re-enable.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `/home/fintan/repos/kadai/tests/cli/status-disabled.test.ts`:
 
@@ -1061,7 +1061,7 @@ test('kadai status with disabled but no reason shows preamble without reason lin
 });
 ```
 
-- [ ] **Step 2: Run tests to confirm they fail**
+- [x] **Step 2: Run tests to confirm they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1070,7 +1070,7 @@ bun test tests/cli/status-disabled.test.ts
 
 Expected: the disabled-preamble tests fail.
 
-- [ ] **Step 3: Update status.ts**
+- [x] **Step 3: Update status.ts**
 
 Read `/home/fintan/repos/kadai/src/cli/status.ts`. At the top of the action handler (after the `findKadaiRoot` resolution), insert:
 
@@ -1093,7 +1093,7 @@ if (disabled) {
 
 If `humanRelativeTime` doesn't exist, just print the ISO timestamp without the relative-time annotation; the timestamp alone is enough.
 
-- [ ] **Step 4: Run tests + verify**
+- [x] **Step 4: Run tests + verify**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1102,7 +1102,7 @@ bun test 2>&1 | tail -3
 bun run typecheck
 ```
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
