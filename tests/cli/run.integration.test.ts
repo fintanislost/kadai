@@ -19,7 +19,7 @@ function seedSpine(root: string) {
   writeFileSync(join(story2, 'plan.md'), '## Task 1: gamma\n');
   writeFileSync(join(root, '.kadai/.counters.json'), '{"epic":1,"feature":1,"story":2,"task":0}');
   writeFileSync(join(root, '.kadai/config.toml'), '[guardrail]\nallowed_paths = []\n[change_capture]\nenabled = true\n');
-  writeFileSync(join(root, '.kadai/picked'), 'STORY-001');
+  writeFileSync(join(root, '.kadai/.picked'), 'STORY-001');
 }
 
 test('runOnce executes picked story to completion when dispatcher always succeeds, ends in paused-review', async () => {
@@ -70,7 +70,7 @@ test('runOnce errors gracefully when no story is picked', async () => {
   const root = mkdtempSync(join(tmpdir(), 'kadai-run-'));
   try {
     seedSpine(root);
-    rmSync(join(root, '.kadai/picked'));  // unpick
+    rmSync(join(root, '.kadai/.picked'));  // unpick
     const dispatcher: Dispatcher = async () => ({ status: 'DONE' });
     const result = await runOnce(root, dispatcher);
     expect(result.kind).toBe('no-story-picked');
@@ -99,7 +99,7 @@ test('runOnce --resume picks up from a paused-needs-feature state when the unblo
     expect(readState(root).status).toBe('paused-needs-feature');
 
     // Step 2: User pivots — picks STORY-099 manually + writes pickedFile.
-    writeFileSync(join(root, '.kadai/picked'), 'STORY-099');
+    writeFileSync(join(root, '.kadai/.picked'), 'STORY-099');
     // Update state to reflect pivot. (In production the runner skill does this when the user accepts the unblocker plan.)
     const { writeState } = await import('../../src/runner/state');
     const state = readState(root);
@@ -119,9 +119,9 @@ test('runOnce --resume picks up from a paused-needs-feature state when the unblo
     expect(stateAfter.status).toBe('running');
     expect(stateAfter.currentStoryId).toBe('STORY-001');
     expect(stateAfter.pausedStack).toHaveLength(0);
-    // CRITICAL: .kadai/picked must also point at STORY-001 now, otherwise
+    // CRITICAL: .kadai/.picked must also point at STORY-001 now, otherwise
     // the next runOnce dispatches the wrong story.
-    const picked = readFileSync(join(root, '.kadai/picked'), 'utf8').trim();
+    const picked = readFileSync(join(root, '.kadai/.picked'), 'utf8').trim();
     expect(picked).toBe('STORY-001');
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

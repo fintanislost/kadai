@@ -89,7 +89,7 @@ test('kadai-runner pauses correctly when implementer reports needs-feature', asy
     writeFileSync(join(story(root), 'plan.md'), '## Task 1: alpha\n\nPLEASE_FAIL_WITH_NEEDS_FEATURE\n');
     writeFileSync(join(root, '.kadai/.counters.json'), '{"epic":1,"feature":1,"story":1,"task":0}');
     writeFileSync(join(root, '.kadai/config.toml'), '[guardrail]\nallowed_paths = []\n[change_capture]\nenabled = true\n');
-    writeFileSync(join(root, '.kadai/picked'), 'STORY-001');
+    writeFileSync(join(root, '.kadai/.picked'), 'STORY-001');
 
     const dispatcher = async (_: string, body: string) => {
       if (body.includes('PLEASE_FAIL_WITH_NEEDS_FEATURE')) {

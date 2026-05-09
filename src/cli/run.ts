@@ -13,11 +13,11 @@ export type RunOnceResult =
   | { kind: 'resumed'; storyId: string };
 
 function writePicked(rootDir: string, storyId: string): void {
-  writeFileSync(join(rootDir, '.kadai/picked'), storyId, 'utf8');
+  writeFileSync(join(rootDir, '.kadai/.picked'), storyId, 'utf8');
 }
 
 export async function runOnce(rootDir: string, dispatcher: Dispatcher): Promise<RunOnceResult> {
-  const pickedPath = join(rootDir, '.kadai/picked');
+  const pickedPath = join(rootDir, '.kadai/.picked');
   if (!existsSync(pickedPath)) return { kind: 'no-story-picked' };
   const storyId = readFileSync(pickedPath, 'utf8').trim();
 
@@ -37,7 +37,7 @@ export async function runOnce(rootDir: string, dispatcher: Dispatcher): Promise<
       // from 'running' precisely so this transition works without an intermediate step.
       const popped = transition(state, { kind: 'resume-paused' });
       writeState(rootDir, popped);
-      // CRITICAL: also update .kadai/picked so the next runOnce call dispatches the
+      // CRITICAL: also update .kadai/.picked so the next runOnce call dispatches the
       // resumed story, not the unblocker we just finished. Without this, the next
       // call would read the stale picked file and dispatch the wrong story.
       if (popped.currentStoryId) writePicked(rootDir, popped.currentStoryId);
