@@ -286,7 +286,7 @@ EOF
 
 **Goal:** When `.kadai/disabled` is present, every hook subcommand exits 0 cleanly without doing its normal work. PreToolUse stops gating, PostToolUse stops appending changelog, UserPromptSubmit stops injecting context, Stop stops nagging.
 
-- [ ] **Step 1: Add the disabled-no-op tests**
+- [x] **Step 1: Add the disabled-no-op tests**
 
 Read `/home/fintan/repos/kadai/tests/cli/hook.test.ts` to find the existing test patterns. APPEND tests like:
 
@@ -336,7 +336,7 @@ test('buildStopReminder returns null when kadai is disabled', () => {
 
 (Read the existing test file first to use the existing seed helpers; if `seedSpineWithPickedStory` doesn't exist, write a small inline equivalent.)
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -345,7 +345,7 @@ bun test tests/cli/hook.test.ts
 
 Expected: 4 new failures (the disabled checks aren't in place yet, so the original behavior runs and the tests fail their assertions).
 
-- [ ] **Step 3: Add the disabled guards in hook.ts**
+- [x] **Step 3: Add the disabled guards in hook.ts**
 
 Read `/home/fintan/repos/kadai/src/cli/hook.ts`. Add `import { isDisabled } from '../core/toggle';` near the top.
 
@@ -375,7 +375,7 @@ export function buildStopReminder(rootDir: string, opts: StopReminderOptions = {
 
 Each is a single line at the top of the function.
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -386,7 +386,7 @@ bun run typecheck
 
 Expected: 4 new tests pass + all existing hook tests still pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/fintan/repos/kadai
