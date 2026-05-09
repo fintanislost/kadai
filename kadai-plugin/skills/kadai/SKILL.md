@@ -30,14 +30,15 @@ This project uses **kadai** for product/feature/story tracking. The spine lives 
 3. Mention the story ID in commit messages so `kadai sync` (post-MVP) can attribute commits later.
 4. After PR merge, transition to `done`.
 
-## Spec → feature, plan → story
+## Spec → feature, plan → story (use the wrappers!)
 
-When you run `/brainstorming` (writes a spec) or `/writing-plans` (writes a plan), call:
+When the user asks for planning, brainstorming, or new feature work in this repo, **prefer the kadai-aware wrappers** over the upstream variants:
 
-- `kadai.attach_spec(feature_id, source_path)` — moves the spec into the feature's directory as `spec.md`.
-- `kadai.attach_plan(story_id, source_path)` — moves the plan into the story's directory as `plan.md`.
+- `kadai-brainstorming` instead of `superpowers:brainstorming` — auto-creates the epic + feature, attaches the spec to the spine.
+- `kadai-writing-plans` instead of `superpowers:writing-plans` — slices the plan per story, creates real kadai tasks, auto-picks the first story.
+- `kadai-runner` (or the `/kadai-run` slash command) — autonomously execute the picked story's plan with fast-follow-up unblocking.
 
-This is what makes kadai an **archive** as well as a tracker — every story carries its full intent → approach → execution trail.
+The upstream skills work, but they produce a freeform `docs/superpowers/` doc that someone has to translate into spine items by hand. The wrappers do that plumbing automatically and keep the spine in sync.
 
 ## Anti-patterns
 

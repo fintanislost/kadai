@@ -138,11 +138,33 @@ Type coercion is based on the existing value (boolean stays boolean, etc.).
 
 Run the MCP stdio server. Spawned by Claude Code via `.mcp.json` — not for direct use.
 
-Tool surface (18 tools):
+Tool surface (19 tools):
 - **Reads:** `list_phases`, `list_epics`, `list_features`, `list_stories`, `list_tasks`, `get`, `get_active_story`, `search`
 - **Writes:** `create_epic`, `create_feature`, `create_story`, `create_task`, `set_status`, `set_phase`, `attach_spec`, `attach_plan`, `pick_story`, `unpick`
 
 All write tools validate against the schema + state machine.
+
+## `kadai plan compose <id>`
+
+Render all descendant story plans of an epic, feature, or story as one composite markdown document. Useful for feeding a full implementation plan into an agent context or reviewing what's planned across a scope.
+
+```bash
+kadai plan compose EPIC-001                  # to stdout
+kadai plan compose FEAT-001 --out plan.md    # to file
+```
+
+Stories without a `plan.md` render as "(no plan yet)" so the composite mirrors the actual spine state rather than hiding gaps.
+
+## `kadai run [--status]`
+
+Autonomous runner — informational from the CLI (the real execution lives in the `/kadai-run` slash command, which can use Claude Code's Task tool to dispatch implementer subagents).
+
+```bash
+kadai run --status        # JSON-print .kadai/runner.json
+kadai run                 # informational; tells you to use /kadai-run from Claude Code
+```
+
+State is persisted in `.kadai/runner.json` and survives across sessions. To start or resume a run, use `/kadai-run` from a Claude Code session.
 
 ## `kadai hook (pre-tool-use|post-tool-use|user-prompt-submit|stop)`
 

@@ -14,6 +14,24 @@ import { serveCommand } from './serve';
 import { getCommand } from './get';
 import { syncCommand } from './sync';
 import { uninstallCommand } from './uninstall';
+import { composeCommand } from './compose';
+import { runCommand } from './run';
+import { appendCallToCassette } from '../cassette/recorder';
+
+let alreadyRecorded = false;
+function recordOnce(exit: number) {
+  if (alreadyRecorded) return;
+  alreadyRecorded = true;
+  appendCallToCassette({ argv: process.argv.slice(2), exit });
+}
+
+const originalExit = process.exit.bind(process);
+process.exit = ((code?: number) => {
+  recordOnce(code ?? 0);
+  return originalExit(code);
+}) as typeof process.exit;
+
+process.on('exit', (code) => recordOnce(code));
 
 const program = new Command();
 program
@@ -36,5 +54,11 @@ program.addCommand(serveCommand);
 program.addCommand(getCommand);
 program.addCommand(syncCommand);
 program.addCommand(uninstallCommand);
+
+const planCommand = new Command('plan')
+  .description('Plan composition + analysis tools');
+planCommand.addCommand(composeCommand);
+program.addCommand(planCommand);
+program.addCommand(runCommand);
 
 program.parseAsync(process.argv);
