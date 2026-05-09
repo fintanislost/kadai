@@ -32,18 +32,23 @@ export function serializeSpine(rootDir: string): Snapshot {
   return out;
 }
 
-// Match an ISO datetime (with time component) inside any quoted string in YAML frontmatter,
-// e.g.  updated: "2026-05-07T14:30:00.123Z"  →  updated: "<TIMESTAMP>"
-// Date-only strings ("2026-05-07") are intentionally NOT matched.
-// The timezone marker (Z or +HH:MM offset) is REQUIRED — kadai always writes
-// Z-suffixed datetimes, and a timezone-naive string (e.g., one that turned out
-// to be deterministic across runs) should NOT be silently normalized away.
+// Match an ISO datetime (with time component) inside any quoted string in YAML
+// frontmatter, e.g.  updated: "2026-05-07T14:30:00.123Z"  →  "<TIMESTAMP>".
+// The timezone marker (Z or +HH:MM offset) is REQUIRED.
 const ISO_DATETIME_REGEX = /"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})"/g;
+
+// Match a YAML-quoted ISO date string (single OR double quotes).
+// Real cassettes capture today's date in created/updated fields (kadai writes
+// new Date().toISOString().split('T')[0]), so a cassette recorded one day
+// always diverges from a next-day replay if these aren't normalized.
+const ISO_DATE_REGEX = /(['"])\d{4}-\d{2}-\d{2}\1/g;
 
 export function normalizeSpine(snap: Snapshot): Snapshot {
   const out: Snapshot = {};
   for (const [k, v] of Object.entries(snap)) {
-    out[k] = v.replace(ISO_DATETIME_REGEX, '"<TIMESTAMP>"');
+    out[k] = v
+      .replace(ISO_DATETIME_REGEX, '"<TIMESTAMP>"')
+      .replace(ISO_DATE_REGEX, '$1<DATE>$1');
   }
   return out;
 }

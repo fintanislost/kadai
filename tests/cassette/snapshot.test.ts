@@ -54,11 +54,11 @@ test('normalizeSpine replaces ISO timestamps with <TIMESTAMP> placeholder', () =
   expect(normalized['epics/EPIC-001/feature.md']).toContain('updated: "<TIMESTAMP>"');
 });
 
-test('normalizeSpine preserves date-only YYYY-MM-DD fields (those are deterministic)', () => {
+test("normalizeSpine REPLACES date-only YYYY-MM-DD fields (cassettes capture today's date)", () => {
   const snap: Snapshot = { 'epics/E/epic.md': 'created: "2026-05-07"\nupdated: "2026-05-07"\n' };
   const normalized = normalizeSpine(snap);
-  // Date-only strings are deterministic given a known seeded date — only ISO datetimes get replaced.
-  expect(normalized['epics/E/epic.md']).toBe('created: "2026-05-07"\nupdated: "2026-05-07"\n');
+  // Real cassettes capture today's date via new Date().toISOString().split('T')[0],
+  expect(normalized["epics/E/epic.md"]).toBe(`created: "<DATE>"\nupdated: "<DATE>"\n`);
 });
 
 test('diffSpines returns null when snapshots are identical after normalization', () => {
