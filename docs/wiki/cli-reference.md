@@ -83,6 +83,27 @@ For programmatic use, the MCP tool `mcp__kadai__set_status` does the same thing.
 
 Clear the picked-story flag. Does NOT change status.
 
+## `kadai disable [--reason <text>]`
+
+Disable kadai in this project. Writes `.kadai/disabled`. Hooks no-op, mutating commands error, MCP refuses mutating tools, web viewer shows a DISABLED banner. Reads still work, as do `kadai disable`/`enable`/`status`/`run`.
+
+```
+kadai disable
+kadai disable --reason "quick refactor"
+```
+
+Idempotent — running twice prints a warning and preserves the original reason.
+
+## `kadai enable`
+
+Re-enable kadai in this project. Removes `.kadai/disabled`. No drift detection — if you did spine-relevant work while disabled, record it manually.
+
+```
+kadai enable
+```
+
+Idempotent — running twice prints an info message.
+
 ## `kadai sync [options]`
 
 Scan the git log for `EPIC-NNN` / `FEAT-NNN` / `STORY-NNN` / `TASK-NNN` references in commit messages and append each matching commit to the referenced item's `changelog.md`. Idempotent — re-running adds only commits not already present (dedup by short SHA).

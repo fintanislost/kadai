@@ -1368,7 +1368,7 @@ EOF
 
 **Goal:** Document the new verbs, the project-state concept, and the answer to "how do I temporarily disable kadai?"
 
-- [ ] **Step 1: Update cli-reference.md**
+- [x] **Step 1: Update cli-reference.md**
 
 Add entries (preserve existing structure/style):
 
@@ -1395,7 +1395,7 @@ kadai enable
 Idempotent — running twice prints an info message.
 ```
 
-- [ ] **Step 2: Add a "Toggle" concept section to concepts.md**
+- [x] **Step 2: Add a "Toggle" concept section to concepts.md**
 
 Append:
 
@@ -1427,7 +1427,7 @@ Vs `KADAI_BYPASS=1`: bypass is per-shell + per-write; the toggle is project-leve
 No drift detection (v1): if you do spine-relevant work while disabled, the spine and reality diverge silently. Easy to add later via the timestamps.
 ```
 
-- [ ] **Step 3: Add a troubleshooting entry**
+- [x] **Step 3: Add a troubleshooting entry**
 
 Append:
 
@@ -1446,7 +1446,7 @@ This switches off every kadai surface (hooks, MCP mutations, CLI mutations, web 
 For per-write/per-shell escapes (rare cases), `KADAI_BYPASS=1` env var still works — that doesn't write the disabled flag and only affects the current shell.
 ```
 
-- [ ] **Step 4: Verify the markdown is valid + commit**
+- [x] **Step 4: Verify the markdown is valid + commit**
 
 ```bash
 cd /home/fintan/repos/kadai
@@ -1480,7 +1480,7 @@ EOF
 - [ ] `kadai status` shows DISABLED preamble when disabled.
 - [ ] Web viewer shows DISABLED banner when API returns `disabled: true`.
 - [ ] Plugin v1.4.x has the two new slash commands.
-- [ ] Wiki updated for cli-reference + concepts + troubleshooting.
+- [x] Wiki updated for cli-reference + concepts + troubleshooting.
 
 ## Post-merge follow-ups
 
