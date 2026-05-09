@@ -5,6 +5,7 @@ import { loadConfig } from '../config/load';
 import { readPicked } from '../core/picked';
 import { findById } from '../core/spine';
 import { findKadaiRoot } from '../core/find-root';
+import { isDisabled } from '../core/toggle';
 
 export interface PreToolUseInput {
   tool_name: string;
@@ -41,6 +42,7 @@ function appendBypassLog(rootDir: string, targetPath: string, reason: string): v
 }
 
 export function evaluatePreToolUse(input: PreToolUseInput, rootDir: string): EvaluationResult {
+  if (isDisabled(rootDir)) return { allow: true };
   if (!GUARDED_TOOLS.has(input.tool_name)) return { allow: true };
   const filePath = input.tool_input.file_path;
   if (!filePath) return { allow: true };
@@ -75,6 +77,7 @@ export interface PostToolUseInput {
 }
 
 export function recordPostToolUse(input: PostToolUseInput, rootDir: string): void {
+  if (isDisabled(rootDir)) return;
   if (!GUARDED_TOOLS.has(input.tool_name)) return;
   const filePath = input.tool_input.file_path;
   if (!filePath) return;
@@ -95,6 +98,7 @@ export function recordPostToolUse(input: PostToolUseInput, rootDir: string): voi
 }
 
 export function buildActiveStoryContext(rootDir: string): string | null {
+  if (isDisabled(rootDir)) return null;
   const pickedId = readPicked(rootDir);
   if (!pickedId) return null;
   const story = findById(rootDir, pickedId);
@@ -137,6 +141,7 @@ export interface StopReminderOptions {
 }
 
 export function buildStopReminder(rootDir: string, opts: StopReminderOptions = {}): string | null {
+  if (isDisabled(rootDir)) return null;
   const pickedId = readPicked(rootDir);
   if (!pickedId) return null;
   const story = findById(rootDir, pickedId);

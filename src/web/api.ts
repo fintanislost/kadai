@@ -13,6 +13,7 @@ import { comparePhases } from '../core/compare';
 import type { Item } from '../core/types';
 import type { ItemKind, Status } from '../core/state-machine';
 import type { EventBus } from './events';
+import { getDisabledInfo } from '../core/toggle';
 
 function filterItems(
   items: Item[],
@@ -37,6 +38,12 @@ function readQuery(url: URL, key: string): string | undefined {
 export async function handleApi(req: Request, rootDir: string, bus?: EventBus): Promise<Response> {
   const url = new URL(req.url);
   const path = url.pathname;
+
+  if (path === '/api/disabled-status' && req.method === 'GET') {
+    const info = getDisabledInfo(rootDir);
+    if (!info) return Response.json({ disabled: false });
+    return Response.json({ disabled: true, since: info.since, reason: info.reason });
+  }
 
   if (path === '/api/phases') {
     return Response.json(loadConfig(rootDir).phases);

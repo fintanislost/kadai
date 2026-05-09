@@ -5,6 +5,14 @@ import { zodToJsonSchema } from 'zod-to-json-schema';
 import { listTools, getTool } from './registry';
 import type { ToolContext } from './types';
 import { appendMcpCallToCassette, captureReferencedFiles } from '../cassette/recorder';
+import { isDisabled } from '../core/toggle';
+import { MUTATING_MCP_TOOLS } from './mutating-tools';
+
+/** Exported for testability. Returns true if a tool call should be refused
+ *  because kadai is disabled in this project AND the tool is a mutating one. */
+export function shouldRefuseMcpCall(toolName: string, rootDir: string): boolean {
+  return isDisabled(rootDir) && MUTATING_MCP_TOOLS.has(toolName);
+}
 
 export async function runServer(rootDir: string): Promise<void> {
   const server = new Server(
@@ -30,6 +38,13 @@ export async function runServer(rootDir: string): Promise<void> {
     if (!tool) {
       return {
         content: [{ type: 'text' as const, text: `Unknown tool: ${name}` }],
+        isError: true,
+      };
+    }
+    // Refusal check BEFORE schema parsing — cheap; no need to validate args we won't use.
+    if (shouldRefuseMcpCall(name, ctx.rootDir)) {
+      return {
+        content: [{ type: 'text' as const, text: 'kadai is disabled in this project; run `kadai enable` to re-enable.' }],
         isError: true,
       };
     }

@@ -211,3 +211,28 @@ git commit
 ```
 
 Tier 3 (real e2e) is the canary for skill-matching drift — Claude shipping a model update that stops loading the wrapper skill. Treat it as a periodic check, not a PR gate.
+## The disable toggle
+
+A project-level on/off switch for all kadai surfaces. When `.kadai/disabled` is present:
+
+- **Hooks no-op cleanly.** PreToolUse stops gating writes; PostToolUse stops appending changelogs; UserPromptSubmit/Stop go silent.
+- **Mutating CLI commands refuse.** `kadai add`, `pick`, `set-status`, `attach-*`, `sync`, etc. error with a friendly message pointing at `kadai enable`.
+- **MCP mutating tools refuse.** `create_*`, `attach_*`, `pick_story`, `set_status`, etc. return an isError response.
+- **Reads work.** `list`, `status`, `get-file`, `phases` (read), `config` (read), `plan compose`, `serve`, `mcp` (reads only) all unaffected.
+- **Escape hatches always work.** `disable`, `enable`, `status`, `run` ignore the flag.
+- **Web viewer shows a banner** in the topbar, accent-colored.
+
+The flag file holds an ISO timestamp and an optional reason:
+```
+disabled-since: 2026-05-08T22:30:15Z
+reason: quick refactor across multiple stories
+```
+
+Use cases:
+- "I want to do something quick that's not part of the spine."
+- "kadai is misbehaving and I need to bypass everything."
+- "This project shouldn't be tracked by kadai right now (exploratory mode)."
+
+Vs `KADAI_BYPASS=1`: bypass is per-shell + per-write; the toggle is project-level + persistent across shells/sessions until you `kadai enable`. Use bypass for one-shot escapes; use the toggle for session-or-longer.
+
+No drift detection (v1): if you do spine-relevant work while disabled, the spine and reality diverge silently. Easy to add later via the timestamps.

@@ -155,3 +155,15 @@ The kadai discipline skill's description points agents at the wrappers — make 
    ```
 
    Be deliberate — the cassette is the contract. Re-recording is fine when the behavior change is intended (e.g., new `kadai add story` flag, schema migration). It's NOT fine to silently re-record because the test is annoying — that defeats the whole tier.
+## "I want to temporarily disable kadai"
+
+**Use the toggle:**
+
+```
+kadai disable                       # silent
+kadai disable --reason "quick fix"  # records why for the audit log
+```
+
+This switches off every kadai surface (hooks, MCP mutations, CLI mutations, web banner) until you run `kadai enable`. Reads continue working. See `concepts.md > The disable toggle` for the full behavior contract.
+
+For per-write/per-shell escapes (rare cases), `KADAI_BYPASS=1` env var still works — that doesn't write the disabled flag and only affects the current shell.

@@ -1,5 +1,6 @@
 import { Command } from 'commander';
 import pc from 'picocolors';
+import { assertEnabled } from '../core/toggle';
 import { syncChangelogs, type SyncResult, type SyncOptions } from '../core/sync';
 
 export function runSync(rootDir: string, opts: SyncOptions): SyncResult {
@@ -18,6 +19,7 @@ export const syncCommand = new Command('sync')
   .option('--branch <name>', 'scan a specific branch instead of HEAD')
   .option('--dry-run', 'show what would be appended without writing')
   .action((opts: SyncCliOptions) => {
+    assertEnabled();
     const result = runSync(process.cwd(), {
       since: opts.since,
       branch: opts.branch,

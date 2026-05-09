@@ -179,3 +179,15 @@ export async function getSubtree(id: string, slug?: string | null): Promise<Item
   if (!r.ok) throw new Error(`/items/${id}/subtree → ${r.status}`);
   return r.json() as Promise<Item[]>;
 }
+
+export interface DisabledStatus {
+  disabled: boolean;
+  since?: string;
+  reason?: string;
+}
+
+export async function getDisabledStatus(slug?: string | null): Promise<DisabledStatus> {
+  const r = await fetch(withBase(slug, '/disabled-status'));
+  if (!r.ok) return { disabled: false };  // gracefully degrade
+  return r.json() as Promise<DisabledStatus>;
+}

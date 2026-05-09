@@ -1,5 +1,6 @@
 import { Command } from 'commander';
 import pc from 'picocolors';
+import { assertEnabled } from '../core/toggle';
 import { loadConfig, saveConfig } from '../config/load';
 import type { PhaseConfig } from '../config/types';
 import { walkSpine } from '../core/spine';
@@ -82,6 +83,7 @@ phasesCommand
   .argument('<display>')
   .argument('[color]', 'hex color', '#888888')
   .action((slug: string, display: string, color: string) => {
+    assertEnabled();
     addPhase(process.cwd(), slug, display, color);
     console.log(pc.green(`✓ added phase ${slug}`));
   });
@@ -91,6 +93,7 @@ phasesCommand
   .argument('<slug>')
   .option('--move-to <slug>', 'migrate items in this phase to the target slug before removing')
   .action((slug: string, opts: { moveTo?: string }) => {
+    assertEnabled();
     removePhase(process.cwd(), slug, { moveTo: opts.moveTo });
     console.log(pc.green(`✓ removed phase ${slug}${opts.moveTo ? ` (migrated to ${opts.moveTo})` : ''}`));
   });
@@ -101,6 +104,7 @@ phasesCommand
   .argument('<newSlug>')
   .argument('<newDisplay>')
   .action((oldSlug: string, newSlug: string, newDisplay: string) => {
+    assertEnabled();
     renamePhase(process.cwd(), oldSlug, newSlug, newDisplay);
     console.log(pc.green(`✓ renamed ${oldSlug} → ${newSlug}`));
   });

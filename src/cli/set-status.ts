@@ -1,5 +1,6 @@
 import { Command } from 'commander';
 import pc from 'picocolors';
+import { assertEnabled } from '../core/toggle';
 import { setStatus } from '../core/operations';
 import type { Status } from '../core/state-machine';
 
@@ -17,6 +18,7 @@ export const setStatusCommand = new Command('set-status')
   .argument('<status>', `target status (${STATUS_VALUES.join('|')})`)
   .option('-r, --reason <text>', 'reason for the change (logged but not persisted in this MVP)')
   .action((id: string, status: string, opts: { reason?: string }) => {
+    assertEnabled();
     if (!STATUS_VALUES.includes(status as Status)) {
       console.error(pc.red(`Invalid status: ${status}. Must be one of: ${STATUS_VALUES.join(', ')}`));
       process.exit(2);
