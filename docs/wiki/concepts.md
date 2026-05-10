@@ -213,26 +213,42 @@ git commit
 Tier 3 (real e2e) is the canary for skill-matching drift — Claude shipping a model update that stops loading the wrapper skill. Treat it as a periodic check, not a PR gate.
 ## The disable toggle
 
-A project-level on/off switch for all kadai surfaces. When `.kadai/disabled` is present:
+An on/off switch for all kadai surfaces, available at three scopes:
+
+| Scope | Source | Lives in | Use when |
+|-------|--------|----------|----------|
+| **Project** | `kadai disable` | `.kadai/disabled` | One project shouldn't be tracked right now |
+| **Global** | `kadai disable --global` | `~/.kadai/disabled` | Disable kadai in *every* project for this user |
+| **Env (per-shell)** | `export KADAI_DISABLED=1` | (env only) | Quick disable in one terminal session |
+
+**Precedence is a logical OR — any source disables:**
+
+```
+KADAI_BYPASS=1  >  ~/.kadai/disabled  >  KADAI_DISABLED env  >  .kadai/disabled
+   (one-shot)       (global persistent)    (global per-shell)    (project)
+```
+
+`KADAI_BYPASS=1` overrides everything (one-shot escape — the only way to write while disabled). The other three are independent: clearing one doesn't help if another is still set. `kadai enable` and `kadai status` warn when other sources remain.
+
+When kadai is disabled (any scope):
 
 - **Hooks no-op cleanly.** PreToolUse stops gating writes; PostToolUse stops appending changelogs; UserPromptSubmit/Stop go silent.
-- **Mutating CLI commands refuse.** `kadai add`, `pick`, `set-status`, `attach-*`, `sync`, etc. error with a friendly message pointing at `kadai enable`.
+- **Mutating CLI commands refuse.** `kadai add`, `pick`, `set-status`, `attach-*`, `sync`, etc. error with a friendly message pointing at `kadai enable` (or `--global`).
 - **MCP mutating tools refuse.** `create_*`, `attach_*`, `pick_story`, `set_status`, etc. return an isError response.
 - **Reads work.** `list`, `status`, `get-file`, `phases` (read), `config` (read), `plan compose`, `serve`, `mcp` (reads only) all unaffected.
 - **Escape hatches always work.** `disable`, `enable`, `status`, `run` ignore the flag.
-- **Web viewer shows a banner** in the topbar, accent-colored.
+- **Web viewer shows a scope-aware banner** in the topbar (`DISABLED`, `DISABLED (GLOBAL)`, or `DISABLED (ENV)`).
 
-The flag file holds an ISO timestamp and an optional reason:
+The file flag (`.kadai/disabled` or `~/.kadai/disabled`) holds an ISO timestamp and an optional reason:
 ```
 disabled-since: 2026-05-08T22:30:15Z
 reason: quick refactor across multiple stories
 ```
 
-Use cases:
-- "I want to do something quick that's not part of the spine."
-- "kadai is misbehaving and I need to bypass everything."
-- "This project shouldn't be tracked by kadai right now (exploratory mode)."
-
-Vs `KADAI_BYPASS=1`: bypass is per-shell + per-write; the toggle is project-level + persistent across shells/sessions until you `kadai enable`. Use bypass for one-shot escapes; use the toggle for session-or-longer.
+Use cases by scope:
+- **Project** — "This project shouldn't be tracked by kadai right now (exploratory mode)."
+- **Global** — "I'm doing focus work across multiple repos and don't want kadai prompts anywhere."
+- **Env** — "Just this terminal, just this session — quick test, demo, one-shot script."
+- **`KADAI_BYPASS=1`** — "Single command must succeed even though kadai is disabled."
 
 No drift detection (v1): if you do spine-relevant work while disabled, the spine and reality diverge silently. Easy to add later via the timestamps.
