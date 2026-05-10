@@ -42,7 +42,7 @@ export async function handleApi(req: Request, rootDir: string, bus?: EventBus): 
   if (path === '/api/disabled-status' && req.method === 'GET') {
     const info = getDisabledInfo(rootDir);
     if (!info) return Response.json({ disabled: false });
-    return Response.json({ disabled: true, since: info.since, reason: info.reason });
+    return Response.json({ disabled: true, scope: info.scope, since: info.since, reason: info.reason });
   }
 
   if (path === '/api/phases') {

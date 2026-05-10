@@ -83,24 +83,37 @@ For programmatic use, the MCP tool `mcp__kadai__set_status` does the same thing.
 
 Clear the picked-story flag. Does NOT change status.
 
-## `kadai disable [--reason <text>]`
+## `kadai disable [--reason <text>] [--global]`
 
-Disable kadai in this project. Writes `.kadai/disabled`. Hooks no-op, mutating commands error, MCP refuses mutating tools, web viewer shows a DISABLED banner. Reads still work, as do `kadai disable`/`enable`/`status`/`run`.
+Disable kadai. Hooks no-op, mutating commands error, MCP refuses mutating tools, web viewer shows a DISABLED banner. Reads still work, as do `kadai disable`/`enable`/`status`/`run`.
+
+Three scopes (most-local-wins display; ANY source disables):
+
+| Scope | How to set | How to clear | Lives in |
+|-------|------------|--------------|----------|
+| **Project** (default) | `kadai disable` | `kadai enable` | `.kadai/disabled` |
+| **Global** (all your projects) | `kadai disable --global` | `kadai enable --global` | `~/.kadai/disabled` |
+| **Env (per-shell)** | `export KADAI_DISABLED=1` | `unset KADAI_DISABLED` | (env only — no file) |
 
 ```
-kadai disable
+kadai disable                              # this project only
 kadai disable --reason "quick refactor"
+kadai disable --global                     # everywhere for this user
+kadai disable --global --reason "..."
 ```
 
-Idempotent — running twice prints a warning and preserves the original reason.
+The status banner and web viewer indicate which scope is active. Idempotent — running `disable` twice prints a warning and preserves the original reason.
 
-## `kadai enable`
+## `kadai enable [--global]`
 
-Re-enable kadai in this project. Removes `.kadai/disabled`. No drift detection — if you did spine-relevant work while disabled, record it manually.
+Re-enable kadai. Removes the corresponding flag file. No drift detection — if you did spine-relevant work while disabled, record it manually.
 
 ```
-kadai enable
+kadai enable             # this project
+kadai enable --global    # global
 ```
+
+If you re-enable a project but `~/.kadai/disabled` or `KADAI_DISABLED=1` still exists, kadai stays disabled and `enable` prints a hint about which other source is still active.
 
 Idempotent — running twice prints an info message.
 

@@ -29,10 +29,18 @@ export const statusCommand = new Command('status')
     if (root) {
       const disabled = getDisabledInfo(root);
       if (disabled) {
-        process.stdout.write(pc.yellow(`⚠ kadai is DISABLED in this project\n`));
+        const scopeLabel = disabled.scope === 'env' ? 'via KADAI_DISABLED env var'
+          : disabled.scope === 'global' ? 'GLOBALLY'
+          : disabled.scope === 'both' ? 'in this project AND GLOBALLY'
+          : 'in this project';
+        const fix = disabled.scope === 'env' ? 'unset KADAI_DISABLED'
+          : disabled.scope === 'global' ? 'kadai enable --global'
+          : disabled.scope === 'both' ? 'kadai enable && kadai enable --global'
+          : 'kadai enable';
+        process.stdout.write(pc.yellow(`⚠ kadai is DISABLED ${scopeLabel}\n`));
         process.stdout.write(pc.dim(`  since: ${disabled.since}\n`));
         if (disabled.reason) process.stdout.write(pc.dim(`  reason: ${disabled.reason}\n`));
-        process.stdout.write(pc.dim(`  re-enable with: kadai enable\n`));
+        process.stdout.write(pc.dim(`  re-enable with: ${fix}\n`));
         process.stdout.write('\n');
       }
     }

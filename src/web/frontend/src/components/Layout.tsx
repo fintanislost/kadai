@@ -32,18 +32,31 @@ function DisabledBanner() {
   }, [activeSlug, liveKey]);
 
   if (!status.disabled) return null;
+  const scopeLabel = status.scope === 'env' ? 'via KADAI_DISABLED env var'
+    : status.scope === 'global' ? 'globally'
+    : status.scope === 'both' ? 'in this project + globally'
+    : 'in this project';
+  const fix = status.scope === 'env' ? 'unset KADAI_DISABLED'
+    : status.scope === 'global' ? 'Run `kadai enable --global` to re-enable.'
+    : status.scope === 'both' ? 'Run `kadai enable && kadai enable --global` to re-enable.'
+    : 'Run `kadai enable` to re-enable.';
   const tooltipText = [
-    `Disabled since ${status.since}`,
+    `Disabled ${scopeLabel} since ${status.since}`,
     status.reason ? `Reason: ${status.reason}` : '',
-    'Run `kadai enable` to re-enable.',
+    fix,
   ].filter(Boolean).join('\n');
+  const badgeLabel = status.scope === 'global' || status.scope === 'both'
+    ? '⚠ DISABLED (GLOBAL)'
+    : status.scope === 'env'
+      ? '⚠ DISABLED (ENV)'
+      : '⚠ DISABLED';
 
   return (
     <span
       title={tooltipText}
       className="bg-accent/[0.10] text-accent border border-accent/25 rounded-md px-2.5 py-1 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide cursor-help"
     >
-      ⚠ DISABLED
+      {badgeLabel}
     </span>
   );
 }

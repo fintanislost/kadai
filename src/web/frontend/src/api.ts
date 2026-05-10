@@ -180,8 +180,11 @@ export async function getSubtree(id: string, slug?: string | null): Promise<Item
   return r.json() as Promise<Item[]>;
 }
 
+export type DisabledScope = 'project' | 'global' | 'env' | 'both';
+
 export interface DisabledStatus {
   disabled: boolean;
+  scope?: DisabledScope;
   since?: string;
   reason?: string;
 }

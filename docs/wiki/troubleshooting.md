@@ -157,13 +157,22 @@ The kadai discipline skill's description points agents at the wrappers — make 
    Be deliberate — the cassette is the contract. Re-recording is fine when the behavior change is intended (e.g., new `kadai add story` flag, schema migration). It's NOT fine to silently re-record because the test is annoying — that defeats the whole tier.
 ## "I want to temporarily disable kadai"
 
-**Use the toggle:**
+Pick the smallest scope that fits — they're listed shortest-blast-radius first:
 
 ```
-kadai disable                       # silent
-kadai disable --reason "quick fix"  # records why for the audit log
+KADAI_BYPASS=1 kadai add story --title ...   # ONE command, even with disable still on
+export KADAI_DISABLED=1                       # this shell only — quick session escape
+kadai disable                                 # this project, persistent across shells
+kadai disable --reason "quick fix"            # records why
+kadai disable --global                        # EVERY kadai project, persistent
+kadai disable --global --reason "focus week"
 ```
 
-This switches off every kadai surface (hooks, MCP mutations, CLI mutations, web banner) until you run `kadai enable`. Reads continue working. See `concepts.md > The disable toggle` for the full behavior contract.
+To re-enable:
+- `unset KADAI_DISABLED` (env)
+- `kadai enable` (project)
+- `kadai enable --global` (global, `~/.kadai/disabled`)
 
-For per-write/per-shell escapes (rare cases), `KADAI_BYPASS=1` env var still works — that doesn't write the disabled flag and only affects the current shell.
+When kadai is disabled by **any** of these, hooks no-op, CLI/MCP mutations refuse, and the web banner shows the scope (`DISABLED`, `DISABLED (GLOBAL)`, `DISABLED (ENV)`). Reads continue working. See `concepts.md > The disable toggle` for the precedence rules and behavior contract.
+
+If you ran `kadai enable` and kadai is *still* disabled, check the other sources — `kadai status` will tell you which scope is active. `~/.kadai/disabled` is sticky across projects; `KADAI_DISABLED` is sticky across the current shell session.
