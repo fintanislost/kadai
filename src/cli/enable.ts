@@ -33,7 +33,7 @@ export const enableCommand = new Command('enable')
     if (!root) { process.stderr.write('Not inside a kadai project (use --global to clear the global flag)\n'); process.exit(1); }
     // Check the PROJECT file specifically — symmetric with `disable` (no --global).
     if (!existsSync(`${root}/.kadai/disabled`)) {
-      process.stdout.write(pc.dim(`kadai is not disabled at the project scope.\n`));
+      process.stdout.write(pc.dim(`kadai is already enabled in this project.\n`));
       if (isGloballyDisabled()) {
         process.stdout.write(pc.yellow(`  Note: kadai is still disabled GLOBALLY (~/.kadai/disabled). Run \`kadai enable --global\` to clear that.\n`));
       }
