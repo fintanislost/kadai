@@ -2,27 +2,27 @@
 # or homebrew-core when ready. Replace REPLACE_WITH_* placeholders before publishing.
 class Kadai < Formula
   desc "Local-first product spine for projects driven by agentic coding"
-  homepage "https://github.com/REPLACE_WITH_OWNER/kadai"
+  homepage "https://github.com/fintanislost/kadai"
   version "REPLACE_WITH_VERSION"
 
   on_macos do
     on_arm do
-      url "https://github.com/REPLACE_WITH_OWNER/kadai/releases/download/v#{version}/kadai-darwin-arm64"
+      url "https://github.com/fintanislost/kadai/releases/download/v#{version}/kadai-darwin-arm64"
       sha256 "REPLACE_WITH_DARWIN_ARM64_SHA256"
     end
     on_intel do
-      url "https://github.com/REPLACE_WITH_OWNER/kadai/releases/download/v#{version}/kadai-darwin-x64"
+      url "https://github.com/fintanislost/kadai/releases/download/v#{version}/kadai-darwin-x64"
       sha256 "REPLACE_WITH_DARWIN_X64_SHA256"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/REPLACE_WITH_OWNER/kadai/releases/download/v#{version}/kadai-linux-arm64"
+      url "https://github.com/fintanislost/kadai/releases/download/v#{version}/kadai-linux-arm64"
       sha256 "REPLACE_WITH_LINUX_ARM64_SHA256"
     end
     on_intel do
-      url "https://github.com/REPLACE_WITH_OWNER/kadai/releases/download/v#{version}/kadai-linux-x64"
+      url "https://github.com/fintanislost/kadai/releases/download/v#{version}/kadai-linux-x64"
       sha256 "REPLACE_WITH_LINUX_X64_SHA256"
     end
   end

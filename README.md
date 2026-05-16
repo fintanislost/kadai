@@ -17,7 +17,7 @@ Plus a bundled **Claude Code plugin** (`kadai-plugin/`) — auto-triggering skil
 From source (requires [Bun](https://bun.sh) ≥ 1.1):
 
 ```bash
-git clone https://github.com/REPLACE_WITH_OWNER/kadai.git
+git clone https://github.com/fintanislost/kadai.git
 cd kadai
 bun install
 bun run build:web

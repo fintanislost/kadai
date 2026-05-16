@@ -8,7 +8,7 @@
 #   INSTALL_URL=https://example.com/releases/v0.8.0 BIN_DIR=/usr/local/bin sh install.sh
 set -eu
 
-INSTALL_URL="${INSTALL_URL:-https://github.com/REPLACE_WITH_OWNER/kadai/releases/latest/download}"
+INSTALL_URL="${INSTALL_URL:-https://github.com/fintanislost/kadai/releases/latest/download}"
 BIN_DIR="${BIN_DIR:-$HOME/.local/bin}"
 
 # 1. Detect OS.
