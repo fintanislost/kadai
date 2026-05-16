@@ -1,6 +1,11 @@
 .superpowers/
 docs/superpowers/
+docs/follow_up_todo.md
+docs/dogfood-acceptance-test.md
 .claude/settings.local.json
+.mcp.json
+.playwright-mcp/
+/*.png
 node_modules/
 dist/
 .DS_Store
