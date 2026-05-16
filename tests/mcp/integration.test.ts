@@ -1,12 +1,12 @@
 import { test, expect, beforeAll, afterAll } from 'bun:test';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { runInit } from '../../src/cli/init';
 
-const REPO_ROOT = '/home/fintan/repos/kadai';
+const REPO_ROOT = resolve(import.meta.dir, '../..');
 const CLI_PATH = join(REPO_ROOT, 'src/cli/index.ts');
 
 let tmp: string;
